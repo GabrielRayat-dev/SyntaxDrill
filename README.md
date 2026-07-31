@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SyntaxDrill
 
-## Getting Started
+Learn to type real code. SyntaxDrill turns JavaScript and Python snippets into explain-then-type drills — read why a pattern works, type it from memory, run it in your browser, and track your pace.
 
-First, run the development server:
+Free forever. No ads, no accounts, no tracking.
+
+## Features
+
+- **Explain-then-type drills** — every snippet teaches first, then you type it from memory.
+- **Two languages, one track** — JavaScript and Python for Variables & Types, Conditionals, Loops, and Functions, plus a Database & Backend starter set (JS, Python, SQL).
+- **Run what you type** — sandboxed JavaScript eval and a full Python interpreter (Pyodide, loaded in the browser).
+- **Speed tests** — timed (15/30/60s) or word-count (10/25/50) runs on common English words.
+- **Mastery tracking** — a "mastered" badge for clean, zero-error runs; sessions and records live in your browser.
+- **Scenes that react** — a finish line sprints as you type, and database snippets show the server handshake live.
+- **Four full themes** — Tokyo Night (default), Rose Pine, Dracula, and Sunset. Every color swaps, nothing looks broken.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) and start typing.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+content/
+  snippets/    # drill snippets per language and concept
+  words/       # word lists for speed tests
+src/
+  app/         # routes (landing, /app, /practice, /speed)
+  components/  # UI: editor, theme picker, landing, scenes
+  lib/         # typing engine, session builder, storage, code runner
+  types/       # shared types
+```
 
-## Learn More
+## Roadmap
 
-To learn more about Next.js, take a look at the following resources:
+- More languages and difficulty tiers
+- Accounts with server-side progress (Neon Postgres)
+- Quiz mode
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE)
