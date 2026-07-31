@@ -1,23 +1,22 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import type { EditorState } from "@/lib/engine";
-import {
-  createEditor,
-  typeChar,
-  backspace,
-  isFinished,
-  finish,
-  wpm,
-  accuracy,
-} from "@/lib/engine";
+import { RotateCcw } from "lucide-react";
 import type { SpeedTestMode, SpeedTestRecord } from "@/types";
 import { pickWords } from "@/lib/words";
 import { createLocalRecordStore, newId } from "@/lib/storage/local";
 import type { SpeedConfig } from "@/lib/config";
-import { WORD_TARGETS } from "@/lib/config";
-import CodeEditor from "@/components/CodeEditor";
+import { TIME_TARGETS, WORD_TARGETS } from "@/lib/config";
+import type { WordTestState } from "@/lib/speedEngine";
+import {
+  createWordTest,
+  refillWordTest,
+  typeChar,
+  backspace,
+  speedWpm,
+  speedRaw,
+  speedAccuracy,
+} from "@/lib/speedEngine";
 import StatChip from "@/components/StatChip";
 import AppHeader from "@/components/AppHeader";
 
@@ -33,196 +32,206 @@ export default function SpeedScreen({
   initialWords,
 }: SpeedScreenProps) {
   const [config, setConfig] = useState<SpeedConfig | null>(initialConfig);
-  const [words, setWords] = useState<string[]>(initialWords);
   const [phase, setPhase] = useState<"config" | "type" | "result">(
     initialConfig ? "type" : "config",
   );
-  const [editor, setEditor] = useState<EditorState | null>(null);
+  const [test, setTest] = useState<WordTestState | null>(() =>
+    initialConfig ? createWordTest(initialWords) : null,
+  );
   const [elapsed, setElapsed] = useState(0);
-  const editorRef = useRef<EditorState | null>(null);
-  const finishingRef = useRef(false);
+  const testRef = useRef<WordTestState | null>(null);
 
   useEffect(() => {
-    editorRef.current = editor;
-  }, [editor]);
+    testRef.current = test;
+  }, [test]);
 
-  const targetText = words.join(" ");
+  const saveRecord = useCallback(
+    (done: WordTestState, cfg: SpeedConfig) => {
+      const durationMs =
+        (done.finishedAt ?? Date.now()) - (done.startedAt ?? Date.now());
+      const record: SpeedTestRecord = {
+        id: newId(),
+        kind: "speed",
+        mode: cfg.mode,
+        target: cfg.target,
+        startedAt: new Date().toISOString(),
+        durationMs,
+        wpm: speedWpm(done),
+        accuracy: speedAccuracy(done),
+        errors: done.errorKeystrokes,
+      };
+      createLocalRecordStore().add(record);
+      setPhase("result");
+    },
+    [],
+  );
 
-  function start(cfg: SpeedConfig) {
-    finishingRef.current = false;
-    setConfig(cfg);
-    setWords(pickWords(cfg.mode === "time" ? TIME_BUFFER : cfg.target));
-    setEditor(null);
-    setElapsed(0);
-    setPhase("type");
-  }
-
-  function beginTyping() {
-    if (!targetText) return;
-    setEditor(createEditor(targetText));
-  }
-
-  const finishNow = useCallback(() => {
-    const cur = editorRef.current;
-    if (!cur || finishingRef.current || !config) return;
-    finishingRef.current = true;
-    const done = finish(cur);
-    setEditor(done);
-    const durationMs =
-      (done.finishedAt ?? Date.now()) - (done.startedAt ?? Date.now());
-    const record: SpeedTestRecord = {
-      id: newId(),
-      kind: "speed",
-      mode: config.mode,
-      target: config.target,
-      startedAt: new Date().toISOString(),
-      durationMs,
-      wpm: wpm(done),
-      accuracy: accuracy(done),
-      errors: done.errorCount,
-    };
-    createLocalRecordStore().add(record);
-    setPhase("result");
-  }, [config]);
+  const start = useCallback(
+    (cfg: SpeedConfig) => {
+      const words = pickWords(cfg.mode === "time" ? TIME_BUFFER : cfg.target);
+      setConfig(cfg);
+      setTest(createWordTest(words));
+      setElapsed(0);
+      setPhase("type");
+    },
+    [],
+  );
 
   function handleType(ch: string) {
-    if (phase !== "type" || !editor) return;
-    const next = typeChar(editor, ch);
-    if (isFinished(next)) {
-      setEditor(next);
-      finishNow();
-    } else {
-      setEditor(next);
+    if (!test || test.finishedAt !== null) return;
+    let next = typeChar(test, ch);
+    if (
+      config?.mode === "time" &&
+      next.currentIndex > next.words.length - 120
+    ) {
+      next = refillWordTest(next, pickWords(200));
+    }
+    setTest(next);
+    if (next.finishedAt !== null) {
+      saveRecord(next, config!);
     }
   }
 
   function handleBackspace() {
-    if (phase !== "type") return;
-    setEditor((prev) => (prev ? backspace(prev) : prev));
+    if (!test) return;
+    setTest(backspace(test));
   }
 
   useEffect(() => {
-    if (phase !== "type" || !config || config.mode !== "time") return;
+    if (phase !== "type" || config?.mode !== "time" || !test?.startedAt) return;
     const id = setInterval(() => {
-      const cur = editorRef.current;
-      if (!cur?.startedAt || cur.finishedAt) return;
+      const cur = testRef.current;
+      if (!cur?.startedAt || cur.finishedAt !== null) return;
       const ms = Date.now() - cur.startedAt;
       setElapsed(ms);
-      if (ms >= config.target * 1000) finishNow();
+      if (ms >= config.target * 1000) {
+        const done = { ...cur, finishedAt: Date.now() };
+        setTest(done);
+        saveRecord(done, config);
+      }
     }, 100);
     return () => clearInterval(id);
-  }, [phase, config, finishNow]);
+  }, [phase, config, test?.startedAt, saveRecord]);
 
-  const remainingWords = editor
-    ? targetText
-        .slice(editor.typed.length)
-        .trim()
-        .split(/\s+/)
-        .filter(Boolean).length
-    : words.length;
+  useEffect(() => {
+    if (phase !== "type" || !test) return;
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "BUTTON" ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.tagName === "A" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "Tab") {
+        e.preventDefault();
+        if (config) start(config);
+        return;
+      }
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setPhase("config");
+        return;
+      }
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        handleBackspace();
+        return;
+      }
+      if (e.key.length === 1) {
+        e.preventDefault();
+        handleType(e.key);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
+  const blurTarget = (e: React.MouseEvent) => {
+    (e.currentTarget as HTMLElement | null)?.blur?.();
+    (document.activeElement as HTMLElement | null)?.blur?.();
+  };
 
   return (
     <div className="min-h-screen">
       <AppHeader />
       <main className="mx-auto max-w-3xl px-4 py-8">
-        {phase === "config" && <SpeedConfigPanel onPick={start} />}
+        {phase === "config" && (
+          <SpeedConfigPanel onPick={start} initial={config ?? undefined} />
+        )}
 
-        {phase !== "config" && config && (
+        {phase !== "config" && config && test && (
           <>
-            <div className="mb-6 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3 text-xs">
-                <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium uppercase tracking-widest text-ink">
-                  Speed
-                </span>
-                <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium text-ink">
-                  {config.mode === "time"
-                    ? `${config.target}s`
-                    : `${config.target} words`}
-                </span>
-              </div>
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <ConfigBar
+                config={config}
+                onPick={(cfg) => start(cfg)}
+                onBlur={blurTarget}
+              />
               <button
-                onClick={() => setPhase("config")}
-                className="text-xs font-medium text-muted transition-colors hover:text-ink"
+                onClick={(e) => {
+                  blurTarget(e);
+                  start(config);
+                }}
+                title="Restart (Tab)"
+                aria-label="Restart test"
+                className="rounded-lg border border-edge/70 bg-surface p-2 text-muted transition-colors hover:border-accent hover:text-accent"
               >
-                Change
+                <RotateCcw className="h-4 w-4" aria-hidden />
               </button>
             </div>
 
-            {phase === "type" && !editor && (
-              <div className="sd-rise space-y-4">
-                <p className="text-sm text-muted">
-                  Ready? Start typing — the clock begins on your first key.
-                </p>
-                <button
-                  onClick={beginTyping}
-                  className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
-                >
-                  Begin
-                </button>
-              </div>
-            )}
-
-            {phase === "type" && editor && (
-              <div className="sd-rise space-y-3">
-                <div className="flex gap-2">
-                  <StatChip label="WPM" value={wpm(editor).toFixed(0)} accent />
-                  <StatChip
-                    label="Acc"
-                    value={`${Math.round(accuracy(editor) * 100)}%`}
-                  />
-                  {config.mode === "time" && (
-                    <StatChip
-                      label="Time"
-                      value={`${Math.max(0, config.target - elapsed / 1000).toFixed(1)}s`}
-                    />
-                  )}
-                  {config.mode === "words" && (
-                    <StatChip label="Left" value={String(remainingWords)} />
-                  )}
-                </div>
-                <CodeEditor
-                  target={targetText}
-                  state={editor}
-                  onType={handleType}
-                  onBackspace={handleBackspace}
-                />
-                <p className="text-center text-[11px] text-muted">
-                  Backspace fixes mistakes.{" "}
-                  {config.mode === "time"
-                    ? "Time runs regardless of accuracy."
-                    : "Finish all words to stop the clock."}
-                </p>
-              </div>
-            )}
-
-            {phase === "result" && editor && (
-              <div className="sd-rise space-y-3">
-                <div className="rounded-xl border border-edge/70 bg-surface p-5">
-                  <h2 className="mb-4 text-sm font-semibold text-ink">Done</h2>
+            {phase === "type" && (
+              <div className="sd-rise overflow-hidden rounded-2xl border border-edge/70 bg-surface">
+                <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-5">
                   <div className="flex gap-2">
-                    <StatChip label="WPM" value={wpm(editor).toFixed(0)} accent />
+                    <StatChip
+                      label="WPM"
+                      value={speedWpm(test).toFixed(0)}
+                      accent
+                    />
                     <StatChip
                       label="Acc"
-                      value={`${Math.round(accuracy(editor) * 100)}%`}
+                      value={`${Math.round(speedAccuracy(test) * 100)}%`}
                     />
-                    <StatChip label="Errors" value={String(editor.errorCount)} />
+                    {config.mode === "time" ? (
+                      <StatChip
+                        label="Time"
+                        value={`${Math.max(0, config.target - elapsed / 1000).toFixed(1)}s`}
+                      />
+                    ) : (
+                      <StatChip
+                        label="Left"
+                        value={String(
+                          Math.max(0, config.target - test.currentIndex),
+                        )}
+                      />
+                    )}
                   </div>
                 </div>
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <button
-                    onClick={() => config && start({ ...config })}
-                    className="flex-1 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
-                  >
-                    Go again
-                  </button>
-                  <Link
-                    href="/app"
-                    className="flex-1 rounded-xl border border-edge bg-surface px-4 py-3 text-center text-sm font-medium text-ink transition-colors hover:bg-raised"
-                  >
-                    Back to tracks
-                  </Link>
+
+                <WordStream test={test} onBlur={blurTarget} />
+
+                <div className="flex items-center justify-between gap-3 border-t border-edge/70 bg-surface/60 px-4 py-2 text-[11px] text-muted sm:px-5">
+                  <span>start typing — the clock begins on your first key</span>
+                  <span className="hidden sm:inline">
+                    tab restarts · esc changes
+                  </span>
                 </div>
               </div>
+            )}
+
+            {phase === "result" && (
+              <SpeedResult
+                test={test}
+                onAgain={() => start(config)}
+                onChange={() => setPhase("config")}
+              />
             )}
           </>
         )}
@@ -231,11 +240,186 @@ export default function SpeedScreen({
   );
 }
 
-function SpeedConfigPanel({ onPick }: { onPick: (config: SpeedConfig) => void }) {
-  const [mode, setMode] = useState<SpeedTestMode>("time");
-  const [target, setTarget] = useState<number>(15);
+function ConfigBar({
+  config,
+  onPick,
+  onBlur,
+}: {
+  config: SpeedConfig;
+  onPick: (config: SpeedConfig) => void;
+  onBlur: (e: React.MouseEvent) => void;
+}) {
+  const targets = config.mode === "time" ? TIME_TARGETS : WORD_TARGETS;
+  return (
+    <div className="flex items-center gap-1 rounded-lg border border-edge/70 bg-surface p-1 text-xs font-medium">
+      {(["time", "words"] as const).map((mode) => (
+        <button
+          key={mode}
+          onClick={(e) => {
+            onBlur(e);
+            onPick({ mode, target: mode === "time" ? 15 : 10 });
+          }}
+          className={`rounded-md px-2.5 py-1 transition-colors ${
+            config.mode === mode ? "bg-raised text-ink" : "text-muted hover:text-ink"
+          }`}
+        >
+          {mode}
+        </button>
+      ))}
+      <span className="mx-1 h-4 w-px bg-edge" aria-hidden />
+      {targets.map((target) => (
+        <button
+          key={target}
+          onClick={(e) => {
+            onBlur(e);
+            onPick({ mode: config.mode, target });
+          }}
+          className={`rounded-md px-2 py-1 tabular-nums transition-colors ${
+            config.target === target
+              ? "bg-raised text-ink"
+              : "text-muted hover:text-ink"
+          }`}
+        >
+          {target}
+        </button>
+      ))}
+    </div>
+  );
+}
 
-  const targets = mode === "time" ? [15, 30, 60] : [...WORD_TARGETS];
+function WordStream({
+  test,
+  onBlur,
+}: {
+  test: WordTestState;
+  onBlur: (e: React.MouseEvent) => void;
+}) {
+  const { words, currentIndex, currentTyped } = test;
+  const windowStart = Math.max(0, currentIndex - 3);
+  const windowEnd = Math.min(words.length, windowStart + 30);
+  const visible = words.slice(windowStart, windowEnd);
+
+  return (
+    <div
+      className="flex min-h-[11rem] items-center justify-center px-4 py-6 sm:min-h-[13rem]"
+      onMouseDown={onBlur}
+    >
+      <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl">
+        {visible.map((word, offset) => {
+          const index = windowStart + offset;
+          if (index < currentIndex) {
+            const back = currentIndex - index;
+            const opacity = Math.max(0.25, 1 - back * 0.18);
+            const wrong = test.typedWords[index] !== word;
+            return (
+              <span
+                key={index}
+                className={wrong ? "text-bad" : "text-accent"}
+                style={{ opacity }}
+              >
+                {word}
+              </span>
+            );
+          }
+          if (index === currentIndex) {
+            return (
+              <span key={index} className="whitespace-nowrap">
+                <ActiveWord word={word} typed={currentTyped} />
+              </span>
+            );
+          }
+          const upcoming = index - currentIndex;
+          return (
+            <span
+              key={index}
+              className="text-muted"
+              style={{ opacity: upcoming <= 1 ? 0.55 : 0.35 }}
+            >
+              {word}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ActiveWord({ word, typed }: { word: string; typed: string }) {
+  const chars: React.ReactNode[] = [];
+  for (let i = 0; i < typed.length; i++) {
+    const target = word[i];
+    const correct = target !== undefined && typed[i] === target;
+    chars.push(
+      <span key={i} className={correct ? "text-accent" : "text-bad"}>
+        {typed[i]}
+      </span>,
+    );
+  }
+  chars.push(<span key="caret" className="caret-bar" aria-hidden />);
+  for (let i = typed.length; i < word.length; i++) {
+    chars.push(
+      <span key={i} className="text-muted/40">
+        {word[i]}
+      </span>,
+    );
+  }
+  return <>{chars}</>;
+}
+
+function SpeedResult({
+  test,
+  onAgain,
+  onChange,
+}: {
+  test: WordTestState;
+  onAgain: () => void;
+  onChange: () => void;
+}) {
+  const durationS =
+    ((test.finishedAt ?? test.startedAt ?? 0) - (test.startedAt ?? 0)) / 1000;
+  return (
+    <div className="sd-rise rounded-2xl border border-edge/70 bg-surface p-8 text-center sm:p-10">
+      <div className="font-display text-6xl font-semibold tabular-nums text-accent sm:text-7xl">
+        {speedWpm(test).toFixed(0)}
+      </div>
+      <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted">
+        words per minute
+      </p>
+      <div className="mx-auto mt-8 grid max-w-md grid-cols-2 gap-2 sm:grid-cols-4">
+        <StatChip label="Acc" value={`${Math.round(speedAccuracy(test) * 100)}%`} />
+        <StatChip label="Raw" value={speedRaw(test).toFixed(0)} />
+        <StatChip label="Errors" value={String(test.errorKeystrokes)} />
+        <StatChip label="Time" value={`${durationS.toFixed(1)}s`} />
+      </div>
+      <div className="mt-8 flex flex-col gap-2 sm:flex-row">
+        <button
+          onClick={onAgain}
+          className="flex-1 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+        >
+          Go again
+        </button>
+        <button
+          onClick={onChange}
+          className="flex-1 rounded-xl border border-edge bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
+        >
+          Change test
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SpeedConfigPanel({
+  onPick,
+  initial,
+}: {
+  onPick: (config: SpeedConfig) => void;
+  initial?: SpeedConfig;
+}) {
+  const [mode, setMode] = useState<SpeedTestMode>(initial?.mode ?? "time");
+  const [target, setTarget] = useState<number>(initial?.target ?? 15);
+
+  const targets = mode === "time" ? TIME_TARGETS : WORD_TARGETS;
 
   function pickMode(next: SpeedTestMode) {
     setMode(next);
@@ -245,9 +429,11 @@ function SpeedConfigPanel({ onPick }: { onPick: (config: SpeedConfig) => void })
   return (
     <div className="sd-rise space-y-6">
       <div>
-        <h1 className="font-display text-xl font-semibold text-ink">Speed test</h1>
+        <h1 className="font-display text-xl font-semibold text-ink">
+          Speed test
+        </h1>
         <p className="mt-1 text-sm text-muted">
-          Plain words, no code — measure raw typing speed and accuracy.
+          Plain words, no code â€” measure raw typing speed and accuracy.
         </p>
       </div>
 
