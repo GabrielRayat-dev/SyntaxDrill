@@ -4,6 +4,9 @@ export interface RunResult {
 }
 
 const PYODIDE_CDN = "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/";
+const LOAD_TIMEOUT_MS = 30_000;
+const PYODIDE_LOAD_ERROR =
+  "Couldn't load the Python interpreter (Pyodide) from the CDN — check your connection and try again.";
 
 export function formatValue(value: unknown): string {
   if (typeof value === "string") return value;
@@ -44,29 +47,47 @@ type PyodideAPI = {
   loadPyodide: (opts: { indexURL: string }) => Promise<unknown>;
 };
 
+type PyodideRuntime = {
+  setStdout: (opts: { batched?: (text: string) => void }) => void;
+  runPythonAsync: (code: string) => Promise<unknown>;
+};
+
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const el = document.createElement("script");
+    const timer = window.setTimeout(() => {
+      el.remove();
+      reject(new Error(`timed out loading ${src}`));
+    }, LOAD_TIMEOUT_MS);
     el.src = src;
     el.async = true;
-    el.onload = () => resolve();
-    el.onerror = () => reject(new Error(`failed to load ${src}`));
+    el.onload = () => {
+      window.clearTimeout(timer);
+      resolve();
+    };
+    el.onerror = () => {
+      window.clearTimeout(timer);
+      el.remove();
+      reject(new Error(`failed to load ${src}`));
+    };
     document.head.appendChild(el);
   });
 }
 
-let pyodidePromise: Promise<unknown> | null = null;
+let pyodidePromise: Promise<PyodideRuntime> | null = null;
 
-function getPyodide(): Promise<unknown> {
+function getPyodide(): Promise<PyodideRuntime> {
   if (typeof window === "undefined") {
     return Promise.reject(new Error("pyodide is browser-only"));
   }
   if (!pyodidePromise) {
     pyodidePromise = loadScript(PYODIDE_CDN + "pyodide.js")
-      .then(() => {
-        const api = (window as unknown as { loadPyodide?: PyodideAPI["loadPyodide"] }).loadPyodide;
-        if (!api) throw new Error("pyodide failed to initialize");
-        return api({ indexURL: PYODIDE_CDN });
+      .then(async () => {
+        const w = window as unknown as {
+          loadPyodide?: PyodideAPI["loadPyodide"];
+        };
+        if (!w.loadPyodide) throw new Error("pyodide failed to initialize");
+        return (await w.loadPyodide({ indexURL: PYODIDE_CDN })) as PyodideRuntime;
       });
     pyodidePromise.catch(() => {
       pyodidePromise = null;
@@ -75,38 +96,41 @@ function getPyodide(): Promise<unknown> {
   return pyodidePromise;
 }
 
+/** Kick off the Pyodide download in the background so the first run is instant. */
+export function preloadPyodide(): void {
+  if (typeof window !== "undefined") {
+    getPyodide().catch(() => {});
+  }
+}
+
 export async function runPython(code: string): Promise<RunResult> {
-  const py = (await getPyodide()) as {
-    setStdout: (opts: { batched?: (text: string) => void }) => void;
-    setStderr: (opts: { batched?: (text: string) => void }) => void;
-    runPythonAsync: (code: string) => Promise<unknown>;
-  };
   const chunks: string[] = [];
+  let py: PyodideRuntime;
+  try {
+    py = await getPyodide();
+  } catch {
+    return { output: "", error: PYODIDE_LOAD_ERROR };
+  }
   py.setStdout({ batched: (t) => chunks.push(t) });
-  py.setStderr({ batched: (t) => chunks.push(t) });
   try {
     await py.runPythonAsync(code);
     return { output: chunks.join(""), error: null };
   } catch (e) {
-    const message = e instanceof Error ? e.message : String(e);
-    const firstLine = message.split("\n").pop() ?? message;
-    return { output: chunks.join(""), error: firstLine };
+    return {
+      output: chunks.join(""),
+      error: e instanceof Error ? e.message : String(e),
+    };
   }
 }
 
-export function runSnippet(
+export async function runSnippet(
   language: "javascript" | "python",
   code: string,
-  needsServer: boolean,
 ): Promise<RunResult> {
-  if (needsServer) {
-    return Promise.resolve({
-      output: "",
-      error: "This snippet talks to a real database — it runs server-side in the ServerConnect scene.",
-    });
+  try {
+    if (language === "javascript") return runJavaScript(code);
+    return await runPython(code);
+  } catch (e) {
+    return { output: "", error: e instanceof Error ? e.message : String(e) };
   }
-  if (language === "javascript") {
-    return Promise.resolve(runJavaScript(code));
-  }
-  return runPython(code);
 }

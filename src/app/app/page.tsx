@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <AppHeader />
-      <main className="mx-auto max-w-5xl px-4 py-10">
+      <main id="main" className="mx-auto max-w-5xl px-4 py-10">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl font-semibold tracking-tight text-ink">

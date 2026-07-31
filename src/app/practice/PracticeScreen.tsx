@@ -24,7 +24,7 @@ import {
 } from "@/lib/concepts";
 import { snippetsFor } from "../../../content/snippets";
 import { createLocalRecordStore, newId } from "@/lib/storage/local";
-import { runSnippet, type RunResult } from "@/lib/runner";
+import { runSnippet, preloadPyodide, type RunResult } from "@/lib/runner";
 import CodeEditor from "@/components/CodeEditor";
 import CodeBlock from "@/components/CodeBlock";
 import ScenePanel from "@/components/scenes/ScenePanel";
@@ -121,17 +121,23 @@ export default function PracticeScreen({
   }
 
   async function runCode() {
-    if (!snippet || running) return;
+    if (!snippet || !editor || running) return;
     setRunning(true);
     setRunResult(null);
-    const needsServer = snippet.concepts.includes("database");
-    const res = await runSnippet(
-      snippet.language === "python" ? "python" : "javascript",
-      snippet.code,
-      needsServer,
-    );
-    setRunResult(res);
-    setRunning(false);
+    try {
+      const res = await runSnippet(
+        snippet.language === "python" ? "python" : "javascript",
+        editor.typed,
+      );
+      setRunResult(res);
+    } catch (e) {
+      setRunResult({
+        output: "",
+        error: e instanceof Error ? e.message : String(e),
+      });
+    } finally {
+      setRunning(false);
+    }
   }
 
   function next() {
@@ -145,6 +151,10 @@ export default function PracticeScreen({
     setRunning(false);
     setPhase("read");
   }
+
+  useEffect(() => {
+    preloadPyodide();
+  }, []);
 
   useEffect(() => {
     if (phase !== "summary" || !config || savedRef.current) return;
@@ -175,7 +185,7 @@ export default function PracticeScreen({
   return (
     <div className="min-h-screen">
       <AppHeader />
-      <main className="mx-auto max-w-3xl px-4 py-8">
+      <main id="main" className="mx-auto max-w-3xl px-4 py-8">
         {phase === "config" && <ConfigPanel onPick={startSession} />}
 
         {phase !== "config" && phase !== "summary" && snippet && (
@@ -285,6 +295,7 @@ export default function PracticeScreen({
                       : "finish-line"
                   }
                   progress={editor.typed.length / snippet.code.length}
+                  correct={editor.typed === snippet.code}
                 />
               </div>
             )}
@@ -315,13 +326,15 @@ export default function PracticeScreen({
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row">
-                  <button
-                    onClick={runCode}
-                    disabled={running}
-                    className="flex-1 rounded-xl border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
-                  >
-                    {running ? "Running…" : "Run it"}
-                  </button>
+                  {snippet.concepts[0] !== "database" && (
+                    <button
+                      onClick={runCode}
+                      disabled={running}
+                      className="flex-1 rounded-xl border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
+                    >
+                      {running ? "Running…" : "Run it"}
+                    </button>
+                  )}
                   <button
                     onClick={next}
                     className="flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
@@ -332,27 +345,44 @@ export default function PracticeScreen({
                   </button>
                 </div>
 
-                {runResult && (
-                  <div className="overflow-hidden rounded-xl border border-edge/70">
-                    <div className="border-b border-edge/70 bg-raised px-4 py-2 text-[11px] font-medium uppercase tracking-widest text-muted">
-                      Output
-                    </div>
-                    <div className="code-layer max-h-64 overflow-auto bg-surface px-4 py-3 text-[13px]">
-                      {runResult.output && (
-                        <pre className="whitespace-pre-wrap text-ink">
-                          {runResult.output}
-                        </pre>
-                      )}
-                      {runResult.error && (
-                        <pre className="whitespace-pre-wrap text-bad">
-                          {runResult.error}
-                        </pre>
-                      )}
-                      {!runResult.output && !runResult.error && (
-                        <span className="text-muted">No output.</span>
-                      )}
-                    </div>
-                  </div>
+                {snippet.concepts[0] === "database" ? (
+                  <ScenePanel
+                    sceneId="server-connect"
+                    progress={1}
+                    done
+                    correct={editor.typed === snippet.code}
+                  />
+                ) : (
+                  <>
+                    {running && snippet.language === "python" && (
+                      <div className="rounded-xl border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
+                        Loading the Python interpreter… first run may take a
+                        moment.
+                      </div>
+                    )}
+                    {runResult && (
+                      <div className="overflow-hidden rounded-xl border border-edge/70">
+                        <div className="border-b border-edge/70 bg-raised px-4 py-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+                          Output
+                        </div>
+                        <div className="code-layer max-h-64 overflow-auto bg-surface px-4 py-3 text-[13px]">
+                          {runResult.output && (
+                            <pre className="whitespace-pre-wrap text-ink">
+                              {runResult.output}
+                            </pre>
+                          )}
+                          {runResult.error && (
+                            <pre className="whitespace-pre-wrap text-bad">
+                              {runResult.error}
+                            </pre>
+                          )}
+                          {!runResult.output && !runResult.error && (
+                            <span className="text-muted">No output.</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             )}

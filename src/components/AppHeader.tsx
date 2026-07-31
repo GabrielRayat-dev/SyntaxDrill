@@ -23,7 +23,14 @@ export default function AppHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-edge/70 bg-page/80 backdrop-blur">
+    <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-3 focus:py-1.5 focus:text-xs focus:font-semibold focus:text-page"
+      >
+        Skip to content
+      </a>
+      <header className="sticky top-0 z-40 border-b border-edge/70 bg-page/80 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
         <div className="flex items-center gap-6">
           <Link
@@ -52,5 +59,6 @@ export default function AppHeader() {
         <ThemePicker compact />
       </div>
     </header>
+    </>
   );
 }

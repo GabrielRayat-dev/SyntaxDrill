@@ -160,7 +160,7 @@ export default function SpeedScreen({
   return (
     <div className="min-h-screen">
       <AppHeader />
-      <main className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-5xl flex-col justify-center px-4 py-8">
+      <main id="main" className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-5xl flex-col justify-center px-4 py-8">
         {phase === "config" && (
           <SpeedConfigPanel onPick={start} initial={config ?? undefined} />
         )}

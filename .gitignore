@@ -41,6 +41,10 @@ dev.log
 prod.log
 skills-lock.json
 
+# installed AI skills (tracked: frontend-design only)
+.agents/skills/*
+!.agents/skills/frontend-design/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

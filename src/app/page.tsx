@@ -99,6 +99,12 @@ const ROADMAP = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-3 focus:py-1.5 focus:text-xs focus:font-semibold focus:text-page"
+      >
+        Skip to content
+      </a>
       <header className="sticky top-0 z-40 border-b border-edge/70 bg-page/80 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
           <Link
@@ -128,13 +134,13 @@ export default function LandingPage() {
               href="/app"
               className="rounded-lg bg-accent px-3.5 py-1.5 text-xs font-semibold text-page transition-opacity hover:opacity-90"
             >
-              Open app
+              Open drills
             </Link>
           </div>
         </div>
       </header>
 
-      <main>
+      <main id="main">
         <section className="mx-auto max-w-5xl px-4 pb-16 pt-16 sm:pt-24">
           <div className="sd-rise mb-8 inline-flex items-center gap-2 rounded-full border border-edge/70 bg-surface px-3 py-1 text-xs font-medium text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-good" />
