@@ -4,14 +4,21 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useSyncExternalStore,
 } from "react";
 import {
+  COLORWAYS,
+  DEFAULT_COLORWAY,
   DEFAULT_THEME,
   isThemeId,
-  THEMES,
+  colorwayOf,
+  modeOf,
+  themeId,
+  type ColorwayId,
   type ThemeId,
+  type ThemeMode,
 } from "@/lib/themes";
 import { getRaw, setRaw, subscribeKey } from "@/lib/localStore";
 
@@ -19,7 +26,10 @@ const STORAGE_KEY = "sd.theme";
 
 interface ThemeContextValue {
   theme: ThemeId;
-  setTheme: (theme: ThemeId) => void;
+  colorway: ColorwayId;
+  mode: ThemeMode;
+  setTheme: (colorway: ColorwayId) => void;
+  setMode: (mode: ThemeMode) => void;
   cycle: () => void;
 }
 
@@ -42,20 +52,57 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     readTheme,
   );
 
-  const setTheme = useCallback((next: ThemeId) => {
+  const applyTheme = useCallback((next: ThemeId) => {
     document.documentElement.setAttribute("data-theme", next);
     setRaw(STORAGE_KEY, next);
   }, []);
 
+  const setTheme = useCallback(
+    (colorway: ColorwayId) => {
+      applyTheme(themeId(colorway, modeOf(theme)));
+    },
+    [applyTheme, theme],
+  );
+
+  const setMode = useCallback(
+    (mode: ThemeMode) => {
+      applyTheme(themeId(colorwayOf(theme), mode));
+    },
+    [applyTheme, theme],
+  );
+
   const cycle = useCallback(() => {
-    const index = THEMES.findIndex((t) => t.id === theme);
-    const next = THEMES[(index + 1) % THEMES.length].id;
-    setTheme(next);
-  }, [theme, setTheme]);
+    const index = COLORWAYS.findIndex((c) => c.id === colorwayOf(theme));
+    const next = COLORWAYS[(index + 1) % COLORWAYS.length].id;
+    applyTheme(themeId(next, modeOf(theme)));
+  }, [applyTheme, theme]);
+
+  // Follow the OS live until the user chooses a theme of their own.
+  useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      typeof window.matchMedia !== "function"
+    ) {
+      return;
+    }
+    const query = window.matchMedia("(prefers-color-scheme: light)");
+    const onChange = () => {
+      if (getRaw(STORAGE_KEY) !== null) return;
+      document.documentElement.dataset.theme = themeId(
+        DEFAULT_COLORWAY,
+        query.matches ? "light" : "dark",
+      );
+    };
+    query.addEventListener("change", onChange);
+    return () => query.removeEventListener("change", onChange);
+  }, []);
+
+  const colorway = colorwayOf(theme);
+  const mode = modeOf(theme);
 
   const value = useMemo(
-    () => ({ theme, setTheme, cycle }),
-    [theme, setTheme, cycle],
+    () => ({ theme, colorway, mode, setTheme, setMode, cycle }),
+    [theme, colorway, mode, setTheme, setMode, cycle],
   );
 
   return (

@@ -41,7 +41,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("sd.theme");document.documentElement.dataset.theme=t||"tokyo-night"}catch(e){document.documentElement.dataset.theme="tokyo-night"}`,
+            __html: `try{var t=localStorage.getItem("sd.theme"),s="tokyo-night";if(t){s=t}else{try{s=matchMedia("(prefers-color-scheme: light)").matches?"tokyo-night-light":"tokyo-night"}catch(e){s="tokyo-night"}}document.documentElement.dataset.theme=s}catch(e){document.documentElement.dataset.theme="tokyo-night"}`,
           }}
         />
       </head>

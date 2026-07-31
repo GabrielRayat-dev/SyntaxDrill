@@ -265,8 +265,8 @@ export default function LandingPage() {
                 Pick a theme that feels like home
               </h2>
               <p className="mt-2 text-sm text-muted">
-                Four full-product themes. Every color swaps — nothing looks
-                broken, everything looks intentional.
+                Four colorways, each in light and dark. Every color swaps —
+                nothing looks broken, everything looks intentional.
               </p>
             </div>
             <ThemePicker />
