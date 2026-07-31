@@ -57,6 +57,45 @@ const TRACK_LANGUAGES: Record<string, string> = {
   database: "JS · Python · SQL",
 };
 
+const ROADMAP = [
+  {
+    phase: "now",
+    label: "Now",
+    note: "building",
+    dot: "bg-accent",
+    bar: "bg-accent",
+    rows: [
+      { tag: "go + rust", text: "Two more languages join the drill set" },
+      { tag: "arrays + objects", text: "New concept tracks for the fundamentals" },
+      { tag: "quiz mode", text: "Recall drills that don't need a keyboard" },
+    ],
+  },
+  {
+    phase: "next",
+    label: "Next",
+    note: "short horizon",
+    dot: "bg-good",
+    bar: "bg-good",
+    rows: [
+      { tag: "difficulty", text: "Beginner → advanced tiers for every track" },
+      { tag: "accounts", text: "Cloud progress on Neon Postgres — still no ads" },
+      { tag: "leaderboards", text: "Opt-in pace comparisons once accounts exist" },
+    ],
+  },
+  {
+    phase: "later",
+    label: "Later",
+    note: "further out",
+    dot: "bg-muted",
+    bar: "border border-dashed border-muted/80 bg-muted/10",
+    rows: [
+      { tag: "community", text: "Share and remix your own drills" },
+      { tag: "mobile", text: "Touch-friendly layouts for phones" },
+      { tag: "api", text: "A free developer API for the word and snippet sets" },
+    ],
+  },
+];
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
@@ -78,6 +117,9 @@ export default function LandingPage() {
             </a>
             <a href="#themes" className="transition-colors hover:text-ink">
               Themes
+            </a>
+            <a href="#roadmap" className="transition-colors hover:text-ink">
+              Roadmap
             </a>
           </nav>
           <div className="flex items-center gap-3">
@@ -255,6 +297,91 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section id="roadmap" className="mx-auto max-w-5xl px-4 py-20">
+          <div className="mb-8 text-center">
+            <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+              The road ahead
+            </h2>
+            <p className="mt-2 text-sm text-muted">
+              An honest roadmap, built in the open. Solid bars are being built;
+              dashed bars are ideas we&apos;re keeping warm.
+            </p>
+          </div>
+          <div className="mb-5 flex flex-wrap items-center justify-center gap-5 text-[11px] text-muted">
+            {ROADMAP.map((phase) => (
+              <span
+                key={phase.phase}
+                className="inline-flex items-center gap-1.5"
+              >
+                <span
+                  className={`h-2 w-2 rounded-full ${phase.dot}`}
+                  aria-hidden
+                />
+                {phase.label} · {phase.note}
+              </span>
+            ))}
+          </div>
+          <div className="overflow-x-auto">
+            <div className="min-w-[640px] overflow-hidden rounded-2xl border border-edge/70 bg-surface">
+              <div className="grid grid-cols-[1.2fr_repeat(3,1fr)] border-b border-edge/70 bg-raised/40">
+                <div className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-muted">
+                  Initiative
+                </div>
+                {ROADMAP.map((phase) => (
+                  <div
+                    key={phase.phase}
+                    className="flex items-center gap-2 px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-muted"
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${phase.dot}`}
+                      aria-hidden
+                    />
+                    {phase.label}
+                  </div>
+                ))}
+              </div>
+              {ROADMAP.map((phase) =>
+                phase.rows.map((row) => (
+                  <div
+                    key={row.tag}
+                    className="grid grid-cols-[1.2fr_repeat(3,1fr)] border-b border-edge/40 transition-colors last:border-b-0 hover:bg-raised/30"
+                  >
+                    <div className="px-4 py-3">
+                      <div className="font-mono text-[11px] font-medium text-accent">
+                        {row.tag}
+                      </div>
+                      <div className="mt-0.5 text-xs text-muted">{row.text}</div>
+                    </div>
+                    {ROADMAP.map((col) => (
+                      <div
+                        key={col.phase}
+                        className="flex items-center px-4 py-3"
+                      >
+                        {col.phase === phase.phase && (
+                          <div
+                            className={`h-5 w-full rounded-md ${phase.bar}`}
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )),
+              )}
+            </div>
+          </div>
+          <p className="mt-8 text-center text-xs text-muted">
+            Have an idea?{" "}
+            <a
+              href="https://github.com/GabrielRayat-dev/SyntaxDrill"
+              target="_blank"
+              rel="noreferrer"
+              className="text-accent underline-offset-2 transition-colors hover:underline"
+            >
+              Open an issue on GitHub
+            </a>
+          </p>
         </section>
 
         <section id="themes" className="border-t border-edge/70 bg-surface/40 py-20">
