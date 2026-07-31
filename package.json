@@ -1,5 +1,5 @@
 {
-  "name": "syntaxdrill-tmp",
+  "name": "syntaxdrill",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,13 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "lucide-react": "^1.28.0",
     "next": "16.2.12",
+    "prismjs": "^1.30.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
