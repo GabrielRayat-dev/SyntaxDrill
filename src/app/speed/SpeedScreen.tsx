@@ -160,7 +160,7 @@ export default function SpeedScreen({
   return (
     <div className="min-h-screen">
       <AppHeader />
-      <main className="mx-auto max-w-3xl px-4 py-8">
+      <main className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-5xl flex-col justify-center px-4 py-8">
         {phase === "config" && (
           <SpeedConfigPanel onPick={start} initial={config ?? undefined} />
         )}
@@ -301,10 +301,10 @@ function WordStream({
 
   return (
     <div
-      className="flex min-h-[11rem] items-center justify-center px-4 py-6 sm:min-h-[13rem]"
+      className="flex min-h-[12rem] items-center justify-center px-4 py-6 sm:min-h-[14rem] xl:min-h-[17rem]"
       onMouseDown={onBlur}
     >
-      <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl">
+      <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
         {visible.map((word, offset) => {
           const index = windowStart + offset;
           if (index < currentIndex) {
