@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { EditorState } from "@/lib/engine";
 import {
   createEditor,
-  typeChar,
+  typeString,
   backspace,
   isFinished,
   finish,
@@ -52,8 +52,8 @@ export default function HeroDemo() {
   const done = editor.finishedAt !== null;
   const bars = traceBars(charStatuses(editor));
 
-  function handleType(ch: string) {
-    const next = typeChar(editor, ch);
+  function handleType(text: string) {
+    const next = typeString(editor, text);
     setEditor(isFinished(next) ? finish(next) : next);
   }
 

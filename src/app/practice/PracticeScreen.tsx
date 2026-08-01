@@ -6,7 +6,7 @@ import type { CodeSessionRecord, ConceptId, Difficulty, Snippet, SnippetLanguage
 import type { EditorState } from "@/lib/engine";
 import {
   createEditor,
-  typeChar,
+  typeString,
   backspace,
   isFinished,
   finish,
@@ -92,10 +92,10 @@ export default function PracticeScreen({
     setPhase("type");
   }
 
-  function handleType(ch: string) {
+  function handleType(text: string) {
     if (phase !== "type" || !editor || !snippet) return;
     const now = Date.now();
-    const next = typeChar(editor, ch, now);
+    const next = typeString(editor, text, now);
     if (isFinished(next)) {
       const done = finish(next, now);
       setEditor(done);
@@ -275,7 +275,8 @@ export default function PracticeScreen({
                   Start typing
                 </button>
                 <p className="text-center text-[11px] text-muted">
-                  Type it from memory — Enter inserts a newline, Backspace fixes mistakes.
+                  Type it from memory — Enter starts a new line, Tab indents,
+                  Backspace fixes mistakes.
                 </p>
               </div>
             )}

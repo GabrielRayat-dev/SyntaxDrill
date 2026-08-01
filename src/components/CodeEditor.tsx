@@ -7,7 +7,7 @@ import { charStatuses } from "@/lib/engine";
 interface CodeEditorProps {
   target: string;
   state: EditorState;
-  onType: (ch: string) => void;
+  onType: (text: string) => void;
   onBackspace: () => void;
   disabled?: boolean;
   className?: string;
@@ -73,6 +73,12 @@ export default function CodeEditor({
     }
     if (e.key === "Tab") {
       e.preventDefault();
+      const i = state.typed.length;
+      let j = i;
+      while (j < target.length && (target[j] === " " || target[j] === "\t")) {
+        j++;
+      }
+      if (j > i) onType(target.slice(i, j));
       return;
     }
     if (e.key.length === 1) {

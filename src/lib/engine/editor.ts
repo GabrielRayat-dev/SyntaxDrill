@@ -27,6 +27,19 @@ export function typeChar(
   };
 }
 
+export function typeString(
+  state: EditorState,
+  text: string,
+  now = Date.now(),
+): EditorState {
+  let next = state;
+  for (const ch of text) {
+    if (next.typed.length >= next.target.length) break;
+    next = typeChar(next, ch, now);
+  }
+  return next;
+}
+
 export function backspace(state: EditorState, now = Date.now()): EditorState {
   if (state.typed.length === 0) return state;
   return {
