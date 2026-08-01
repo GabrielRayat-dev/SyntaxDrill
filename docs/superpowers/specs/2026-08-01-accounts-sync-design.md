@@ -6,15 +6,15 @@
 
 ## Summary
 
-Add optional user accounts to SyntaxDrill: sign-in with GitHub, Google, or
-email + password (with username), plus cloud sync of practice/speed records to
-Neon Postgres. Signed-out users keep the existing localStorage-first behavior
+Add optional user accounts to SyntaxDrill: sign-in with GitHub or email +
+password (with username), plus cloud sync of practice/speed records to Neon
+Postgres. Signed-out users keep the existing localStorage-first behavior
 unchanged. The app stays free with no ads.
 
 ## Goals / Non-goals
 
 **Goals**
-- Sign up / sign in via GitHub OAuth, Google OAuth, or email + password.
+- Sign up / sign in via GitHub OAuth or email + password.
 - One account = one history, accessible across devices after sync.
 - Local-first experience preserved for signed-out users.
 - Landing-page copy updated (no more "no accounts, ever" claims).
@@ -40,7 +40,7 @@ unchanged. The app stays free with no ads.
 - **Usernames:** required and unique at email/password sign-up (inline "taken"
   check). OAuth sign-up creates no username; the user is prompted to set one in
   Settings. Username is editable in Settings anytime.
-- **OAuth providers:** GitHub and Google, both wired in Phase 1.
+- **OAuth providers:** GitHub only (Google dropped by user decision on 2026-08-01).
 - **Verification:** none for email at sign-up.
 
 ## Data model (`src/db/schema.ts`, pushed to Neon)
@@ -87,7 +87,7 @@ Aggregates (WPM, accuracy, streaks, mastered counts) are computed in TS from
 
 ## Auth wiring
 
-- `src/lib/auth.ts` — `NextAuth({ adapter, providers: [GitHub, Google, Credentials], session: { strategy: "jwt" }, pages: { signIn: "/signin" }, callbacks })`.
+- `src/lib/auth.ts` — `NextAuth({ adapter, providers: [GitHub, Credentials], session: { strategy: "jwt" }, pages: { signIn: "/signin" }, callbacks })`.
   - `jwt`/`session` callbacks expose `user.id` and `user.username`.
   - Export `{ auth, signIn, signOut, handlers }` (Auth.js v5 style).
   - `trustHost: true` for dev.
@@ -97,7 +97,7 @@ Aggregates (WPM, accuracy, streaks, mastered counts) are computed in TS from
 - **Sign-up action** (`registerUser`): validate inputs → check username + email
   uniqueness → bcrypt hash → insert `users` → `signIn("credentials")` to log in.
 - **Credentials sign-in:** bcrypt verify against `users.passwordHash`.
-- **OAuth:** `signIn("github" | "google", { redirectTo })`. Adapter auto-links by
+- **OAuth:** `signIn("github", { redirectTo })`. Adapter auto-links by
   verified email.
 
 ## Pages & UI
@@ -109,10 +109,10 @@ tokens, `font-display`/`font-mono` where used.
   - Create account: `username`, `email`, `password`, `confirm password`
     (min 8 chars, client match check, server-side validation, inline
     "username taken" / "email in use" errors).
-  - Sign in: email/password form + "Continue with GitHub" / "Continue with Google".
+  - Sign in: email/password form + "Continue with GitHub".
 - **`/settings`** (protected) — profile (avatar, name, editable username with
   taken-check), password section (set / change / remove), connected providers
-  (link/unlink GitHub + Google; block unlinking the last sign-in method when no
+  (link/unlink GitHub; block unlinking the last sign-in method when no
   password is set), sign out.
 - **`/progress`** (protected, Phase 3) — current/longest streak, hand-rolled SVG
   WPM/accuracy trend, per-concept mastered bars, speed-test bests, filterable
@@ -148,11 +148,9 @@ keeping the same public API:
 - `AUTH_SECRET` — generated value.
 - `AUTH_TRUST_HOST=true`
 - `AUTH_GITHUB_ID`, `AUTH_GITHUB_SECRET`
-- `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`
 
 User-supplied: Neon project + connection string; GitHub OAuth app (callback
-`http://localhost:3000/api/auth/callback/github`); Google OAuth client (callback
-`http://localhost:3000/api/auth/callback/google`).
+`http://localhost:3000/api/auth/callback/github`).
 
 ## Risks
 
@@ -168,10 +166,9 @@ User-supplied: Neon project + connection string; GitHub OAuth app (callback
 ## Verification
 
 - Per phase: `npm run lint`, `npx tsc --noEmit`, `next build`.
-- Manual: email/password sign-up, GitHub sign-in, Google sign-in, link a second
-  provider, username taken-check, password set/change/remove, record sync +
-  merge on sign-in, sign-out reverts to localStorage, dashboard reads from remote
-  when signed in.
+- Manual: email/password sign-up, GitHub sign-in, username taken-check, password
+  set/change/remove, record sync + merge on sign-in, sign-out reverts to
+  localStorage, dashboard reads from remote when signed in.
 - `drizzle-kit push` then inspect tables in Neon SQL editor.
 
 ## Build order & git
