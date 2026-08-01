@@ -3,6 +3,7 @@ import { Geist, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import Providers from "@/components/Providers";
+import SyncProvider from "@/components/SyncProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,7 +49,10 @@ export default function RootLayout({
       </head>
       <body className="min-h-full">
         <ThemeProvider>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <SyncProvider />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

@@ -4,7 +4,7 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import type { SnippetLanguage } from "@/types";
 import { CONCEPTS, DIFFICULTIES, LANGUAGES } from "@/lib/concepts";
-import { getRecords, subscribeRecords } from "@/lib/storage/local";
+import { getRecords, subscribeRecords } from "@/lib/storage/store";
 import {
   codeKey,
   seriesByKey,

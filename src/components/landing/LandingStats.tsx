@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { getRecords, subscribeRecords } from "@/lib/storage/local";
+import { getRecords, subscribeRecords } from "@/lib/storage/store";
 import { totals } from "@/lib/storage/aggregates";
 
 export default function LandingStats() {

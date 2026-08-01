@@ -4,7 +4,8 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { RotateCcw } from "lucide-react";
 import type { SpeedTestMode, SpeedTestRecord } from "@/types";
 import { pickWords } from "@/lib/words";
-import { createLocalRecordStore, newId } from "@/lib/storage/local";
+import { newId } from "@/lib/storage/local";
+import { addRecord } from "@/lib/storage/store";
 import type { SpeedConfig } from "@/lib/config";
 import { TIME_TARGETS, WORD_TARGETS } from "@/lib/config";
 import type { WordTestState } from "@/lib/speedEngine";
@@ -60,7 +61,7 @@ export default function SpeedScreen({
         accuracy: speedAccuracy(done),
         errors: done.errorKeystrokes,
       };
-      createLocalRecordStore().add(record);
+      void addRecord(record);
       setPhase("result");
     },
     [],

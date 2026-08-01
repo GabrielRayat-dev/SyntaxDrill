@@ -55,6 +55,20 @@ export function createLocalRecordStore(): RecordStore {
   };
 }
 
+export function addRecord(record: StatRecord): void {
+  save([...load(), record]);
+  refreshCache();
+  notifyRecords();
+}
+
+export function clearRecords(): void {
+  if (typeof window !== "undefined") {
+    window.localStorage.removeItem(KEY);
+  }
+  recordsCache = [];
+  notifyRecords();
+}
+
 /* Reactive snapshot for useSyncExternalStore (home screen stats). */
 
 let recordsCache: StatRecord[] | null = null;

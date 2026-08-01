@@ -23,7 +23,8 @@ import {
   LANGUAGES,
 } from "@/lib/concepts";
 import { snippetsFor } from "../../../content/snippets";
-import { createLocalRecordStore, newId } from "@/lib/storage/local";
+import { newId } from "@/lib/storage/local";
+import { addRecord } from "@/lib/storage/store";
 import { runSnippet, preloadPyodide, type RunResult } from "@/lib/runner";
 import CodeEditor from "@/components/CodeEditor";
 import CodeBlock from "@/components/CodeBlock";
@@ -188,7 +189,7 @@ export default function PracticeScreen({
       masteredCount: results.filter((r) => r.mastered).length,
       errorCount: results.reduce((s, r) => s + r.errorCount, 0),
     };
-    createLocalRecordStore().add(record);
+    void addRecord(record);
   }, [phase, config, results, session]);
 
   return (
