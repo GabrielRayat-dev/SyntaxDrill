@@ -16,6 +16,7 @@ import { ThemePicker } from "@/components/theme/ThemePicker";
 import HeroDemo from "@/components/landing/HeroDemo";
 import LandingStats from "@/components/landing/LandingStats";
 import AccountButton from "@/components/AccountButton";
+import ModeToggle from "@/components/theme/ModeToggle";
 
 const FEATURES = [
   {
@@ -130,13 +131,14 @@ export default function LandingPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
-            <AccountButton />
+            <ModeToggle />
             <Link
               href="/app"
               className="rounded-lg bg-accent px-3.5 py-1.5 text-xs font-semibold text-page transition-opacity hover:opacity-90"
             >
               Open drills
             </Link>
+            <AccountButton />
           </div>
         </div>
       </header>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { setRaw } from "@/lib/localStore";
 import AccountButton from "@/components/AccountButton";
+import ModeToggle from "@/components/theme/ModeToggle";
 
 type AppMode = "practice" | "speed";
 
@@ -57,6 +58,7 @@ export default function AppHeader() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
+          <ModeToggle />
           <AccountButton />
         </div>
       </div>
