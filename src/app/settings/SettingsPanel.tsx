@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { signIn, signOut } from "next-auth/react";
+import { ThemePicker } from "@/components/theme/ThemePicker";
 import {
   changePassword,
   removePassword,
@@ -203,6 +204,11 @@ export default function SettingsPanel({
             Disconnect GitHub
           </button>
         </form>
+      </section>
+
+      <section className={sectionCls}>
+        <h2 className="mb-3 font-semibold text-ink">Theme</h2>
+        <ThemePicker />
       </section>
 
       <button
