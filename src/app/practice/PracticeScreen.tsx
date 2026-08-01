@@ -153,6 +153,14 @@ export default function PracticeScreen({
     setPhase("read");
   }
 
+  function retry() {
+    setResults((r) => r.slice(0, -1));
+    setEditor(null);
+    setRunResult(null);
+    setRunning(false);
+    setPhase("read");
+  }
+
   useEffect(() => {
     preloadPyodide();
   }, []);
@@ -327,6 +335,14 @@ export default function PracticeScreen({
                 </div>
 
                 <div className="flex flex-col gap-2 sm:flex-row">
+                  {results[results.length - 1]?.mastered !== true && (
+                    <button
+                      onClick={retry}
+                      className="flex-1 rounded-xl border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised"
+                    >
+                      Retry
+                    </button>
+                  )}
                   {snippet.concepts[0] !== "database" && (
                     <button
                       onClick={runCode}
