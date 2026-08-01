@@ -79,8 +79,8 @@ const ROADMAP = [
     bar: "bg-good",
     rows: [
       { tag: "difficulty", text: "Beginner → advanced tiers for every track" },
-      { tag: "accounts", text: "Cloud progress on Neon Postgres — still no ads" },
-      { tag: "leaderboards", text: "Opt-in pace comparisons once accounts exist" },
+      { tag: "password reset", text: "Email recovery for account sign-ins" },
+      { tag: "leaderboards", text: "Opt-in pace comparisons across accounts" },
     ],
   },
   {
