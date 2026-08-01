@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import type { SpeedTestMode, SpeedTestRecord } from "@/types";
 import { pickWords } from "@/lib/words";
@@ -287,6 +287,10 @@ function ConfigBar({
   );
 }
 
+const STREAM_LINES = 3;
+const STREAM_GAP = 12;
+const STREAM_PAD_Y = 20;
+
 function WordStream({
   test,
   onBlur,
@@ -295,50 +299,83 @@ function WordStream({
   onBlur: (e: React.MouseEvent) => void;
 }) {
   const { words, currentIndex, currentTyped } = test;
-  const windowStart = Math.max(0, currentIndex - 3);
-  const windowEnd = Math.min(words.length, windowStart + 30);
-  const visible = words.slice(windowStart, windowEnd);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const activeRef = useRef<HTMLSpanElement>(null);
+
+  const align = useCallback(() => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+    const active = activeRef.current;
+    if (!outer || !inner || !active) return;
+    const lineH = active.getBoundingClientRect().height;
+    if (lineH <= 0) return;
+    const stride = lineH + STREAM_GAP;
+    const top =
+      active.getBoundingClientRect().top -
+      inner.getBoundingClientRect().top -
+      STREAM_PAD_Y;
+    const lineIndex = Math.round(top / stride);
+    const offset = stride * Math.max(0, lineIndex - (STREAM_LINES - 2));
+    inner.style.transform = `translateY(${-offset}px)`;
+    outer.style.height = `${STREAM_PAD_Y * 2 + lineH * STREAM_LINES + STREAM_GAP * (STREAM_LINES - 1)}px`;
+  }, []);
+
+  useLayoutEffect(() => {
+    align();
+  });
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", align);
+    return () => window.removeEventListener("resize", align);
+  }, [align]);
 
   return (
     <div
-      className="flex min-h-[12rem] items-center justify-center px-4 py-6 sm:min-h-[14rem] xl:min-h-[17rem]"
+      ref={outerRef}
+      className="relative w-full overflow-hidden"
       onMouseDown={onBlur}
     >
-      <div className="flex w-full flex-wrap items-center justify-center gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
-        {visible.map((word, offset) => {
-          const index = windowStart + offset;
-          if (index < currentIndex) {
-            const back = currentIndex - index;
-            const opacity = Math.max(0.25, 1 - back * 0.18);
-            const wrong = test.typedWords[index] !== word;
+      <div
+        ref={innerRef}
+        className="relative px-4 will-change-transform sm:px-5"
+        style={{ paddingTop: STREAM_PAD_Y, paddingBottom: STREAM_PAD_Y }}
+      >
+        <div className="flex w-full flex-wrap items-start justify-start gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
+          {words.map((word, index) => {
+            if (index < currentIndex) {
+              const back = currentIndex - index;
+              const opacity = Math.max(0.25, 1 - back * 0.18);
+              const wrong = test.typedWords[index] !== word;
+              return (
+                <span
+                  key={index}
+                  className={wrong ? "text-bad" : "text-accent"}
+                  style={{ opacity }}
+                >
+                  {word}
+                </span>
+              );
+            }
+            if (index === currentIndex) {
+              return (
+                <span key={index} ref={activeRef} className="whitespace-nowrap">
+                  <ActiveWord word={word} typed={currentTyped} />
+                </span>
+              );
+            }
+            const upcoming = index - currentIndex;
             return (
               <span
                 key={index}
-                className={wrong ? "text-bad" : "text-accent"}
-                style={{ opacity }}
+                className="text-muted"
+                style={{ opacity: upcoming <= 1 ? 0.55 : 0.35 }}
               >
                 {word}
               </span>
             );
-          }
-          if (index === currentIndex) {
-            return (
-              <span key={index} className="whitespace-nowrap">
-                <ActiveWord word={word} typed={currentTyped} />
-              </span>
-            );
-          }
-          const upcoming = index - currentIndex;
-          return (
-            <span
-              key={index}
-              className="text-muted"
-              style={{ opacity: upcoming <= 1 ? 0.55 : 0.35 }}
-            >
-              {word}
-            </span>
-          );
-        })}
+          })}
+        </div>
       </div>
     </div>
   );

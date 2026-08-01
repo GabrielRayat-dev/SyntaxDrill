@@ -26,7 +26,17 @@ export function refillWordTest(
   state: WordTestState,
   extra: string[],
 ): WordTestState {
-  return { ...state, words: [...state.words, ...extra] };
+  const words = [...state.words, ...extra];
+  const drop = Math.max(0, state.currentIndex - 40);
+  if (drop === 0) {
+    return { ...state, words };
+  }
+  return {
+    ...state,
+    words: words.slice(drop),
+    typedWords: state.typedWords.slice(drop),
+    currentIndex: state.currentIndex - drop,
+  };
 }
 
 export function typeChar(state: WordTestState, ch: string): WordTestState {
