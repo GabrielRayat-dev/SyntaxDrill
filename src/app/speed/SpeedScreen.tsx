@@ -219,7 +219,7 @@ export default function SpeedScreen({
                 <WordStream test={test} onBlur={blurTarget} />
 
                 <div className="flex items-center justify-between gap-3 border-t border-edge/70 bg-surface/60 px-4 py-2 text-[11px] text-muted sm:px-5">
-                  <span>start typing — the clock begins on your first key</span>
+                  <span>start typing. The clock begins on your first key</span>
                   <span className="hidden sm:inline">
                     tab restarts · esc changes
                   </span>

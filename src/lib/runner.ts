@@ -6,7 +6,7 @@ export interface RunResult {
 const PYODIDE_CDN = "https://cdn.jsdelivr.net/pyodide/v0.29.4/full/";
 const LOAD_TIMEOUT_MS = 30_000;
 const PYODIDE_LOAD_ERROR =
-  "Couldn't load the Python interpreter (Pyodide) from the CDN — check your connection and try again.";
+  "Couldn't load the Python interpreter (Pyodide) from the CDN. Check your connection and try again.";
 
 export function formatValue(value: unknown): string {
   if (typeof value === "string") return value;

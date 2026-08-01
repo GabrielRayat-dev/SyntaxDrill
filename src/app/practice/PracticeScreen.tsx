@@ -275,7 +275,7 @@ export default function PracticeScreen({
                   Start typing
                 </button>
                 <p className="text-center text-[11px] text-muted">
-                  Type it from memory — Enter starts a new line, Tab indents,
+                  Type it from memory. Enter starts a new line, Tab indents,
                   Backspace fixes mistakes.
                 </p>
               </div>
@@ -370,8 +370,8 @@ export default function PracticeScreen({
                       good={editor.typed === snippet.code}
                       title={
                         editor.typed === snippet.code
-                          ? "Nice work — you're connected!"
-                          : "Almost there — connection refused."
+                          ? "Nice work, you're connected!"
+                          : "Almost there. Connection refused."
                       }
                       subtitle={
                         editor.typed === snippet.code
@@ -400,13 +400,13 @@ export default function PracticeScreen({
                           good={runResult.error === null}
                           title={
                             runResult.error === null
-                              ? "Nice work — it runs clean!"
-                              : "Almost there — fix the error below."
+                              ? "Nice work, it runs clean!"
+                              : "Almost there. Fix the error below."
                           }
                           subtitle={
                             runResult.error === null
                               ? "No errors, correct output. That's how it's done."
-                              : "Your typo is breaking the code. Fix it and run it again — you've got this."
+                              : "Your typo is breaking the code. Fix it and run it again. You've got this."
                           }
                         />
                         <div className="overflow-hidden rounded-xl border border-edge/70">
@@ -463,7 +463,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
       <div>
         <h1 className="font-display text-xl font-semibold text-ink">Practice</h1>
         <p className="mt-1 text-sm text-muted">
-          Pick a language, concept, and difficulty — then type 10 real snippets.
+          Pick a language, concept, and difficulty, then type 10 real snippets.
         </p>
       </div>
 
@@ -588,7 +588,7 @@ function Summary({
         <span className="font-medium text-ink">{LANGUAGES[config.language].name}</span> ·{" "}
         {CONCEPTS.find((c) => c.id === config.concept)?.name} · {config.difficulty}
         <p className="mt-1">
-          Aim for a mastered run next time — every snippet counts toward your streak.
+          Aim for a mastered run next time. Every snippet counts toward your streak.
         </p>
       </div>
 

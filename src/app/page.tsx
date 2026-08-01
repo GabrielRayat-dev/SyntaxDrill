@@ -4,7 +4,6 @@ import {
   Brain,
   Code2,
   Gauge,
-  Palette,
   Play,
   Rocket,
   ShieldCheck,
@@ -12,42 +11,56 @@ import {
   Zap,
 } from "lucide-react";
 import { CONCEPTS } from "@/lib/concepts";
-import { ThemePicker } from "@/components/theme/ThemePicker";
 import HeroDemo from "@/components/landing/HeroDemo";
 import LandingStats from "@/components/landing/LandingStats";
 import AccountButton from "@/components/AccountButton";
 import ModeToggle from "@/components/theme/ModeToggle";
 
-const FEATURES = [
+const FEATURE_GROUPS = [
   {
-    icon: Code2,
-    title: "Real code, real syntax",
-    body: "Snippets are the exact patterns you'll write on the job — variables, loops, functions, queries. Not lorem ipsum.",
+    title: "Learn",
+    items: [
+      {
+        icon: Code2,
+        title: "Real code, real syntax",
+        body: "Snippets are the exact patterns you'll write on the job: variables, loops, functions, queries. Not lorem ipsum.",
+      },
+      {
+        icon: Brain,
+        title: "Explain-then-type",
+        body: "Every snippet teaches first. Read why it works, then type it from memory. That's how syntax sticks.",
+      },
+    ],
   },
   {
-    icon: Brain,
-    title: "Explain-then-type",
-    body: "Every snippet teaches first. Read why it works, then type it from memory. That's how syntax sticks.",
+    title: "Feedback",
+    items: [
+      {
+        icon: Gauge,
+        title: "Instant char-by-char state",
+        body: "Live WPM and accuracy, and a mastered badge for clean, zero-error runs.",
+      },
+      {
+        icon: Zap,
+        title: "Scenes that react",
+        body: "A finish line sprints as you type. Database snippets show the server handshake live.",
+      },
+    ],
   },
   {
-    icon: Terminal,
-    title: "Runs in your browser",
-    body: "Execute what you type with a sandboxed JavaScript eval — or a full Python interpreter via Pyodide.",
-  },
-  {
-    icon: Gauge,
-    title: "Instant feedback",
-    body: "Char-by-char state, live WPM and accuracy, and a 'mastered' badge for clean, zero-error runs.",
-  },
-  {
-    icon: Zap,
-    title: "Scenes that react",
-    body: "A finish line sprints as you type. Database snippets show the server handshake happening live.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Local-first progress",
-    body: "Progress lives in your browser by default. Create a free account to sync it across devices — no ads, no tracking.",
+    title: "Runs anywhere",
+    items: [
+      {
+        icon: Terminal,
+        title: "In your browser",
+        body: "Execute what you type with a sandboxed eval, or a full Python interpreter via Pyodide.",
+      },
+      {
+        icon: ShieldCheck,
+        title: "Local-first progress",
+        body: "Progress lives in your browser. Create a free account to sync it across devices, no ads, no tracking.",
+      },
+    ],
   },
 ];
 
@@ -56,7 +69,7 @@ const TRACK_LANGUAGES: Record<string, string> = {
   conditionals: "JS · Python",
   loops: "JS · Python",
   functions: "JS · Python",
-  database: "JS · Python · SQL",
+  database: "JS + Python + SQL",
 };
 
 const ROADMAP = [
@@ -65,7 +78,6 @@ const ROADMAP = [
     label: "Now",
     note: "building",
     dot: "bg-accent",
-    bar: "bg-accent",
     rows: [
       { tag: "go + rust", text: "Two more languages join the drill set" },
       { tag: "arrays + objects", text: "New concept tracks for the fundamentals" },
@@ -77,9 +89,8 @@ const ROADMAP = [
     label: "Next",
     note: "short horizon",
     dot: "bg-good",
-    bar: "bg-good",
     rows: [
-      { tag: "difficulty", text: "Beginner → advanced tiers for every track" },
+      { tag: "difficulty", text: "Beginner to advanced tiers for every track" },
       { tag: "password reset", text: "Email recovery for account sign-ins" },
       { tag: "leaderboards", text: "Opt-in pace comparisons across accounts" },
     ],
@@ -89,7 +100,6 @@ const ROADMAP = [
     label: "Later",
     note: "further out",
     dot: "bg-muted",
-    bar: "border border-dashed border-muted/80 bg-muted/10",
     rows: [
       { tag: "community", text: "Share and remix your own drills" },
       { tag: "mobile", text: "Touch-friendly layouts for phones" },
@@ -98,95 +108,99 @@ const ROADMAP = [
   },
 ];
 
+const NAV_LINKS = [
+  { href: "#tracks", label: "Tracks" },
+  { href: "#features", label: "Features" },
+  { href: "#roadmap", label: "Roadmap" },
+];
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-accent focus:px-3 focus:py-1.5 focus:text-xs focus:font-semibold focus:text-page"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-3 focus:py-1.5 focus:text-xs focus:font-semibold focus:text-page"
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-40 border-b border-edge/70 bg-page/80 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-          <Link
-            href="/"
-            className="font-mono text-sm font-semibold tracking-tight text-ink"
-          >
-            <span className="text-accent">&gt;</span>_
-            <span className="ml-2 hidden sm:inline">SyntaxDrill</span>
-          </Link>
-          <nav className="hidden items-center gap-6 text-xs font-medium text-muted md:flex">
-            <a href="#tracks" className="transition-colors hover:text-ink">
-              Tracks
-            </a>
-            <a href="#features" className="transition-colors hover:text-ink">
-              Features
-            </a>
-            <a href="#themes" className="transition-colors hover:text-ink">
-              Themes
-            </a>
-            <a href="#roadmap" className="transition-colors hover:text-ink">
-              Roadmap
-            </a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <ModeToggle />
+      <header className="sticky top-3 z-40">
+        <div className="mx-auto max-w-5xl px-4">
+          <nav className="mt-3 flex h-12 items-center justify-between gap-3 rounded-full border border-edge/70 bg-page/85 px-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)] backdrop-blur sm:px-4">
             <Link
-              href="/app"
-              className="rounded-lg bg-accent px-3.5 py-1.5 text-xs font-semibold text-page transition-opacity hover:opacity-90"
+              href="/"
+              className="font-mono text-sm font-semibold tracking-tight text-ink"
             >
-              Open drills
+              <span className="text-accent">&gt;</span>_
+              <span className="ml-2 hidden sm:inline">SyntaxDrill</span>
             </Link>
-            <AccountButton />
-          </div>
+            <div className="hidden items-center gap-5 text-xs font-medium text-muted md:flex">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="transition-colors hover:text-ink"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <ModeToggle />
+              <Link
+                href="/app"
+                className="hidden items-center gap-1.5 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-page transition-colors hover:bg-accent/90 sm:inline-flex"
+              >
+                Start practicing
+              </Link>
+              <AccountButton />
+            </div>
+          </nav>
         </div>
       </header>
 
       <main id="main">
-        <section className="mx-auto max-w-5xl px-4 pb-16 pt-16 sm:pt-24">
-          <div className="sd-rise mb-8 inline-flex items-center gap-2 rounded-full border border-edge/70 bg-surface px-3 py-1 text-xs font-medium text-muted">
-            <span className="h-1.5 w-1.5 rounded-full bg-good" />
-            Free forever · no ads · no tracking
-          </div>
-          <p
-            className="sd-rise mb-5 font-mono text-xs text-muted sm:text-sm"
-            aria-hidden
-          >
-            <span className="text-accent">{"//"}</span> typing drills for real code
-          </p>
-          <h1 className="sd-rise max-w-2xl font-display text-[2.6rem] font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl">
-            Learn to type code
-            <span className="block pl-6 sm:pl-12">the way you&apos;ll</span>
-            <span className="block pl-6 font-mono text-[0.82em] font-medium text-accent sm:pl-12">
-              write&nbsp;it();<span className="caret-bar" aria-hidden />
-            </span>
-          </h1>
-          <p className="sd-rise mt-6 max-w-xl text-base leading-relaxed text-muted">
-            SyntaxDrill turns real JavaScript and Python snippets into typing
-            drills — explain-then-type, run your code in the browser, and
-            track your pace. Your keyboard becomes the practice tool.
-          </p>
-          <div className="sd-rise mt-8 flex flex-col items-start gap-3 sm:flex-row">
-            <Link
-              href="/app"
-              className="inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+        <section className="mx-auto grid max-w-5xl gap-10 px-4 pb-16 pt-16 sm:pt-20 lg:grid-cols-[1fr_1.05fr] lg:items-center lg:pt-24">
+          <div>
+            <p
+              className="sd-rise mb-5 font-mono text-xs text-muted sm:text-sm"
+              aria-hidden
             >
-              <Play className="h-4 w-4" aria-hidden />
-              Start practicing
-            </Link>
-            <Link
-              href="/speed"
-              className="inline-flex items-center gap-2 rounded-xl border border-edge bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
-            >
-              Try a speed test
-              <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+              <span className="text-accent">{"//"}</span> typing drills for real
+              code
+            </p>
+            <h1 className="sd-rise max-w-xl font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              Learn to type code
+              <span className="block">
+                the way you&apos;ll{" "}
+                <span className="font-mono text-[0.82em] font-medium text-accent">
+                  write&nbsp;it();<span className="caret-bar" aria-hidden />
+                </span>
+              </span>
+            </h1>
+            <p className="sd-rise mt-6 max-w-md text-base leading-relaxed text-muted">
+              SyntaxDrill turns real JavaScript and Python snippets into typing
+              drills. Read, type, run, and track your pace. Free forever.
+            </p>
+            <div className="sd-rise mt-8 flex flex-col items-start gap-3 sm:flex-row">
+              <Link
+                href="/app"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-page transition-colors hover:bg-accent/90"
+              >
+                <Play className="h-4 w-4" aria-hidden />
+                Start practicing
+              </Link>
+              <Link
+                href="/speed"
+                className="inline-flex items-center gap-2 rounded-full border border-edge bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
+              >
+                Try a speed test
+                <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </div>
           </div>
-        </section>
-
-        <section className="mx-auto max-w-4xl px-4 pb-16">
-          <HeroDemo />
+          <div className="sd-rise">
+            <HeroDemo />
+          </div>
         </section>
 
         <section className="border-y border-edge/70 bg-surface/40">
@@ -209,7 +223,7 @@ export default function LandingPage() {
               href="/app"
               className="group rounded-2xl border border-edge/70 bg-surface p-6 transition-colors hover:border-accent"
             >
-              <div className="mb-4 inline-flex rounded-lg bg-accent/15 p-2 text-accent">
+              <div className="mb-4 inline-flex rounded-full bg-accent/15 p-2 text-accent">
                 <Code2 className="h-5 w-5" aria-hidden />
               </div>
               <h3 className="text-base font-semibold text-ink">Practice mode</h3>
@@ -226,7 +240,7 @@ export default function LandingPage() {
               href="/speed"
               className="group rounded-2xl border border-edge/70 bg-surface p-6 transition-colors hover:border-accent"
             >
-              <div className="mb-4 inline-flex rounded-lg bg-accent/15 p-2 text-accent">
+              <div className="mb-4 inline-flex rounded-full bg-accent/15 p-2 text-accent">
                 <Gauge className="h-5 w-5" aria-hidden />
               </div>
               <h3 className="text-base font-semibold text-ink">Speed test</h3>
@@ -257,7 +271,7 @@ export default function LandingPage() {
               {CONCEPTS.map((concept) => (
                 <div
                   key={concept.id}
-                  className="rounded-xl border border-edge/70 bg-surface p-5"
+                  className="rounded-xl border border-edge/70 bg-surface p-5 transition-colors hover:border-muted"
                 >
                   <h3 className="font-medium text-ink">{concept.name}</h3>
                   <p className="mt-1 text-xs leading-relaxed text-muted">
@@ -279,106 +293,79 @@ export default function LandingPage() {
         </section>
 
         <section id="features" className="mx-auto max-w-5xl px-4 py-20">
-          <div className="mb-10 text-center">
+          <div className="mb-12 text-center">
             <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
-              Built for learning, not filler
+              Built for learning
             </h2>
             <p className="mt-2 text-sm text-muted">
-              Everything below is already in the app.
+              Every feature below is live today.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((feature) => (
-              <div
-                key={feature.title}
-                className="rounded-xl border border-edge/70 bg-surface p-5 transition-colors hover:border-muted"
-              >
-                <feature.icon
-                  className="mb-3 h-5 w-5 text-accent"
-                  aria-hidden
-                />
+          <div className="grid gap-10 lg:grid-cols-3">
+            {FEATURE_GROUPS.map((group) => (
+              <div key={group.title}>
                 <h3 className="text-sm font-semibold text-ink">
-                  {feature.title}
+                  {group.title}
                 </h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted">
-                  {feature.body}
-                </p>
+                <div className="mt-4 divide-y divide-edge/60">
+                  {group.items.map((feature) => (
+                    <div key={feature.title} className="flex gap-3 py-4 first:pt-0 last:pb-0">
+                      <div className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent">
+                        <feature.icon className="h-4 w-4" aria-hidden />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-semibold text-ink">
+                          {feature.title}
+                        </h4>
+                        <p className="mt-1 text-xs leading-relaxed text-muted">
+                          {feature.body}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </section>
 
         <section id="roadmap" className="mx-auto max-w-5xl px-4 py-20">
-          <div className="mb-8 text-center">
+          <div className="mb-10 text-center">
             <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
               The road ahead
             </h2>
             <p className="mt-2 text-sm text-muted">
-              An honest roadmap, built in the open. Solid bars are being built;
-              dashed bars are ideas we&apos;re keeping warm.
+              An honest roadmap, built in the open.
             </p>
           </div>
-          <div className="mb-5 flex flex-wrap items-center justify-center gap-5 text-[11px] text-muted">
+          <div className="grid gap-4 sm:grid-cols-3">
             {ROADMAP.map((phase) => (
-              <span
+              <div
                 key={phase.phase}
-                className="inline-flex items-center gap-1.5"
+                className="rounded-2xl border border-edge/70 bg-surface p-5"
               >
-                <span
-                  className={`h-2 w-2 rounded-full ${phase.dot}`}
-                  aria-hidden
-                />
-                {phase.label} · {phase.note}
-              </span>
-            ))}
-          </div>
-          <div className="overflow-x-auto">
-            <div className="min-w-[640px] overflow-hidden rounded-2xl border border-edge/70 bg-surface">
-              <div className="grid grid-cols-[1.2fr_repeat(3,1fr)] border-b border-edge/70 bg-raised/40">
-                <div className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-muted">
-                  Initiative
-                </div>
-                {ROADMAP.map((phase) => (
-                  <div
-                    key={phase.phase}
-                    className="flex items-center gap-2 px-4 py-3 text-[11px] font-semibold uppercase tracking-wider text-muted"
-                  >
-                    <span
-                      className={`h-1.5 w-1.5 rounded-full ${phase.dot}`}
-                      aria-hidden
-                    />
+                <div className="mb-4 flex items-center gap-2">
+                  <span
+                    className={`h-2 w-2 rounded-full ${phase.dot}`}
+                    aria-hidden
+                  />
+                  <h3 className="text-sm font-semibold text-ink">
                     {phase.label}
-                  </div>
-                ))}
-              </div>
-              {ROADMAP.map((phase) =>
-                phase.rows.map((row) => (
-                  <div
-                    key={row.tag}
-                    className="grid grid-cols-[1.2fr_repeat(3,1fr)] border-b border-edge/40 transition-colors last:border-b-0 hover:bg-raised/30"
-                  >
-                    <div className="px-4 py-3">
+                  </h3>
+                  <span className="text-xs text-muted">{phase.note}</span>
+                </div>
+                <ul className="space-y-4">
+                  {phase.rows.map((row) => (
+                    <li key={row.tag}>
                       <div className="font-mono text-[11px] font-medium text-accent">
                         {row.tag}
                       </div>
                       <div className="mt-0.5 text-xs text-muted">{row.text}</div>
-                    </div>
-                    {ROADMAP.map((col) => (
-                      <div
-                        key={col.phase}
-                        className="flex items-center px-4 py-3"
-                      >
-                        {col.phase === phase.phase && (
-                          <div
-                            className={`h-5 w-full rounded-md ${phase.bar}`}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )),
-              )}
-            </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
           <p className="mt-8 text-center text-xs text-muted">
             Have an idea?{" "}
@@ -393,35 +380,19 @@ export default function LandingPage() {
           </p>
         </section>
 
-        <section id="themes" className="border-t border-edge/70 bg-surface/40 py-20">
-          <div className="mx-auto max-w-3xl px-4">
-            <div className="mb-10 text-center">
-              <h2 className="flex items-center justify-center gap-2 font-display text-2xl font-semibold tracking-tight text-ink">
-                <Palette className="h-5 w-5 text-accent" aria-hidden />
-                Pick a theme that feels like home
-              </h2>
-              <p className="mt-2 text-sm text-muted">
-                Four colorways, each in light and dark. Every color swaps —
-                nothing looks broken, everything looks intentional.
-              </p>
-            </div>
-            <ThemePicker />
-          </div>
-        </section>
-
         <section className="mx-auto max-w-3xl px-4 py-20 text-center">
           <h2 className="font-display text-3xl font-semibold tracking-tight text-ink">
             Free. Forever.
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted">
             Core learning will never be gated behind a paywall. Future plans
-            only unlock depth and convenience — never the drills.
+            only unlock depth and convenience, never the drills.
           </p>
           <Link
             href="/app"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-page transition-colors hover:bg-accent/90"
           >
-            Start typing
+            Start practicing
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
         </section>
@@ -443,7 +414,9 @@ export default function LandingPage() {
               Top
             </Link>
           </nav>
-          <p className="text-xs text-muted">Made for learners. No ads, no tracking.</p>
+          <p className="text-xs text-muted">
+            Made for learners. No ads, no tracking.
+          </p>
         </div>
       </footer>
     </div>

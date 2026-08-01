@@ -22,12 +22,20 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: "SyntaxDrill — Learn syntax by typing it",
+    default: "SyntaxDrill | Learn syntax by typing it",
     template: "%s · SyntaxDrill",
   },
   description:
     "A coding typing-practice platform that teaches real programming syntax and concepts. Type real code, learn loops, OOP, async, databases and more. Free forever.",
 };
+
+// Legacy theme ids map onto the Drillbook variants, dark to night and
+// light to paper, so returning users keep their mode without a flash.
+const LEGACY_THEMES = `{"tokyo-night":"night","rose-pine":"night","dracula":"night","sunset":"night","tokyo-night-light":"paper-light","rose-pine-light":"paper-light","dracula-light":"paper-light","sunset-light":"paper-light"}`;
+
+function themeScript() {
+  return `try{var map=${LEGACY_THEMES},t=localStorage.getItem("sd.theme"),s;if(t){s=map[t]||t}else{try{s=matchMedia("(prefers-color-scheme: light)").matches?"paper-light":"paper"}catch(e){s="paper"}}document.documentElement.dataset.theme=s}catch(e){document.documentElement.dataset.theme="paper"}`;
+}
 
 export default function RootLayout({
   children,
@@ -43,7 +51,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem("sd.theme"),s="tokyo-night";if(t){s=t}else{try{s=matchMedia("(prefers-color-scheme: light)").matches?"tokyo-night-light":"tokyo-night"}catch(e){s="tokyo-night"}}document.documentElement.dataset.theme=s}catch(e){document.documentElement.dataset.theme="tokyo-night"}`,
+            __html: themeScript(),
           }}
         />
       </head>

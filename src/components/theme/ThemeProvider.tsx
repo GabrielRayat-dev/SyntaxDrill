@@ -12,7 +12,7 @@ import {
   COLORWAYS,
   DEFAULT_COLORWAY,
   DEFAULT_THEME,
-  isThemeId,
+  migrateTheme,
   colorwayOf,
   modeOf,
   themeId,
@@ -36,11 +36,13 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function readTheme(): ThemeId {
-  const stored = getRaw(STORAGE_KEY);
-  if (isThemeId(stored)) return stored;
+  const stored = migrateTheme(getRaw(STORAGE_KEY));
+  if (stored) return stored;
   if (typeof document !== "undefined") {
-    const applied = document.documentElement.getAttribute("data-theme");
-    if (isThemeId(applied)) return applied;
+    const applied = migrateTheme(
+      document.documentElement.getAttribute("data-theme"),
+    );
+    if (applied) return applied;
   }
   return DEFAULT_THEME;
 }

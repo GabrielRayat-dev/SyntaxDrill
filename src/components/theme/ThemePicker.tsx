@@ -64,7 +64,7 @@ export function ThemePicker({ compact = false }: { compact?: boolean }) {
       <div className="mb-4 flex justify-center">
         <ModeControl mode={mode} onMode={setMode} />
       </div>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-3">
         {COLORWAYS.map((c) => {
           const active = c.id === colorway;
           return (
@@ -73,7 +73,7 @@ export function ThemePicker({ compact = false }: { compact?: boolean }) {
               type="button"
               onClick={() => setTheme(c.id)}
               aria-pressed={active}
-              className={`group rounded-xl border p-3 text-left transition-all hover:-translate-y-0.5 ${
+              className={`group rounded-xl border p-4 text-left transition-all hover:-translate-y-0.5 ${
                 active
                   ? "border-accent bg-raised"
                   : "border-edge bg-surface hover:border-muted"

@@ -66,7 +66,7 @@ export default function HeroDemo() {
   }
 
   return (
-    <div className="sd-rise overflow-hidden rounded-2xl border border-edge/70 bg-surface shadow-2xl shadow-black/40">
+    <div className="sd-rise overflow-hidden rounded-2xl border border-edge/70 bg-surface shadow-[0_18px_40px_-20px_var(--sd-glow)]">
       <div className="flex items-center justify-between gap-3 border-b border-edge/70 px-4 py-3 sm:px-5">
         <span className="flex items-center gap-2 font-mono text-xs text-muted">
           <span className="text-accent">$</span>
@@ -115,7 +115,8 @@ export default function HeroDemo() {
         {done ? (
           <>
             <span className="text-sm font-medium text-good">
-              ✓ {Math.round(accuracy(editor) * 100)}% accurate — that&apos;s a clean run.
+              ✓ {Math.round(accuracy(editor) * 100)}% accurate, that is a clean
+              run.
             </span>
             <button
               onClick={reset}
@@ -126,7 +127,7 @@ export default function HeroDemo() {
           </>
         ) : (
           <span className="text-xs text-muted">
-            Click the editor and start typing — the trace above is yours.
+            Click the editor and start typing. The trace above is yours.
           </span>
         )}
       </div>

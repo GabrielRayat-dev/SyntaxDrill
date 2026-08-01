@@ -33,7 +33,7 @@ function BestTable({
           >
             <span className="text-xs text-muted">{row.label}</span>
             <span className="font-mono text-sm font-semibold tabular-nums text-ink">
-              {row.value ?? "—"}
+              {row.value ?? "-"}
             </span>
           </div>
         ))}

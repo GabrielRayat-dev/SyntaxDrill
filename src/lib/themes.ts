@@ -1,10 +1,6 @@
 export type ThemeMode = "light" | "dark";
 
-export type ColorwayId =
-  | "tokyo-night"
-  | "rose-pine"
-  | "dracula"
-  | "sunset";
+export type ColorwayId = "paper" | "night" | "pencil";
 
 export type ThemeId = ColorwayId | `${ColorwayId}-light`;
 
@@ -18,45 +14,52 @@ export interface Colorway {
 
 export const COLORWAYS: Colorway[] = [
   {
-    id: "tokyo-night",
-    name: "Tokyo Night",
-    description: "Neon nights over the city.",
+    id: "paper",
+    name: "Paper",
+    description: "Cool paper and blue ink.",
     swatches: {
-      dark: ["#1a1b26", "#7aa2f7", "#bb9af7", "#9ece6a", "#f7768e"],
-      light: ["#f6f7fb", "#3366d6", "#8b5cf6", "#3f9d5a", "#e0405f"],
+      dark: ["#0f1620", "#6ea8ff", "#a5b4fc", "#4ade80", "#fb7185"],
+      light: ["#f2f4f8", "#2563c9", "#4f46c9", "#1f9d55", "#dc3d5a"],
     },
   },
   {
-    id: "rose-pine",
-    name: "Rose Pine",
-    description: "Soft, rosy, easy on the eyes.",
+    id: "night",
+    name: "Night",
+    description: "Slate and lamp-blue.",
     swatches: {
-      dark: ["#191724", "#c4a7e7", "#ebbcba", "#9ccfd8", "#eb6f92"],
-      light: ["#fffaf3", "#286983", "#907aa9", "#56949f", "#d04a6f"],
+      dark: ["#0b1220", "#7ab0ff", "#a5c1ff", "#5ee0a9", "#ff8fa3"],
+      light: ["#e9eef5", "#2a63d4", "#6b5de7", "#1e9e6a", "#e05263"],
     },
   },
   {
-    id: "dracula",
-    name: "Dracula",
-    description: "The classic vampire colorway.",
+    id: "pencil",
+    name: "Pencil",
+    description: "Cool graphite and slate-teal.",
     swatches: {
-      dark: ["#282a36", "#bd93f9", "#ff79c6", "#50fa7b", "#ff5555"],
-      light: ["#ffffff", "#5b21b6", "#db2777", "#15803d", "#dc2626"],
-    },
-  },
-  {
-    id: "sunset",
-    name: "Sunset",
-    description: "Warm dusk over the horizon.",
-    swatches: {
-      dark: ["#1d1028", "#ff9e64", "#ff7eb6", "#a3d977", "#f7768e"],
-      light: ["#fffaf4", "#d9480f", "#c2255c", "#4d7c0f", "#e03131"],
+      dark: ["#0e1114", "#5aa0b8", "#7cc0d8", "#55c98f", "#ff7d8a"],
+      light: ["#eceef1", "#3f7087", "#4b7fa0", "#2f8f66", "#c94f5a"],
     },
   },
 ];
 
-export const DEFAULT_COLORWAY: ColorwayId = "tokyo-night";
-export const DEFAULT_THEME: ThemeId = "tokyo-night";
+/**
+ * Legacy colorway ids from the pre-Drillbook system. Dark variants map to
+ * night (dark); light variants map to paper (light), preserving the user's
+ * mode preference.
+ */
+const LEGACY_THEMES: Record<string, ThemeId> = {
+  "tokyo-night": "night",
+  "rose-pine": "night",
+  dracula: "night",
+  sunset: "night",
+  "tokyo-night-light": "paper-light",
+  "rose-pine-light": "paper-light",
+  "dracula-light": "paper-light",
+  "sunset-light": "paper-light",
+};
+
+export const DEFAULT_COLORWAY: ColorwayId = "paper";
+export const DEFAULT_THEME: ThemeId = "paper";
 
 export function themeId(
   colorway: ColorwayId,
@@ -77,4 +80,14 @@ export function isThemeId(value: string | null): value is ThemeId {
   if (value === null) return false;
   const colorway = value.replace(/-light$/, "");
   return COLORWAYS.some((c) => c.id === colorway);
+}
+
+/**
+ * Map a stored theme value (new or legacy) to a valid ThemeId.
+ * Returns null when nothing usable is stored.
+ */
+export function migrateTheme(value: string | null): ThemeId | null {
+  if (isThemeId(value)) return value;
+  if (value !== null && LEGACY_THEMES[value]) return LEGACY_THEMES[value];
+  return null;
 }

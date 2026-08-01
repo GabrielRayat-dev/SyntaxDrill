@@ -89,18 +89,18 @@ export default function HomePage() {
                 <div className="mb-4 grid grid-cols-3 gap-2">
                   <TrackStat
                     label="Best WPM"
-                    value={summary.best ? Math.round(summary.best.wpm).toFixed(0) : "—"}
+                    value={summary.best ? Math.round(summary.best.wpm).toFixed(0) : "-"}
                   />
                   <TrackStat
                     label="Last WPM"
-                    value={summary.last ? Math.round(summary.last.wpm).toFixed(0) : "—"}
+                    value={summary.last ? Math.round(summary.last.wpm).toFixed(0) : "-"}
                   />
                   <TrackStat
                     label="Mastered"
                     value={
                       summary.count > 0
                         ? `${summary.masteredRuns}/${summary.count}`
-                        : "—"
+                        : "-"
                     }
                   />
                 </div>

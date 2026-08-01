@@ -12,13 +12,18 @@ export default function ModeToggle() {
       onClick={() => setMode(light ? "dark" : "light")}
       title={light ? "Switch to dark mode" : "Switch to light mode"}
       aria-label={light ? "Switch to dark mode" : "Switch to light mode"}
-      className="flex h-8 w-8 items-center justify-center rounded-lg border border-edge bg-surface text-muted transition-colors hover:text-accent"
+      className="group flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
     >
-      {light ? (
-        <Moon className="h-3.5 w-3.5" aria-hidden />
-      ) : (
-        <Sun className="h-3.5 w-3.5" aria-hidden />
-      )}
+      <span
+        key={mode}
+        className="sd-rise flex h-full w-full items-center justify-center"
+      >
+        {light ? (
+          <Moon className="h-3.5 w-3.5" aria-hidden />
+        ) : (
+          <Sun className="h-3.5 w-3.5" aria-hidden />
+        )}
+      </span>
     </button>
   );
 }
