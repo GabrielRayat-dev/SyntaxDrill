@@ -29,6 +29,7 @@ import CodeEditor from "@/components/CodeEditor";
 import CodeBlock from "@/components/CodeBlock";
 import ScenePanel from "@/components/scenes/ScenePanel";
 import StatChip from "@/components/StatChip";
+import VerdictBanner from "@/components/VerdictBanner";
 import AppHeader from "@/components/AppHeader";
 
 interface SnippetResult {
@@ -346,12 +347,27 @@ export default function PracticeScreen({
                 </div>
 
                 {snippet.concepts[0] === "database" ? (
-                  <ScenePanel
-                    sceneId="server-connect"
-                    progress={1}
-                    done
-                    correct={editor.typed === snippet.code}
-                  />
+                  <>
+                    <VerdictBanner
+                      good={editor.typed === snippet.code}
+                      title={
+                        editor.typed === snippet.code
+                          ? "Nice work — you're connected!"
+                          : "Almost there — connection refused."
+                      }
+                      subtitle={
+                        editor.typed === snippet.code
+                          ? "Clean code, no typos. The server accepts you."
+                          : "A typo is breaking the connection. Fix it and the server will accept you."
+                      }
+                    />
+                    <ScenePanel
+                      sceneId="server-connect"
+                      progress={1}
+                      done
+                      correct={editor.typed === snippet.code}
+                    />
+                  </>
                 ) : (
                   <>
                     {running && snippet.language === "python" && (
@@ -361,26 +377,41 @@ export default function PracticeScreen({
                       </div>
                     )}
                     {runResult && (
-                      <div className="overflow-hidden rounded-xl border border-edge/70">
-                        <div className="border-b border-edge/70 bg-raised px-4 py-2 text-[11px] font-medium uppercase tracking-widest text-muted">
-                          Output
+                      <>
+                        <VerdictBanner
+                          good={runResult.error === null}
+                          title={
+                            runResult.error === null
+                              ? "Nice work — it runs clean!"
+                              : "Almost there — fix the error below."
+                          }
+                          subtitle={
+                            runResult.error === null
+                              ? "No errors, correct output. That's how it's done."
+                              : "Your typo is breaking the code. Fix it and run it again — you've got this."
+                          }
+                        />
+                        <div className="overflow-hidden rounded-xl border border-edge/70">
+                          <div className="border-b border-edge/70 bg-raised px-4 py-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+                            Output
+                          </div>
+                          <div className="code-layer max-h-64 overflow-auto bg-surface px-4 py-3 text-[13px]">
+                            {runResult.output && (
+                              <pre className="whitespace-pre-wrap text-ink">
+                                {runResult.output}
+                              </pre>
+                            )}
+                            {runResult.error && (
+                              <pre className="whitespace-pre-wrap text-bad">
+                                {runResult.error}
+                              </pre>
+                            )}
+                            {!runResult.output && !runResult.error && (
+                              <span className="text-muted">No output.</span>
+                            )}
+                          </div>
                         </div>
-                        <div className="code-layer max-h-64 overflow-auto bg-surface px-4 py-3 text-[13px]">
-                          {runResult.output && (
-                            <pre className="whitespace-pre-wrap text-ink">
-                              {runResult.output}
-                            </pre>
-                          )}
-                          {runResult.error && (
-                            <pre className="whitespace-pre-wrap text-bad">
-                              {runResult.error}
-                            </pre>
-                          )}
-                          {!runResult.output && !runResult.error && (
-                            <span className="text-muted">No output.</span>
-                          )}
-                        </div>
-                      </div>
+                      </>
                     )}
                   </>
                 )}

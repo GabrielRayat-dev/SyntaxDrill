@@ -11,6 +11,7 @@
   --color-accent-2: var(--sd-accent-2);
   --color-good: var(--sd-correct);
   --color-bad: var(--sd-error);
+  --color-warn: var(--sd-warn);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "Cascadia Code", Menlo, monospace;
