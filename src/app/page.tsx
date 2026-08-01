@@ -15,6 +15,7 @@ import { CONCEPTS } from "@/lib/concepts";
 import { ThemePicker } from "@/components/theme/ThemePicker";
 import HeroDemo from "@/components/landing/HeroDemo";
 import LandingStats from "@/components/landing/LandingStats";
+import AccountButton from "@/components/AccountButton";
 
 const FEATURES = [
   {
@@ -45,7 +46,7 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: "Local-first progress",
-    body: "Sessions and speed-test records live in your browser. No accounts, no tracking, no ads — ever.",
+    body: "Progress lives in your browser by default. Create a free account to sync it across devices — no ads, no tracking.",
   },
 ];
 
@@ -129,6 +130,7 @@ export default function LandingPage() {
             </a>
           </nav>
           <div className="flex items-center gap-3">
+            <AccountButton />
             <ThemePicker compact />
             <Link
               href="/app"
@@ -144,7 +146,7 @@ export default function LandingPage() {
         <section className="mx-auto max-w-5xl px-4 pb-16 pt-16 sm:pt-24">
           <div className="sd-rise mb-8 inline-flex items-center gap-2 rounded-full border border-edge/70 bg-surface px-3 py-1 text-xs font-medium text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-good" />
-            Free forever · no ads · no accounts
+            Free forever · no ads · no tracking
           </div>
           <p
             className="sd-rise mb-5 font-mono text-xs text-muted sm:text-sm"
@@ -440,7 +442,7 @@ export default function LandingPage() {
               Top
             </Link>
           </nav>
-          <p className="text-xs text-muted">Made for learners. No ads, no accounts.</p>
+          <p className="text-xs text-muted">Made for learners. No ads, no tracking.</p>
         </div>
       </footer>
     </div>

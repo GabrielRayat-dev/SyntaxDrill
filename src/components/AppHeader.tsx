@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemePicker } from "@/components/theme/ThemePicker";
 import { setRaw } from "@/lib/localStore";
+import AccountButton from "@/components/AccountButton";
 
 type AppMode = "practice" | "speed";
 
@@ -56,7 +57,10 @@ export default function AppHeader() {
             ))}
           </nav>
         </div>
-        <ThemePicker compact />
+        <div className="flex items-center gap-2">
+          <AccountButton />
+          <ThemePicker compact />
+        </div>
       </div>
     </header>
     </>
