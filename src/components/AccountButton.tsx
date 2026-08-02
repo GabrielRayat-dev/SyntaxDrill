@@ -33,11 +33,11 @@ export default function AccountButton() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-accent/15 text-sm font-semibold text-accent ring-1 ring-inset ring-edge"
+        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-[2px] bg-accent/15 text-sm font-semibold text-accent ring-1 ring-inset ring-edge"
       >
         {user.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={user.image} alt="" className="h-full w-full object-cover" />
+          <img src={user.image} alt="" className="h-full w-full rounded-full object-cover" />
         ) : (
           initial
         )}
