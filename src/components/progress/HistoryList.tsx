@@ -32,7 +32,7 @@ function label(record: StatRecord): string {
 export default function HistoryList({ records }: { records: StatRecord[] }) {
   if (records.length === 0) {
     return (
-      <div className="rounded-xl border border-edge/70 bg-surface p-5">
+      <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
         <h2 className="mb-3 font-semibold text-ink">History</h2>
         <p className="text-sm text-muted">No sessions yet.</p>
       </div>
@@ -49,7 +49,7 @@ export default function HistoryList({ records }: { records: StatRecord[] }) {
   }
 
   return (
-    <div className="rounded-xl border border-edge/70 bg-surface p-5">
+    <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
       <h2 className="mb-3 font-semibold text-ink">History</h2>
       <div className="flex flex-col gap-4">
         {[...grouped.entries()].map(([day, rows]) => (

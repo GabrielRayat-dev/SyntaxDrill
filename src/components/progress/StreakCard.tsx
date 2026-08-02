@@ -56,7 +56,7 @@ export default function StreakCard({ records }: { records: StatRecord[] }) {
   const { current, longest } = computeStreak(records);
 
   return (
-    <div className="rounded-xl border border-edge/70 bg-surface p-5">
+    <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
       <h2 className="mb-3 font-semibold text-ink">Streaks</h2>
       {records.length === 0 ? (
         <p className="text-sm text-muted">

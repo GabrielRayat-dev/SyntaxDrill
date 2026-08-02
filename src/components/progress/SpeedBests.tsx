@@ -29,7 +29,7 @@ function BestTable({
         {rows.map((row) => (
           <div
             key={row.label}
-            className="flex items-center justify-between rounded-lg bg-raised/60 px-3 py-1.5"
+            className="flex items-center justify-between rounded-[2px] bg-raised/60 px-3 py-1.5"
           >
             <span className="text-xs text-muted">{row.label}</span>
             <span className="font-mono text-sm font-semibold tabular-nums text-ink">
@@ -47,7 +47,7 @@ export default function SpeedBests({ records }: { records: StatRecord[] }) {
 
   if (speed.length === 0) {
     return (
-      <div className="rounded-xl border border-edge/70 bg-surface p-5">
+      <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
         <h2 className="mb-3 font-semibold text-ink">Speed bests</h2>
         <p className="text-sm text-muted">
           No speed tests yet. Run a timed or word-count test to see your bests.
@@ -57,7 +57,7 @@ export default function SpeedBests({ records }: { records: StatRecord[] }) {
   }
 
   return (
-    <div className="rounded-xl border border-edge/70 bg-surface p-5">
+    <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
       <h2 className="mb-3 font-semibold text-ink">Speed bests</h2>
       <div className="flex gap-6">
         <BestTable

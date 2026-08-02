@@ -6,7 +6,7 @@ export default function ConceptBars({ records }: { records: StatRecord[] }) {
 
   if (code.length === 0) {
     return (
-      <div className="mb-6 rounded-xl border border-edge/70 bg-surface p-5">
+      <div className="sd-rise mb-6 rounded-lg border border-edge/70 bg-surface p-5">
         <h2 className="mb-3 font-semibold text-ink">Concepts</h2>
         <p className="text-sm text-muted">No practice sessions yet.</p>
       </div>
@@ -22,7 +22,7 @@ export default function ConceptBars({ records }: { records: StatRecord[] }) {
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-edge/70 bg-surface p-5">
+    <div className="sd-rise mb-6 rounded-lg border border-edge/70 bg-surface p-5">
       <h2 className="mb-3 font-semibold text-ink">Concepts</h2>
       <div className="flex flex-col gap-3">
         {CONCEPTS.map((concept) => {
@@ -37,9 +37,9 @@ export default function ConceptBars({ records }: { records: StatRecord[] }) {
                   {agg.mastered}/{agg.total} mastered
                 </span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-raised">
+              <div className="h-2 overflow-hidden rounded-[2px] bg-raised">
                 <div
-                  className="h-full rounded-full bg-accent transition-[width]"
+                  className="h-full rounded-[2px] bg-accent transition-[width]"
                   style={{ width: `${pct}%` }}
                 />
               </div>
