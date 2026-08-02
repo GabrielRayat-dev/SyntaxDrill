@@ -11,8 +11,7 @@ import {
   summarizeSeries,
   totals,
 } from "@/lib/storage/aggregates";
-import { snippetsFor } from "../../../content/snippets";
-import AppHeader from "@/components/AppHeader";
+import { snippetsFor } from "../../../../content/snippets";
 
 export default function HomePage() {
   const [language, setLanguage] = useState<SnippetLanguage>("javascript");
@@ -22,10 +21,8 @@ export default function HomePage() {
   const t = useMemo(() => totals(records), [records]);
 
   return (
-    <div className="min-h-screen">
-      <AppHeader />
-      <main id="main" className="mx-auto max-w-5xl px-4 py-10">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <>
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-2xl font-semibold tracking-tight text-ink">
               Practice tracks
@@ -139,8 +136,7 @@ export default function HomePage() {
             Open speed test →
           </Link>
         </div>
-      </main>
-    </div>
+    </>
   );
 }
 

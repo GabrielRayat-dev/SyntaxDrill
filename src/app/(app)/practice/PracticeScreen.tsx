@@ -22,7 +22,7 @@ import {
   DIFFICULTIES,
   LANGUAGES,
 } from "@/lib/concepts";
-import { snippetsFor } from "../../../content/snippets";
+import { snippetsFor } from "../../../../content/snippets";
 import { newId } from "@/lib/storage/local";
 import { addRecord } from "@/lib/storage/store";
 import { runSnippet, preloadPyodide, type RunResult } from "@/lib/runner";
@@ -31,7 +31,6 @@ import CodeBlock from "@/components/CodeBlock";
 import ScenePanel from "@/components/scenes/ScenePanel";
 import StatChip from "@/components/StatChip";
 import VerdictBanner from "@/components/VerdictBanner";
-import AppHeader from "@/components/AppHeader";
 
 interface SnippetResult {
   id: string;
@@ -193,10 +192,8 @@ export default function PracticeScreen({
   }, [phase, config, results, session]);
 
   return (
-    <div className="min-h-screen">
-      <AppHeader />
-      <main id="main" className="mx-auto max-w-3xl px-4 py-8">
-        {phase === "config" && <ConfigPanel onPick={startSession} />}
+    <div className="mx-auto max-w-3xl">
+      {phase === "config" && <ConfigPanel onPick={startSession} />}
 
         {phase !== "config" && phase !== "summary" && snippet && (
           <>
@@ -445,8 +442,7 @@ export default function PracticeScreen({
             onAgain={() => startSession({ ...config })}
           />
         )}
-      </main>
-    </div>
+      </div>
   );
 }
 

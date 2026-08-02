@@ -19,7 +19,6 @@ import {
   speedAccuracy,
 } from "@/lib/speedEngine";
 import StatChip from "@/components/StatChip";
-import AppHeader from "@/components/AppHeader";
 
 export const TIME_BUFFER = 200;
 
@@ -159,10 +158,8 @@ export default function SpeedScreen({
   };
 
   return (
-    <div className="min-h-screen">
-      <AppHeader />
-      <main id="main" className="mx-auto flex min-h-[calc(100vh-3.5rem)] w-full max-w-5xl flex-col justify-center px-4 py-8">
-        {phase === "config" && (
+    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col justify-center">
+      {phase === "config" && (
           <SpeedConfigPanel onPick={start} initial={config ?? undefined} />
         )}
 
@@ -236,8 +233,7 @@ export default function SpeedScreen({
             )}
           </>
         )}
-      </main>
-    </div>
+      </div>
   );
 }
 
