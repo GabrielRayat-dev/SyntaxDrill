@@ -29,15 +29,12 @@ export default function ServerConnectScene({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-edge/70 bg-surface px-5 py-4 font-mono text-[13px] leading-relaxed ${className}`}
+      className={`relative overflow-hidden rounded-lg border border-edge/70 bg-surface px-5 py-4 font-mono text-[13px] leading-relaxed ${className}`}
     >
       <div className="mb-3 flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-bad/70" />
-        <span
-          className="h-2.5 w-2.5 rounded-full opacity-70"
-          style={{ background: "var(--sd-warn)" }}
-        />
-        <span className="h-2.5 w-2.5 rounded-full bg-good/70" />
+        <span className="h-2.5 w-2.5 rounded-[2px] bg-bad/70" />
+        <span className="h-2.5 w-2.5 rounded-[2px] bg-warn opacity-70" />
+        <span className="h-2.5 w-2.5 rounded-[2px] bg-good/70" />
         <span className="ml-2 text-[11px] text-muted">
           syntaxdrill → postgres:5432
         </span>
@@ -65,7 +62,7 @@ export default function ServerConnectScene({
             }`}
             style={{ animationDelay: `${bootDelay}s` }}
           >
-            <span aria-hidden>{connected ? "✅" : "❌"}</span>
+            <span aria-hidden>{connected ? "✓" : "✗"}</span>
             <span className="font-semibold">
               {connected
                 ? "connected to database"

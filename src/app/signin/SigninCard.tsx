@@ -34,15 +34,15 @@ export default function SigninCard() {
   }
 
   const inputCls =
-    "w-full rounded-lg border border-edge bg-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
+    "w-full rounded-[2px] border border-edge bg-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
   const tabBtn = (id: "signin" | "register") =>
-    `flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+    `flex-1 rounded-[2px] px-3 py-1.5 text-sm font-medium transition-colors ${
       tab === id ? "bg-raised text-ink shadow-sm" : "text-muted hover:text-ink"
     }`;
 
   return (
-    <div className="w-full max-w-sm rounded-2xl border border-edge/70 bg-surface p-6">
-      <div className="mb-5 flex items-center gap-1 rounded-lg border border-edge/70 bg-page p-0.5">
+    <div className="w-full max-w-sm rounded-lg border border-edge/70 bg-surface p-6">
+      <div className="mb-5 flex items-center gap-1 rounded-[2px] border border-edge/70 bg-page p-0.5">
         <button type="button" onClick={() => setTab("signin")} className={tabBtn("signin")}>
           Sign in
         </button>
@@ -54,7 +54,7 @@ export default function SigninCard() {
       <button
         type="button"
         onClick={handleGithub}
-        className="mb-5 w-full rounded-lg bg-page px-3.5 py-2.5 text-sm font-semibold text-ink ring-1 ring-inset ring-edge transition-colors hover:bg-raised"
+        className="mb-5 w-full rounded-[2px] bg-page px-3.5 py-2.5 text-sm font-semibold text-ink ring-1 ring-inset ring-edge transition-colors hover:bg-raised"
       >
         Continue with GitHub
       </button>
@@ -72,7 +72,7 @@ export default function SigninCard() {
           {loginError && <p className="text-xs text-bad">{loginError}</p>}
           <button
             type="submit"
-            className="mt-1 w-full rounded-lg bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+            className="mt-1 w-full rounded-[2px] bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
           >
             Sign in
           </button>
@@ -100,7 +100,7 @@ export default function SigninCard() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-1 w-full rounded-lg bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="mt-1 w-full rounded-[2px] bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {pending ? "Creating account…" : "Create account"}
           </button>
