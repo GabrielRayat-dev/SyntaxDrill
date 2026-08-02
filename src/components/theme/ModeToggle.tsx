@@ -12,7 +12,7 @@ export default function ModeToggle() {
       onClick={() => setMode(light ? "dark" : "light")}
       title={light ? "Switch to dark mode" : "Switch to light mode"}
       aria-label={light ? "Switch to dark mode" : "Switch to light mode"}
-      className="group flex h-8 w-8 items-center justify-center overflow-hidden rounded-full border border-edge bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+      className="group flex h-8 w-8 items-center justify-center overflow-hidden rounded-[2px] border border-edge bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
     >
       <span
         key={mode}

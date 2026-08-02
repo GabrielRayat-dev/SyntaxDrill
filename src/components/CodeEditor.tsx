@@ -12,6 +12,7 @@ interface CodeEditorProps {
   disabled?: boolean;
   className?: string;
   autoFocus?: boolean;
+  bare?: boolean;
 }
 
 export default function CodeEditor({
@@ -22,6 +23,7 @@ export default function CodeEditor({
   disabled = false,
   className = "",
   autoFocus = true,
+  bare = false,
 }: CodeEditorProps) {
   const ref = useRef<HTMLPreElement>(null);
   const [focused, setFocused] = useState(false);
@@ -98,8 +100,12 @@ export default function CodeEditor({
       onCompositionStart={() => (composing.current = true)}
       onCompositionEnd={() => (composing.current = false)}
       aria-label="Code to type"
-      className={`code-layer relative cursor-text select-none overflow-x-auto rounded-xl border bg-surface px-5 py-4 outline-none transition-colors ${
-        focused ? "border-edge ring-1 ring-accent/30" : "border-edge/70"
+      className={`code-layer relative cursor-text select-none overflow-x-auto outline-none transition-colors ${
+        bare
+          ? "px-0 py-0"
+          : `rounded-xl border bg-surface px-5 py-4 ${
+              focused ? "border-edge ring-1 ring-accent/30" : "border-edge/70"
+            }`
       } ${className}`}
     >
       {nodes}

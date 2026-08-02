@@ -9,14 +9,14 @@ export default function AccountButton() {
   const [open, setOpen] = useState(false);
 
   if (status === "loading") {
-    return <span className="h-8 w-8 animate-pulse rounded-full bg-raised" aria-hidden />;
+    return <span className="h-8 w-8 animate-pulse rounded-[2px] bg-raised" aria-hidden />;
   }
 
   if (!session?.user) {
     return (
       <Link
         href="/signin"
-        className="rounded-lg border border-edge bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
+        className="rounded-[2px] border border-edge bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
       >
         Sign in
       </Link>
@@ -53,7 +53,7 @@ export default function AccountButton() {
           />
           <div
             role="menu"
-            className="absolute right-0 z-50 mt-2 w-48 rounded-xl border border-edge/70 bg-surface p-1.5 shadow-xl"
+            className="absolute right-0 z-50 mt-2 w-48 rounded-lg border border-edge/70 bg-surface p-1.5 shadow-xl"
           >
             <div className="border-b border-edge/70 px-3 py-2">
               <div className="truncate text-sm font-semibold text-ink">
@@ -67,7 +67,7 @@ export default function AccountButton() {
               href="/progress"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="mt-1 block rounded-lg px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
+              className="mt-1 block rounded-[2px] px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
             >
               Progress
             </Link>
@@ -75,7 +75,7 @@ export default function AccountButton() {
               href="/settings"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
+              className="block rounded-[2px] px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
             >
               Settings
             </Link>
@@ -83,7 +83,7 @@ export default function AccountButton() {
               type="button"
               role="menuitem"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="block w-full rounded-lg px-3 py-2 text-left text-sm text-bad transition-colors hover:bg-raised"
+              className="block w-full rounded-[2px] px-3 py-2 text-left text-sm text-bad transition-colors hover:bg-raised"
             >
               Sign out
             </button>
