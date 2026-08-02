@@ -285,7 +285,7 @@ export default function PracticeScreen({
                   onBackspace={handleBackspace}
                 />
                 <div className="flex items-center justify-between gap-2">
-                  <div className="flex gap-2">
+                  <div className="sd-ledger grid grid-cols-3 divide-x divide-edge/60">
                     <StatChip label="WPM" value={wpm(editor).toFixed(0)} accent />
                     <StatChip
                       label="Acc"
@@ -319,7 +319,7 @@ export default function PracticeScreen({
                       <span className="sd-stamp">✓ Mastered</span>
                     )}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="sd-ledger grid grid-cols-3 divide-x divide-edge/60">
                     <StatChip label="WPM" value={wpm(editor).toFixed(0)} accent />
                     <StatChip
                       label="Acc"
@@ -573,7 +573,7 @@ function Summary({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="sd-ledger grid grid-cols-2 gap-y-3 sm:grid-cols-4 sm:divide-x sm:divide-edge/60">
         <StatChip label="WPM" value={overallWpm.toFixed(0)} accent />
         <StatChip label="Acc" value={`${Math.round(avgAccuracy * 100)}%`} />
         <StatChip label="Time" value={`${Math.round(totalMs / 1000)}s`} />
