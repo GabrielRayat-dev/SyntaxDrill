@@ -11,7 +11,7 @@ export default function VerdictBanner({
 }: VerdictBannerProps) {
   return (
     <div
-      className={`rounded-xl border px-4 py-3 ${
+      className={`rounded-lg border px-4 py-3 ${
         good ? "border-good/50 bg-good/10" : "border-warn/50 bg-warn/10"
       }`}
     >

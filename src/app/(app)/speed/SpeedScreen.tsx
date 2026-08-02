@@ -178,39 +178,37 @@ export default function SpeedScreen({
                 }}
                 title="Restart (Tab)"
                 aria-label="Restart test"
-                className="rounded-lg border border-edge/70 bg-surface p-2 text-muted transition-colors hover:border-accent hover:text-accent"
+                className="rounded-[2px] border border-edge/70 bg-surface p-2 text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 <RotateCcw className="h-4 w-4" aria-hidden />
               </button>
             </div>
 
             {phase === "type" && (
-              <div className="sd-rise overflow-hidden rounded-2xl border border-edge/70 bg-surface">
-                <div className="flex items-center justify-between gap-3 px-4 pt-4 sm:px-5">
-                  <div className="flex gap-2">
+              <div className="sd-rise overflow-hidden rounded-lg border border-edge/70 bg-surface">
+                <div className="sd-ledger grid grid-cols-3 divide-x divide-edge/60 px-4 pt-4 sm:px-5">
+                  <StatChip
+                    label="WPM"
+                    value={speedWpm(test).toFixed(0)}
+                    accent
+                  />
+                  <StatChip
+                    label="Acc"
+                    value={`${Math.round(speedAccuracy(test) * 100)}%`}
+                  />
+                  {config.mode === "time" ? (
                     <StatChip
-                      label="WPM"
-                      value={speedWpm(test).toFixed(0)}
-                      accent
+                      label="Time"
+                      value={`${Math.max(0, config.target - elapsed / 1000).toFixed(1)}s`}
                     />
+                  ) : (
                     <StatChip
-                      label="Acc"
-                      value={`${Math.round(speedAccuracy(test) * 100)}%`}
+                      label="Left"
+                      value={String(
+                        Math.max(0, config.target - test.currentIndex),
+                      )}
                     />
-                    {config.mode === "time" ? (
-                      <StatChip
-                        label="Time"
-                        value={`${Math.max(0, config.target - elapsed / 1000).toFixed(1)}s`}
-                      />
-                    ) : (
-                      <StatChip
-                        label="Left"
-                        value={String(
-                          Math.max(0, config.target - test.currentIndex),
-                        )}
-                      />
-                    )}
-                  </div>
+                  )}
                 </div>
 
                 <WordStream test={test} onBlur={blurTarget} />
@@ -248,7 +246,7 @@ function ConfigBar({
 }) {
   const targets = config.mode === "time" ? TIME_TARGETS : WORD_TARGETS;
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-edge/70 bg-surface p-1 text-xs font-medium">
+    <div className="flex items-center gap-1 rounded-[2px] border border-edge/70 bg-surface p-1 text-xs font-medium">
       {(["time", "words"] as const).map((mode) => (
         <button
           key={mode}
@@ -256,7 +254,7 @@ function ConfigBar({
             onBlur(e);
             onPick({ mode, target: mode === "time" ? 15 : 10 });
           }}
-          className={`rounded-md px-2.5 py-1 transition-colors ${
+          className={`rounded-[2px] px-2.5 py-1 transition-colors ${
             config.mode === mode ? "bg-raised text-ink" : "text-muted hover:text-ink"
           }`}
         >
@@ -271,7 +269,7 @@ function ConfigBar({
             onBlur(e);
             onPick({ mode: config.mode, target });
           }}
-          className={`rounded-md px-2 py-1 tabular-nums transition-colors ${
+          className={`rounded-[2px] px-2 py-1 tabular-nums transition-colors ${
             config.target === target
               ? "bg-raised text-ink"
               : "text-muted hover:text-ink"
@@ -412,14 +410,16 @@ function SpeedResult({
   const durationS =
     ((test.finishedAt ?? test.startedAt ?? 0) - (test.startedAt ?? 0)) / 1000;
   return (
-    <div className="sd-rise rounded-2xl border border-edge/70 bg-surface p-8 text-center sm:p-10">
+    <div className="sd-rise relative rounded-lg border border-edge/70 bg-surface p-8 text-center sm:p-10">
+      <span className="index-hole left-10" aria-hidden />
+      <span className="index-hole left-16" aria-hidden />
       <div className="font-display text-6xl font-semibold tabular-nums text-accent sm:text-7xl">
         {speedWpm(test).toFixed(0)}
       </div>
       <p className="mt-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted">
         words per minute
       </p>
-      <div className="mx-auto mt-8 grid max-w-md grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="sd-ledger mx-auto mt-8 grid max-w-md grid-cols-2 gap-y-3 sm:grid-cols-4 sm:divide-x sm:divide-edge/60">
         <StatChip label="Acc" value={`${Math.round(speedAccuracy(test) * 100)}%`} />
         <StatChip label="Raw" value={speedRaw(test).toFixed(0)} />
         <StatChip label="Errors" value={String(test.errorKeystrokes)} />
@@ -428,13 +428,13 @@ function SpeedResult({
       <div className="mt-8 flex flex-col gap-2 sm:flex-row">
         <button
           onClick={onAgain}
-          className="flex-1 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+          className="flex-1 rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
         >
           Go again
         </button>
         <button
           onClick={onChange}
-          className="flex-1 rounded-xl border border-edge bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
+          className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
         >
           Change test
         </button>
@@ -463,11 +463,12 @@ function SpeedConfigPanel({
   return (
     <div className="sd-rise space-y-6">
       <div>
+        <p className="sd-eyebrow mb-1">{"// speed test"}</p>
         <h1 className="font-display text-xl font-semibold text-ink">
           Speed test
         </h1>
         <p className="mt-1 text-sm text-muted">
-          Plain words, no code â€” measure raw typing speed and accuracy.
+          Plain words, no code. Measure raw typing speed and accuracy.
         </p>
       </div>
 
@@ -480,7 +481,7 @@ function SpeedConfigPanel({
             <button
               key={m}
               onClick={() => pickMode(m)}
-              className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
                 mode === m
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -501,7 +502,7 @@ function SpeedConfigPanel({
             <button
               key={t}
               onClick={() => setTarget(t)}
-              className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
                 target === t
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -515,7 +516,7 @@ function SpeedConfigPanel({
 
       <button
         onClick={() => onPick({ mode, target })}
-        className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+        className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
       >
         Start test
       </button>

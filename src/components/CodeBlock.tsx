@@ -24,7 +24,7 @@ export default function CodeBlock({ code, language, className = "" }: CodeBlockP
     [code, language],
   );
   return (
-    <pre className={`code-layer overflow-x-auto rounded-xl border border-edge/70 bg-surface px-5 py-4 ${className}`}>
+    <pre className={`code-layer overflow-x-auto rounded-lg border border-edge/70 bg-surface px-5 py-4 ${className}`}>
       <code
         className={`language-${language}`}
         dangerouslySetInnerHTML={{ __html: html }}
