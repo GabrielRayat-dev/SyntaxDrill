@@ -24,6 +24,7 @@ export default function HomePage() {
     <>
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
+            <p className="sd-eyebrow mb-1">{"// drill catalogue"}</p>
             <h1 className="font-display text-2xl font-semibold tracking-tight text-ink">
               Practice tracks
             </h1>
@@ -37,7 +38,7 @@ export default function HomePage() {
               <button
                 key={lang}
                 onClick={() => setLanguage(lang)}
-                className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
                   language === lang
                     ? "border-accent bg-raised text-ink"
                     : "border-edge bg-surface text-muted hover:text-ink"
@@ -50,7 +51,7 @@ export default function HomePage() {
         </div>
 
         {records.length > 0 && (
-          <div className="mb-8 grid grid-cols-2 gap-2 sm:grid-cols-5">
+          <div className="sd-ledger mb-8 grid grid-cols-2 gap-y-3 sm:grid-cols-5 sm:divide-x sm:divide-edge/60">
             <Totals label="Sessions" value={String(t.sessions)} />
             <Totals label="Snippets" value={String(t.snippetsTyped)} />
             <Totals label="Mastered" value={String(t.snippetsMastered)} />
@@ -71,8 +72,10 @@ export default function HomePage() {
             return (
               <div
                 key={concept.id}
-                className="flex flex-col rounded-xl border border-edge/70 bg-surface p-4"
+                className="sd-rise relative flex flex-col rounded-lg border border-edge/70 bg-surface p-4 pt-7"
               >
+                <span className="index-hole left-5" aria-hidden />
+                <span className="index-hole left-11" aria-hidden />
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <h2 className="font-semibold text-ink">{concept.name}</h2>
                   {summary.count > 0 && (
@@ -110,7 +113,7 @@ export default function HomePage() {
                       <Link
                         key={d.id}
                         href={`/practice?language=${language}&concept=${concept.id}&difficulty=${d.id}`}
-                        className="rounded-md border border-edge bg-raised px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-accent"
+                        className="rounded-[2px] border border-edge bg-raised px-2.5 py-1 text-xs font-medium text-ink transition-colors hover:border-accent"
                       >
                         {d.name}
                       </Link>
@@ -122,8 +125,9 @@ export default function HomePage() {
           })}
         </div>
 
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-edge/70 bg-surface p-5 sm:flex-row sm:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-lg border border-edge/70 bg-surface p-5 sm:flex-row sm:items-center">
           <div>
+            <span className="sd-stamp sd-stamp-accent mb-2 inline-flex">Speed test</span>
             <h2 className="font-semibold text-ink">Raw speed test</h2>
             <p className="mt-0.5 text-sm text-muted">
               Timed or word-count runs on plain English words.
@@ -131,7 +135,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/speed"
-            className="rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+            className="rounded-[2px] bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
           >
             Open speed test →
           </Link>
@@ -142,8 +146,8 @@ export default function HomePage() {
 
 function Totals({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-edge/70 bg-surface px-3 py-2.5">
-      <div className="font-mono text-lg font-semibold tabular-nums text-ink">
+    <div className="px-3 py-2.5 text-center">
+      <div className="font-display text-2xl font-semibold tabular-nums text-ink">
         {value}
       </div>
       <div className="text-[10px] font-medium uppercase tracking-widest text-muted">
@@ -155,7 +159,7 @@ function Totals({ label, value }: { label: string; value: string }) {
 
 function TrackStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg bg-raised/60 px-2 py-1.5 text-center">
+    <div className="rounded-[2px] bg-raised/60 px-2 py-1.5 text-center">
       <div className="font-mono text-sm font-semibold tabular-nums text-ink">
         {value}
       </div>
