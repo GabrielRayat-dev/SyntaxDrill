@@ -66,13 +66,14 @@ export default function HeroDemo() {
   }
 
   return (
-    <div className="sd-rise overflow-hidden rounded-2xl border border-edge/70 bg-surface shadow-[0_18px_40px_-20px_var(--sd-glow)]">
-      <div className="flex items-center justify-between gap-3 border-b border-edge/70 px-4 py-3 sm:px-5">
-        <span className="flex items-center gap-2 font-mono text-xs text-muted">
-          <span className="text-accent">$</span>
-          type your first drill
+    <div className="sd-rise relative rounded-lg border border-edge bg-surface shadow-[0_18px_40px_-20px_var(--sd-glow)]">
+      <span className="index-hole left-10" aria-hidden />
+      <span className="index-hole left-16" aria-hidden />
+      <div className="flex items-center gap-3 border-b border-edge/70 px-4 pb-3 pt-6 sm:px-5">
+        <span className="font-mono text-xs text-muted">
+          DR-004 <span className="text-accent">loops</span> · JS
         </span>
-        <span className="font-mono text-xs tabular-nums text-accent">
+        <span className="ml-auto font-mono text-xs tabular-nums text-accent">
           {wpm(editor).toFixed(0)} wpm
         </span>
       </div>
@@ -83,16 +84,17 @@ export default function HeroDemo() {
           onType={handleType}
           onBackspace={handleBackspace}
           autoFocus={false}
+          bare
         />
       </div>
       <div
-        className="flex h-10 items-end gap-[3px] px-4 pb-3 pt-2 sm:px-5"
+        className="flex h-10 items-end gap-[3px] border-t border-dotted border-edge/60 px-4 pb-2 pt-2 sm:px-5"
         aria-hidden
       >
         {bars.map((bar, i) => (
           <div
             key={i}
-            className="min-w-0 flex-1 rounded-full transition-colors duration-75"
+            className="min-w-0 flex-1 rounded-none transition-colors duration-75"
             style={{
               height: bar.hasError
                 ? "38%"
@@ -111,23 +113,24 @@ export default function HeroDemo() {
           />
         ))}
       </div>
-      <div className="flex min-h-9 items-center justify-between gap-3 border-t border-edge/70 bg-surface/60 px-4 py-2.5 sm:px-5">
+      <div className="flex min-h-9 items-center gap-4 border-t border-edge/70 px-4 py-2.5 sm:px-5">
         {done ? (
           <>
-            <span className="text-sm font-medium text-good">
-              ✓ {Math.round(accuracy(editor) * 100)}% accurate, that is a clean
-              run.
+            <span className="sd-stamp">Clean run</span>
+            <span className="mr-auto font-mono text-xs tabular-nums text-muted">
+              {Math.round(accuracy(editor) * 100)}% accurate
             </span>
             <button
               onClick={reset}
-              className="text-xs font-medium text-muted transition-colors hover:text-ink"
+              className="font-mono text-xs text-muted transition-colors hover:text-ink"
             >
               Reset
             </button>
           </>
         ) : (
-          <span className="text-xs text-muted">
-            Click the editor and start typing. The trace above is yours.
+          <span className="flex items-center gap-2 text-xs text-muted">
+            <span className="h-px w-8 bg-edge" aria-hidden />
+            Type the specimen from memory
           </span>
         )}
       </div>
