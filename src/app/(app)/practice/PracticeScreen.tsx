@@ -20,6 +20,7 @@ import type { PracticeConfig } from "@/lib/config";
 import {
   CONCEPTS,
   DIFFICULTIES,
+  DIFFICULTY_TEXT,
   LANGUAGES,
 } from "@/lib/concepts";
 import { snippetsFor } from "../../../../content/snippets";
@@ -206,19 +207,16 @@ export default function PracticeScreen({
                   ← Tracks
                 </Link>
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium text-ink">
+                  <span className="rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium text-ink">
                     {LANGUAGES[snippet.language].short}
                   </span>
-                  <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium text-ink">
+                  <span className="rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium text-ink">
                     {CONCEPTS.find((c) => c.id === snippet.concepts[0])?.name}
                   </span>
                   <span
-                    className="rounded-md border border-edge bg-surface px-2 py-1 font-medium"
-                    style={{
-                      color:
-                        DIFFICULTIES.find((d) => d.id === snippet.difficulty)
-                          ?.color ?? "var(--sd-accent)",
-                    }}
+                    className={`rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium ${
+                      DIFFICULTY_TEXT[snippet.difficulty] ?? "text-accent"
+                    }`}
                   >
                     {snippet.difficulty}
                   </span>
@@ -245,7 +243,7 @@ export default function PracticeScreen({
                 {session.map((_, i) => (
                   <div
                     key={i}
-                    className={`h-1 flex-1 rounded-full ${
+                    className={`h-1 flex-1 rounded-[2px] ${
                       i < index
                         ? "bg-accent"
                         : i === index
@@ -267,7 +265,7 @@ export default function PracticeScreen({
                 <CodeBlock code={snippet.code} language={snippet.language} />
                 <button
                   onClick={beginTyping}
-                  className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+                  className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
                 >
                   Start typing
                 </button>
@@ -310,7 +308,7 @@ export default function PracticeScreen({
 
             {phase === "result" && editor && (
               <div className="sd-rise space-y-3">
-                <div className="rounded-xl border border-edge/70 bg-surface p-5">
+                <div className="rounded-lg border border-edge/70 bg-surface p-5">
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-sm font-semibold text-ink">
                       {results[results.length - 1]?.mastered
@@ -318,9 +316,7 @@ export default function PracticeScreen({
                         : "Snippet done"}
                     </h2>
                     {results[results.length - 1]?.mastered && (
-                      <span className="rounded-full bg-good/15 px-2.5 py-1 text-xs font-semibold text-good">
-                        ✓ Mastered
-                      </span>
+                      <span className="sd-stamp">✓ Mastered</span>
                     )}
                   </div>
                   <div className="flex gap-2">
@@ -337,7 +333,7 @@ export default function PracticeScreen({
                   {results[results.length - 1]?.mastered !== true && (
                     <button
                       onClick={retry}
-                      className="flex-1 rounded-xl border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised"
+                      className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised"
                     >
                       Retry
                     </button>
@@ -346,14 +342,14 @@ export default function PracticeScreen({
                     <button
                       onClick={runCode}
                       disabled={running}
-                      className="flex-1 rounded-xl border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
+                      className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
                     >
                       {running ? "Running…" : "Run it"}
                     </button>
                   )}
                   <button
                     onClick={next}
-                    className="flex-1 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+                    className="flex-1 rounded-[2px] bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
                   >
                     {index + 1 >= session.length
                       ? "Finish session →"
@@ -386,7 +382,7 @@ export default function PracticeScreen({
                 ) : (
                   <>
                     {running && snippet.language === "python" && (
-                      <div className="rounded-xl border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
+                      <div className="rounded-lg border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
                         Loading the Python interpreter… first run may take a
                         moment.
                       </div>
@@ -406,7 +402,7 @@ export default function PracticeScreen({
                               : "Your typo is breaking the code. Fix it and run it again. You've got this."
                           }
                         />
-                        <div className="overflow-hidden rounded-xl border border-edge/70">
+                        <div className="overflow-hidden rounded-lg border border-edge/70">
                           <div className="border-b border-edge/70 bg-raised px-4 py-2 text-[11px] font-medium uppercase tracking-widest text-muted">
                             Output
                           </div>
@@ -457,6 +453,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
   return (
     <div className="sd-rise space-y-6">
       <div>
+        <p className="sd-eyebrow mb-1">{"// drill session"}</p>
         <h1 className="font-display text-xl font-semibold text-ink">Practice</h1>
         <p className="mt-1 text-sm text-muted">
           Pick a language, concept, and difficulty, then type 10 real snippets.
@@ -472,7 +469,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
                 language === lang
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -493,7 +490,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={c.id}
               onClick={() => setConcept(c.id)}
-              className={`rounded-xl border p-3 text-left transition-colors ${
+              className={`rounded-[2px] border p-3 text-left transition-colors ${
                 concept === c.id
                   ? "border-accent bg-raised"
                   : "border-edge bg-surface hover:border-muted"
@@ -515,7 +512,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={d.id}
               onClick={() => setDifficulty(d.id)}
-              className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
                 difficulty === d.id
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -527,7 +524,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
+      <div className="rounded-lg border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
         {canStart
           ? `${poolCount} snippet${poolCount === 1 ? "" : "s"} available · session of ${SESSION_SIZE}`
           : "No snippets for this combination yet."}
@@ -536,7 +533,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
       <button
         onClick={() => onPick({ language, concept, difficulty })}
         disabled={!canStart}
-        className="w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
         Start session
       </button>
@@ -566,11 +563,14 @@ function Summary({
 
   return (
     <div className="sd-rise space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-xl font-semibold text-ink">Session complete</h1>
-        <span className="rounded-full bg-good/15 px-2.5 py-1 text-xs font-semibold text-good">
-          {mastered}/{results.length} mastered
-        </span>
+      <div>
+        <p className="sd-eyebrow mb-1">{"// drill session"}</p>
+        <div className="flex items-center justify-between">
+          <h1 className="font-display text-xl font-semibold text-ink">Session complete</h1>
+          <span className="sd-stamp">
+            {mastered}/{results.length} mastered
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -580,7 +580,7 @@ function Summary({
         <StatChip label="Errors" value={String(errors)} />
       </div>
 
-      <div className="rounded-xl border border-edge/70 bg-surface p-4 text-xs text-muted">
+      <div className="rounded-lg border border-edge/70 bg-surface p-4 text-xs text-muted">
         <span className="font-medium text-ink">{LANGUAGES[config.language].name}</span> ·{" "}
         {CONCEPTS.find((c) => c.id === config.concept)?.name} · {config.difficulty}
         <p className="mt-1">
@@ -591,13 +591,13 @@ function Summary({
       <div className="flex flex-col gap-2 sm:flex-row">
         <button
           onClick={onAgain}
-          className="flex-1 rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+          className="flex-1 rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
         >
           Practice again
         </button>
         <Link
           href="/app"
-          className="flex-1 rounded-xl border border-edge bg-surface px-4 py-3 text-center text-sm font-medium text-ink transition-colors hover:bg-raised"
+          className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-3 text-center text-sm font-medium text-ink transition-colors hover:bg-raised"
         >
           Back to tracks
         </Link>

@@ -1,5 +1,11 @@
 import type { Concept, ConceptId, Difficulty, SnippetLanguage } from "@/types";
 
+export const DIFFICULTY_TEXT: Record<string, string> = {
+  beginner: "text-good",
+  intermediate: "text-warn",
+  advanced: "text-bad",
+};
+
 export const CONCEPTS: Concept[] = [
   {
     id: "variables",
@@ -57,7 +63,6 @@ export function getConcept(id: string): Concept | undefined {
 export interface LanguageMeta {
   name: string;
   short: string;
-  color: string;
   prism: string;
 }
 
@@ -65,25 +70,22 @@ export const LANGUAGES: Record<SnippetLanguage, LanguageMeta> = {
   javascript: {
     name: "JavaScript",
     short: "JS",
-    color: "#e0af68",
     prism: "javascript",
   },
   python: {
     name: "Python",
     short: "PY",
-    color: "#7aa2f7",
     prism: "python",
   },
   sql: {
     name: "SQL",
     short: "SQL",
-    color: "#9ece6a",
     prism: "sql",
   },
 };
 
 export const DIFFICULTIES = [
-  { id: "beginner", name: "Beginner", color: "#9ece6a" },
-  { id: "intermediate", name: "Intermediate", color: "#e0af68" },
-  { id: "advanced", name: "Advanced", color: "#f7768e" },
+  { id: "beginner", name: "Beginner", tone: "good" },
+  { id: "intermediate", name: "Intermediate", tone: "warn" },
+  { id: "advanced", name: "Advanced", tone: "bad" },
 ] as const;
