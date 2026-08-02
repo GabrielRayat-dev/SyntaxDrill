@@ -158,7 +158,7 @@ export default function SpeedScreen({
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col justify-center">
+    <div className="flex min-h-[calc(100vh-9rem)] flex-col justify-center">
       {phase === "config" && (
           <SpeedConfigPanel onPick={start} initial={config ?? undefined} />
         )}

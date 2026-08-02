@@ -359,14 +359,6 @@ body {
   border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 70%, transparent);
 }
 
-/* Squared input field */
-.sd-field {
-  border-radius: 2px;
-  border: 1px solid var(--sd-border);
-  background: var(--sd-raised);
-  color: var(--sd-text);
-}
-
 /* Header nav link with a dotted underline */
 .sd-nav-link {
   font-family: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
