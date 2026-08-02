@@ -16,10 +16,10 @@ export const COLORWAYS: Colorway[] = [
   {
     id: "paper",
     name: "Paper",
-    description: "Cool paper and blue ink.",
+    description: "Aged paper, ink, vermilion.",
     swatches: {
-      dark: ["#0f1620", "#6ea8ff", "#a5b4fc", "#4ade80", "#fb7185"],
-      light: ["#f2f4f8", "#2563c9", "#4f46c9", "#1f9d55", "#dc3d5a"],
+      dark: ["#1c1712", "#e0662e", "#d19a5b", "#7fb069", "#e06c5a"],
+      light: ["#f1ecdf", "#b3401f", "#8a4a2e", "#49783f", "#a6352f"],
     },
   },
   {
@@ -27,8 +27,8 @@ export const COLORWAYS: Colorway[] = [
     name: "Night",
     description: "Slate and lamp-blue.",
     swatches: {
-      dark: ["#0b1220", "#7ab0ff", "#a5c1ff", "#5ee0a9", "#ff8fa3"],
-      light: ["#e9eef5", "#2a63d4", "#6b5de7", "#1e9e6a", "#e05263"],
+      dark: ["#12161f", "#7aa2e0", "#9b8cff", "#5bbf9a", "#e26d7e"],
+      light: ["#e9ecf2", "#3a63c8", "#6658d6", "#2e8a67", "#c94a5e"],
     },
   },
   {
@@ -36,8 +36,8 @@ export const COLORWAYS: Colorway[] = [
     name: "Pencil",
     description: "Cool graphite and slate-teal.",
     swatches: {
-      dark: ["#0e1114", "#5aa0b8", "#7cc0d8", "#55c98f", "#ff7d8a"],
-      light: ["#eceef1", "#3f7087", "#4b7fa0", "#2f8f66", "#c94f5a"],
+      dark: ["#10151a", "#4f9aa8", "#7fc2cf", "#52b589", "#e4707c"],
+      light: ["#eaedef", "#3b7f8c", "#4f8da0", "#2f8a63", "#c24753"],
     },
   },
 ];
