@@ -12,8 +12,8 @@ import {
 } from "./actions";
 
 const inputCls =
-  "w-full rounded-lg border border-edge bg-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
-const sectionCls = "rounded-xl border border-edge/70 bg-surface p-5";
+  "w-full rounded-[2px] border border-edge bg-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
+const sectionCls = "rounded-lg border border-edge/70 bg-surface p-5";
 
 function Status({ error, ok }: { error?: string; ok?: boolean }) {
   if (error) return <p className="text-xs text-bad">{error}</p>;
@@ -91,7 +91,7 @@ export default function SettingsPanel({
           <button
             type="submit"
             disabled={userPending}
-            className="w-fit rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="w-fit rounded-[2px] bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {userPending ? "Saving…" : "Save username"}
           </button>
@@ -128,7 +128,7 @@ export default function SettingsPanel({
               <button
                 type="submit"
                 disabled={changePending}
-                className="w-fit rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
+                className="w-fit rounded-[2px] bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
               >
                 {changePending ? "Changing…" : "Change password"}
               </button>
@@ -145,7 +145,7 @@ export default function SettingsPanel({
               <button
                 type="submit"
                 disabled={removePending}
-                className="w-fit rounded-lg border border-bad/60 px-3.5 py-2 text-sm font-semibold text-bad transition-colors hover:bg-bad/10 disabled:opacity-60"
+                className="w-fit rounded-[2px] border border-bad/60 px-3.5 py-2 text-sm font-semibold text-bad transition-colors hover:bg-bad/10 disabled:opacity-60"
               >
                 {removePending ? "Removing…" : "Remove password"}
               </button>
@@ -174,7 +174,7 @@ export default function SettingsPanel({
             <button
               type="submit"
               disabled={setPending}
-              className="w-fit rounded-lg bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
+              className="w-fit rounded-[2px] bg-accent px-3.5 py-2 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {setPending ? "Saving…" : "Set password"}
             </button>
@@ -184,12 +184,12 @@ export default function SettingsPanel({
 
       <section className={sectionCls}>
         <h2 className="mb-3 font-semibold text-ink">Connected accounts</h2>
-        <div className="flex items-center justify-between gap-3 rounded-lg bg-raised/60 px-3.5 py-2.5">
+        <div className="flex items-center justify-between gap-3 rounded-[2px] bg-raised/60 px-3.5 py-2.5">
           <span className="text-sm font-medium text-ink">GitHub</span>
           <button
             type="button"
             onClick={() => signIn("github", { redirectTo: "/settings" })}
-            className="rounded-lg border border-edge px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
+            className="rounded-[2px] border border-edge px-3 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
           >
             Connect
           </button>
@@ -214,7 +214,7 @@ export default function SettingsPanel({
       <button
         type="button"
         onClick={() => signOut({ callbackUrl: "/" })}
-        className="w-fit rounded-lg border border-edge bg-surface px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-raised"
+        className="w-fit rounded-[2px] border border-edge bg-surface px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-raised"
       >
         Sign out
       </button>

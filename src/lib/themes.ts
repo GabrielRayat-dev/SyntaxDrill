@@ -7,7 +7,7 @@ export type ThemeId = ColorwayId | `${ColorwayId}-light`;
 export interface Colorway {
   id: ColorwayId;
   name: string;
-  description: string;
+  descriptions: Record<ThemeMode, string>;
   /** Swatches for the theme picker UI, one set per mode. */
   swatches: Record<ThemeMode, string[]>;
 }
@@ -16,7 +16,11 @@ export const COLORWAYS: Colorway[] = [
   {
     id: "paper",
     name: "Paper",
-    description: "Aged paper, ink, vermilion.",
+    // paper
+    descriptions: {
+      light: "Cream stock, ink, vermilion. The classic field guide.",
+      dark: "The reading room. Warm lamplit charcoal.",
+    },
     swatches: {
       dark: ["#1c1712", "#e0662e", "#d19a5b", "#7fb069", "#e06c5a"],
       light: ["#f1ecdf", "#b3401f", "#8a4a2e", "#49783f", "#a6352f"],
@@ -25,7 +29,11 @@ export const COLORWAYS: Colorway[] = [
   {
     id: "night",
     name: "Night",
-    description: "Slate and lamp-blue.",
+    // night
+    descriptions: {
+      light: "Library slate and lamp-blue ink.",
+      dark: "Night shift. Deep blue-charcoal.",
+    },
     swatches: {
       dark: ["#12161f", "#7aa2e0", "#9b8cff", "#5bbf9a", "#e26d7e"],
       light: ["#e9ecf2", "#3a63c8", "#6658d6", "#2e8a67", "#c94a5e"],
@@ -34,7 +42,11 @@ export const COLORWAYS: Colorway[] = [
   {
     id: "pencil",
     name: "Pencil",
-    description: "Cool graphite and slate-teal.",
+    // pencil
+    descriptions: {
+      light: "Graphite, cool paper, slate-teal marks.",
+      dark: "Field notebook graphite, heavy shadow.",
+    },
     swatches: {
       dark: ["#10151a", "#4f9aa8", "#7fc2cf", "#52b589", "#e4707c"],
       light: ["#eaedef", "#3b7f8c", "#4f8da0", "#2f8a63", "#c24753"],

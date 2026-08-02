@@ -25,6 +25,7 @@ export default async function SettingsPage() {
       >
         ← Tracks
       </Link>
+      <p className="sd-eyebrow mb-1">{"// account"}</p>
       <h1 className="mb-6 font-display text-2xl font-semibold tracking-tight text-ink">
         Settings
       </h1>

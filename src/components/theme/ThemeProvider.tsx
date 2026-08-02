@@ -28,6 +28,7 @@ interface ThemeContextValue {
   mode: ThemeMode;
   setTheme: (colorway: ColorwayId) => void;
   setMode: (mode: ThemeMode) => void;
+  setVariant: (theme: ThemeId) => void;
   cycle: () => void;
 }
 
@@ -71,6 +72,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     [applyTheme, theme],
   );
 
+  const setVariant = useCallback((next: ThemeId) => {
+    applyTheme(next);
+  }, [applyTheme]);
+
   const cycle = useCallback(() => {
     const index = COLORWAYS.findIndex((c) => c.id === colorwayOf(theme));
     const next = COLORWAYS[(index + 1) % COLORWAYS.length].id;
@@ -81,8 +86,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const mode = modeOf(theme);
 
   const value = useMemo(
-    () => ({ theme, colorway, mode, setTheme, setMode, cycle }),
-    [theme, colorway, mode, setTheme, setMode, cycle],
+    () => ({ theme, colorway, mode, setTheme, setMode, setVariant, cycle }),
+    [theme, colorway, mode, setTheme, setMode, setVariant, cycle],
   );
 
   return (
