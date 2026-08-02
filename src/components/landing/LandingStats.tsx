@@ -19,13 +19,18 @@ export default function LandingStats() {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+    <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:divide-x sm:divide-edge/60">
       {items.map((item) => (
-        <div key={item.label} className="flex items-baseline gap-2">
-          <span className="font-mono text-lg font-semibold tabular-nums text-ink">
+        <div
+          key={item.label}
+          className="flex flex-col items-center gap-1 px-4 text-center sm:items-start sm:text-left"
+        >
+          <span className="font-display text-3xl font-medium tabular-nums text-ink">
             {item.value}
           </span>
-          <span className="text-xs text-muted">{item.label}</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+            {item.label}
+          </span>
         </div>
       ))}
     </div>
