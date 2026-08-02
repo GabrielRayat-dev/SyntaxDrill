@@ -4,13 +4,11 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useSyncExternalStore,
 } from "react";
 import {
   COLORWAYS,
-  DEFAULT_COLORWAY,
   DEFAULT_THEME,
   migrateTheme,
   colorwayOf,
@@ -78,26 +76,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const next = COLORWAYS[(index + 1) % COLORWAYS.length].id;
     applyTheme(themeId(next, modeOf(theme)));
   }, [applyTheme, theme]);
-
-  // Follow the OS live until the user chooses a theme of their own.
-  useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      typeof window.matchMedia !== "function"
-    ) {
-      return;
-    }
-    const query = window.matchMedia("(prefers-color-scheme: light)");
-    const onChange = () => {
-      if (getRaw(STORAGE_KEY) !== null) return;
-      document.documentElement.dataset.theme = themeId(
-        DEFAULT_COLORWAY,
-        query.matches ? "light" : "dark",
-      );
-    };
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }, []);
 
   const colorway = colorwayOf(theme);
   const mode = modeOf(theme);

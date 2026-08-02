@@ -91,7 +91,7 @@ Three variants, each with light + dark token sets. New cool family (previous war
 
 > Note: corrected typo values during implementation (`border`, `raised`, `accent-2` in night). Final hexes live in `globals.css`.
 
-- **Default:** `paper` light. `DEFAULT_COLORWAY = "paper"`, `DEFAULT_THEME = "paper"`.
+- **Default:** `paper` light. `DEFAULT_COLORWAY = "paper"`, `DEFAULT_THEME = "paper-light"` (the flagship Paper identity loads light for everyone, not just light-OS visitors).
 - **Legacy migration:** stored `sd.theme` ids from the old system (`tokyo-night`, `rose-pine`, `dracula`, `sunset`, plus `-light`) map: dark variants → `night`, light variants → `paper`. The `layout.tsx` inline script performs this migration before paint; `ThemeProvider` mirrors it via `migrateTheme`.
 
 ## 4. Landing Layout (Section 11 redesign + Section 4.7 layout discipline)

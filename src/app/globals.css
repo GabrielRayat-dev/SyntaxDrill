@@ -20,26 +20,9 @@
 /*
  * Theme presets — each one swaps these tokens. All UI reads the tokens,
  * never a raw color, so the three themes are real, full-product variants.
- * Default (:root) is Paper, dark.
+ * Default (:root) is Paper, light.
  */
 :root,
-[data-theme="paper"] {
-  --sd-bg: #0f1620;
-  --sd-surface: #141d2a;
-  --sd-raised: #1d2838;
-  --sd-border: #2a3a4d;
-  --sd-text: #d5dce8;
-  --sd-muted: #8a97ab;
-  --sd-accent: #6ea8ff;
-  --sd-accent-2: #a5b4fc;
-  --sd-correct: #4ade80;
-  --sd-error: #fb7185;
-  --sd-warn: #fbbf24;
-  --sd-caret: #6ea8ff;
-  --sd-glow: rgba(110, 168, 255, 0.16);
-  color-scheme: dark;
-}
-
 [data-theme="paper-light"] {
   --sd-bg: #f2f4f8;
   --sd-surface: #fafbfd;
@@ -55,6 +38,23 @@
   --sd-caret: #2563c9;
   --sd-glow: rgba(37, 99, 201, 0.14);
   color-scheme: light;
+}
+
+[data-theme="paper"] {
+  --sd-bg: #0f1620;
+  --sd-surface: #141d2a;
+  --sd-raised: #1d2838;
+  --sd-border: #2a3a4d;
+  --sd-text: #d5dce8;
+  --sd-muted: #8a97ab;
+  --sd-accent: #6ea8ff;
+  --sd-accent-2: #a5b4fc;
+  --sd-correct: #4ade80;
+  --sd-error: #fb7185;
+  --sd-warn: #fbbf24;
+  --sd-caret: #6ea8ff;
+  --sd-glow: rgba(110, 168, 255, 0.16);
+  color-scheme: dark;
 }
 
 [data-theme="night"] {
