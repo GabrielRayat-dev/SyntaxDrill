@@ -47,6 +47,8 @@ headlines, which is semantically motivated in a code field guide.
 Six token sets, same structure as today (`paper`, `night`, `pencil` x
 `light`/`dark`), retuned to the identity. Default stays `paper-light`.
 
+> Note: implementation values supersede the tables below; final hexes live in `globals.css` (see plan `2026-08-02-field-guide-identity.md`).
+
 ### Paper: "Aged stock, ink, vermilion" (the star, default)
 
 **Light**

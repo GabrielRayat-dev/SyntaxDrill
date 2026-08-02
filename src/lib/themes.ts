@@ -58,7 +58,6 @@ const LEGACY_THEMES: Record<string, ThemeId> = {
   "sunset-light": "paper-light",
 };
 
-export const DEFAULT_COLORWAY: ColorwayId = "paper";
 export const DEFAULT_THEME: ThemeId = "paper-light";
 
 export function themeId(

@@ -20,7 +20,7 @@
 
 /*
  * Theme presets — each one swaps these tokens. All UI reads the tokens,
- * never a raw color, so the three themes are real, full-product variants.
+ * never a raw color, so the six theme variants are real, full-product themes.
  * Default (:root) is Paper, light.
  */
 :root,
