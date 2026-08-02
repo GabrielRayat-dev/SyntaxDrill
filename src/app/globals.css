@@ -13,7 +13,8 @@
   --color-bad: var(--sd-error);
   --color-warn: var(--sd-warn);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif-4), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-eb-garamond), var(--font-source-serif-4), Georgia, serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "Cascadia Code", Menlo, monospace;
 }
 
@@ -128,7 +129,7 @@
 body {
   background: var(--sd-bg);
   color: var(--sd-text);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-source-serif-4), Georgia, "Times New Roman", serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -285,6 +286,17 @@ body {
 
 .sd-rise {
   animation: sd-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Paper-grain overlay, fixed above page content but below nav and menus */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
 @media (prefers-reduced-motion: reduce) {
