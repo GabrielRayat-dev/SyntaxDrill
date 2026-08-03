@@ -22,6 +22,7 @@ import {
   DIFFICULTIES,
   DIFFICULTY_TEXT,
   LANGUAGES,
+  PRACTICE_LANGUAGES,
 } from "@/lib/concepts";
 import { snippetsFor } from "../../../../content/snippets";
 import { newId } from "@/lib/storage/local";
@@ -338,7 +339,9 @@ export default function PracticeScreen({
                       Retry
                     </button>
                   )}
-                  {snippet.concepts[0] !== "database" && (
+                  {snippet.concepts[0] !== "database" &&
+                    snippet.language !== "php" &&
+                    snippet.language !== "c" && (
                     <button
                       onClick={runCode}
                       disabled={running}
@@ -465,7 +468,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
           Language
         </p>
         <div className="flex gap-2">
-          {(["javascript", "python"] as const).map((lang) => (
+          {PRACTICE_LANGUAGES.map((lang) => (
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
