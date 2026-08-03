@@ -562,7 +562,7 @@ Expected: `48` and `48`.
 - [ ] **Step 3: Snippet integrity sweep**
 
 Run: `rg -h 'id: "(js|py|php|c|sql)-' content/snippets | Measure-Object -Line | Select-Object -ExpandProperty Lines`
-Expected: `192` (48 x 3 + 48) — 144 fundamentals + 48 database/SQL.
+Expected: `196` (48 x 4 + 4) — 192 fundamentals (js/py/php/c) + 4 database/SQL.
 
 Run: `rg -c 'int main' content/snippets/c.ts`
 Expected: `48` (every C snippet contains `int main`).
