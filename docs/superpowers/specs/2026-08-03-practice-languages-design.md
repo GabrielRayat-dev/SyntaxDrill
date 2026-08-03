@@ -24,13 +24,14 @@
 ## Scope
 
 - New: `content/snippets/php.ts`, `content/snippets/c.ts`.
-- Modified: `src/types/index.ts`, `src/lib/concepts.ts`, `src/lib/config.ts`
-  (nothing to change — confirmed), `src/components/CodeBlock.tsx`,
+- Modified: `src/types/index.ts`, `src/lib/concepts.ts`,
+  `src/components/CodeBlock.tsx`,
   `src/app/(app)/practice/PracticeScreen.tsx`,
   `src/app/(app)/app/page.tsx`, `content/snippets/index.ts`.
-- Untouched: DB/schema/API (records store `data` as JSON, no allowlist on
-  `language`), runner (`src/lib/runner.ts`), landing page, speed test,
-  settings, progress screens (all consume records generically).
+- Untouched: `src/lib/config.ts` (already accepts any non-`sql` language once
+  `isLanguage` passes), DB/schema/API (records store `data` as JSON, no
+  allowlist on `language`), runner (`src/lib/runner.ts`), landing page, speed
+  test, settings, progress screens (all consume records generically).
 
 ## 1. Types and Meta
 
