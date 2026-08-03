@@ -467,7 +467,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
         <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
           Language
         </p>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {PRACTICE_LANGUAGES.map((lang) => (
             <button
               key={lang}

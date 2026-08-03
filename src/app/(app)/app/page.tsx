@@ -33,7 +33,7 @@ export default function HomePage() {
               errors.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {PRACTICE_LANGUAGES.map((lang) => (
               <button
                 key={lang}
