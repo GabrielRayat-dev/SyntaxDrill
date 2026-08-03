@@ -53,7 +53,13 @@ export function isDifficulty(value: unknown): value is Difficulty {
 }
 
 export function isLanguage(value: unknown): value is SnippetLanguage {
-  return value === "javascript" || value === "python" || value === "sql";
+  return (
+    value === "javascript" ||
+    value === "python" ||
+    value === "sql" ||
+    value === "php" ||
+    value === "c"
+  );
 }
 
 export function getConcept(id: string): Concept | undefined {
@@ -82,7 +88,19 @@ export const LANGUAGES: Record<SnippetLanguage, LanguageMeta> = {
     short: "SQL",
     prism: "sql",
   },
+  php: {
+    name: "PHP",
+    short: "PHP",
+    prism: "php",
+  },
+  c: {
+    name: "C",
+    short: "C",
+    prism: "c",
+  },
 };
+
+export const PRACTICE_LANGUAGES = ["javascript", "python", "php", "c"] as const;
 
 export const DIFFICULTIES = [
   { id: "beginner", name: "Beginner", tone: "good" },

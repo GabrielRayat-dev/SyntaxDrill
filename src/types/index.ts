@@ -1,4 +1,4 @@
-export type SnippetLanguage = "javascript" | "python" | "sql";
+export type SnippetLanguage = "javascript" | "python" | "sql" | "php" | "c";
 
 export type Difficulty = "beginner" | "intermediate" | "advanced";
 

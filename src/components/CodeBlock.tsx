@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-sql";
+import "prismjs/components/prism-php";
+import "prismjs/components/prism-c";
 import type { SnippetLanguage } from "@/types";
 
 interface CodeBlockProps {
@@ -16,6 +18,8 @@ const GRAMMARS: Record<SnippetLanguage, Prism.Grammar> = {
   javascript: Prism.languages.javascript,
   python: Prism.languages.python,
   sql: Prism.languages.sql,
+  php: Prism.languages.php,
+  c: Prism.languages.c,
 };
 
 export default function CodeBlock({ code, language, className = "" }: CodeBlockProps) {
