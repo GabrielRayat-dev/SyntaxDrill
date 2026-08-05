@@ -32,10 +32,12 @@ function label(record: StatRecord): string {
 export default function HistoryList({ records }: { records: StatRecord[] }) {
   if (records.length === 0) {
     return (
-      <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
-        <h2 className="mb-3 font-semibold text-ink">History</h2>
+      <section>
+        <h2 className="mb-4 text-xl font-medium tracking-[-0.035em] text-ink">
+          History
+        </h2>
         <p className="text-sm text-muted">No sessions yet.</p>
-      </div>
+      </section>
     );
   }
 
@@ -49,24 +51,28 @@ export default function HistoryList({ records }: { records: StatRecord[] }) {
   }
 
   return (
-    <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
-      <h2 className="mb-3 font-semibold text-ink">History</h2>
-      <div className="flex flex-col gap-4">
+    <section>
+      <h2 className="mb-4 text-xl font-medium tracking-[-0.035em] text-ink">
+        History
+      </h2>
+      <div className="flex flex-col gap-5">
         {[...grouped.entries()].map(([day, rows]) => (
           <div key={day}>
-            <div className="mb-1.5 text-xs font-semibold uppercase tracking-widest text-muted">
+            <div className="mb-1 font-mono text-[11px] font-semibold uppercase tracking-widest text-muted">
               {formatDay(day)}
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="divide-y divide-edge/80">
               {rows.map((r) => (
                 <div
                   key={r.id}
-                  className="flex items-center justify-between gap-3 rounded-lg bg-raised/60 px-3 py-2"
+                  className="flex items-center justify-between gap-3 py-2.5"
                 >
-                  <div className="flex min-w-0 items-center gap-2">
+                  <div className="flex min-w-0 items-center gap-3">
                     <span
-                      className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                        r.kind === "code" ? "bg-accent/15 text-accent" : "bg-good/15 text-good"
+                      className={`rounded-[2px] px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider ${
+                        r.kind === "code"
+                          ? "bg-accent/15 text-accent"
+                          : "bg-good/15 text-good"
                       }`}
                     >
                       {r.kind}
@@ -84,6 +90,6 @@ export default function HistoryList({ records }: { records: StatRecord[] }) {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
