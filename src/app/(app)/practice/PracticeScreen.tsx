@@ -208,14 +208,14 @@ export default function PracticeScreen({
                   ← Tracks
                 </Link>
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium text-ink">
+                  <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium text-ink">
                     {LANGUAGES[snippet.language].short}
                   </span>
-                  <span className="rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium text-ink">
+                  <span className="rounded-md border border-edge bg-surface px-2 py-1 font-medium text-ink">
                     {CONCEPTS.find((c) => c.id === snippet.concepts[0])?.name}
                   </span>
                   <span
-                    className={`rounded-[2px] border border-edge bg-surface px-2 py-1 font-medium ${
+                    className={`rounded-md border border-edge bg-surface px-2 py-1 font-medium ${
                       DIFFICULTY_TEXT[snippet.difficulty] ?? "text-accent"
                     }`}
                   >
@@ -244,7 +244,7 @@ export default function PracticeScreen({
                 {session.map((_, i) => (
                   <div
                     key={i}
-                    className={`h-1 flex-1 rounded-[2px] ${
+                    className={`h-1 flex-1 rounded-md ${
                       i < index
                         ? "bg-accent"
                         : i === index
@@ -266,7 +266,7 @@ export default function PracticeScreen({
                 <CodeBlock code={snippet.code} language={snippet.language} />
                 <button
                   onClick={beginTyping}
-                  className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+                  className="signal-cta w-full"
                 >
                   Start typing
                 </button>
@@ -309,7 +309,7 @@ export default function PracticeScreen({
 
             {phase === "result" && editor && (
               <div className="sd-rise space-y-3">
-                <div className="rounded-lg border border-edge/70 bg-surface p-5">
+                <div className="border-t border-edge/80 pt-5">
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className="text-sm font-semibold text-ink">
                       {results[results.length - 1]?.mastered
@@ -334,7 +334,7 @@ export default function PracticeScreen({
                   {results[results.length - 1]?.mastered !== true && (
                     <button
                       onClick={retry}
-                      className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised"
+                      className="flex-1 rounded-md border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised"
                     >
                       Retry
                     </button>
@@ -345,14 +345,14 @@ export default function PracticeScreen({
                     <button
                       onClick={runCode}
                       disabled={running}
-                      className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
+                      className="flex-1 rounded-md border border-edge bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-raised disabled:opacity-60"
                     >
                       {running ? "Running…" : "Run it"}
                     </button>
                   )}
                   <button
                     onClick={next}
-                    className="flex-1 rounded-[2px] bg-accent px-4 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+                    className="signal-cta flex-1"
                   >
                     {index + 1 >= session.length
                       ? "Finish session →"
@@ -385,7 +385,7 @@ export default function PracticeScreen({
                 ) : (
                   <>
                     {running && snippet.language === "python" && (
-                      <div className="rounded-lg border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
+                      <div className="text-xs text-muted">
                         Loading the Python interpreter… first run may take a
                         moment.
                       </div>
@@ -464,7 +464,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
       </div>
 
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
           Language
         </p>
         <div className="flex flex-wrap gap-2">
@@ -472,7 +472,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={lang}
               onClick={() => setLanguage(lang)}
-              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                 language === lang
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -485,7 +485,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
       </div>
 
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
           Concept
         </p>
         <div className="grid gap-2 sm:grid-cols-2">
@@ -493,7 +493,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={c.id}
               onClick={() => setConcept(c.id)}
-              className={`rounded-[2px] border p-3 text-left transition-colors ${
+              className={`rounded-md border p-3 text-left transition-colors ${
                 concept === c.id
                   ? "border-accent bg-raised"
                   : "border-edge bg-surface hover:border-muted"
@@ -507,7 +507,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
       </div>
 
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
           Difficulty
         </p>
         <div className="flex flex-wrap gap-2">
@@ -515,7 +515,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
             <button
               key={d.id}
               onClick={() => setDifficulty(d.id)}
-              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                 difficulty === d.id
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -527,16 +527,16 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
         </div>
       </div>
 
-      <div className="rounded-lg border border-edge/70 bg-surface px-4 py-3 text-xs text-muted">
+      <p className="text-xs text-muted">
         {canStart
           ? `${poolCount} snippet${poolCount === 1 ? "" : "s"} available · session of ${SESSION_SIZE}`
           : "No snippets for this combination yet."}
-      </div>
+      </p>
 
       <button
         onClick={() => onPick({ language, concept, difficulty })}
         disabled={!canStart}
-        className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className="signal-cta w-full disabled:cursor-not-allowed disabled:opacity-40"
       >
         Start session
       </button>
@@ -583,7 +583,7 @@ function Summary({
         <StatChip label="Errors" value={String(errors)} />
       </div>
 
-      <div className="rounded-lg border border-edge/70 bg-surface p-4 text-xs text-muted">
+      <div className="border-t border-edge/80 pt-4 text-xs text-muted">
         <span className="font-medium text-ink">{LANGUAGES[config.language].name}</span> ·{" "}
         {CONCEPTS.find((c) => c.id === config.concept)?.name} · {config.difficulty}
         <p className="mt-1">
@@ -594,13 +594,13 @@ function Summary({
       <div className="flex flex-col gap-2 sm:flex-row">
         <button
           onClick={onAgain}
-          className="flex-1 rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+          className="signal-cta flex-1"
         >
           Practice again
         </button>
         <Link
           href="/app"
-          className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-3 text-center text-sm font-medium text-ink transition-colors hover:bg-raised"
+          className="flex-1 rounded-md border border-edge bg-surface px-4 py-3 text-center text-sm font-medium text-ink transition-colors hover:bg-raised"
         >
           Back to tracks
         </Link>
