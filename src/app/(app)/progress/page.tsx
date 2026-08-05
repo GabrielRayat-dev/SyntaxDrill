@@ -34,16 +34,26 @@ export default async function ProgressPage() {
         ← Tracks
       </Link>
       <p className="signal-kicker mb-3">Your history</p>
-      <h1 className="mb-8 text-4xl font-medium tracking-[-0.05em] text-ink">
+      <h1 className="mb-4 text-4xl font-medium tracking-[-0.05em] text-ink">
         Progress
       </h1>
-      <div className="mb-6 grid gap-3 sm:grid-cols-2">
-        <StreakCard records={list} />
-        <SpeedBests records={list} />
+      <div className="flex flex-col">
+        <div className="border-t border-edge/80 py-8">
+          <StreakCard records={list} />
+        </div>
+        <div className="border-t border-edge/80 py-8">
+          <SpeedBests records={list} />
+        </div>
+        <div className="border-t border-edge/80 py-8">
+          <TrendChart records={list} />
+        </div>
+        <div className="border-t border-edge/80 py-8">
+          <ConceptBars records={list} />
+        </div>
+        <div className="border-t border-edge/80 py-8">
+          <HistoryList records={list} />
+        </div>
       </div>
-      <TrendChart records={list} />
-      <ConceptBars records={list} />
-      <HistoryList records={list} />
     </div>
   );
 }
