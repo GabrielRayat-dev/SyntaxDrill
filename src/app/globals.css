@@ -472,3 +472,37 @@ body:has(.signal-app) .paper-grain { display: none; }
     animation: none;
   }
 }
+
+/* Nav sign-in: mono eyebrow link with a live underline */
+.signal-nav-signin {
+  align-items: center;
+  color: var(--sd-muted);
+  display: inline-flex;
+  font-family: var(--font-jetbrains-mono), ui-monospace, Menlo, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  gap: 0.3rem;
+  letter-spacing: 0.16em;
+  padding-bottom: 2px;
+  position: relative;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+.signal-nav-signin::after {
+  background: var(--sd-accent);
+  bottom: -2px;
+  content: "";
+  height: 1.5px;
+  left: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(.2, .9, .2, 1);
+  width: 100%;
+}
+.signal-nav-signin:hover { color: var(--sd-text); }
+.signal-nav-signin:hover::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .signal-nav-signin::after { transition: none; }
+  .signal-nav-signin .lucide-arrow-right { display: none; }
+}

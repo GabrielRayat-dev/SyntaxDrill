@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { ArrowRight } from "lucide-react";
 
 export default function AccountButton() {
   const { data: session, status } = useSession();
@@ -14,11 +15,12 @@ export default function AccountButton() {
 
   if (!session?.user) {
     return (
-      <Link
-        href="/signin"
-        className="rounded-md border border-edge bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
-      >
+      <Link href="/signin" className="signal-nav-signin group">
         Sign in
+        <ArrowRight
+          className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+          aria-hidden
+        />
       </Link>
     );
   }
