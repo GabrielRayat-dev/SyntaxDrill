@@ -25,7 +25,7 @@ export default function LandingStats() {
           key={item.label}
           className="flex flex-col items-center gap-1 px-4 text-center sm:items-start sm:text-left"
         >
-          <span className="font-display text-3xl font-medium tabular-nums text-ink">
+          <span className="font-sans text-3xl font-medium tabular-nums tracking-[-0.03em] text-ink">
             {item.value}
           </span>
           <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">

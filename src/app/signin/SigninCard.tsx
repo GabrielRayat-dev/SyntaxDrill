@@ -113,6 +113,8 @@ export default function SigninCard() {
             className="signal-auth-submit mt-1 w-full disabled:opacity-60"
           >
             {pending ? "Creating account…" : "Create account"}
+            <span className="signal-auth-submit-index" aria-hidden>02</span>
+            <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden />
           </button>
         </form>
       )}

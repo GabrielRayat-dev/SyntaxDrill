@@ -5,6 +5,7 @@ import {
   CircleCheck,
   Gauge,
   Sparkles,
+  type LucideIcon,
 } from "lucide-react";
 import { CONCEPTS } from "@/lib/concepts";
 import HeroDemo from "@/components/landing/HeroDemo";
@@ -18,17 +19,38 @@ const NAV_LINKS = [
 ];
 
 const TRACK_LANGUAGES: Record<string, string> = {
-  variables: "JavaScript + Python",
-  conditionals: "JavaScript + Python",
-  loops: "JavaScript + Python",
-  functions: "JavaScript + Python",
-  database: "JavaScript + Python + SQL",
+  variables: "JavaScript + Python + PHP + C",
+  conditionals: "JavaScript + Python + PHP + C",
+  loops: "JavaScript + Python + PHP + C",
+  functions: "JavaScript + Python + PHP + C",
+  database: "JavaScript + Python + PHP + C + SQL",
 };
 
 const ROADMAP = [
   ["In progress", "Go and Rust tracks", "Two more languages for deliberate practice."],
-  ["Next up", "Difficulty tiers", "A clearer path from first patterns to fluency."],
-  ["On deck", "Recall drills", "Practice syntax away from the keyboard, too."],
+  ["Next up", "Recall drills", "Practice syntax away from the keyboard, too."],
+  ["On deck", "Difficulty tiers", "A clearer path from first patterns to fluency."],
+];
+
+const STEPS: { number: string; title: string; copy: string; icon: LucideIcon }[] = [
+  {
+    number: "01",
+    title: "See the pattern",
+    copy: "Start with a short explanation, so you know what the syntax is doing before your hands touch the keys.",
+    icon: Braces,
+  },
+  {
+    number: "02",
+    title: "Recall it",
+    copy: "Type the pattern from memory. The gap between seeing and writing is where recognition becomes knowledge.",
+    icon: Sparkles,
+  },
+  {
+    number: "03",
+    title: "Earn the clean run",
+    copy: "Character-level feedback gives you a precise read on accuracy, pace, and the next pattern to master.",
+    icon: CircleCheck,
+  },
 ];
 
 export default function LandingPage() {
@@ -54,9 +76,11 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-3">
             <AccountButton />
-            <Link href="/app" className="signal-cta hidden sm:inline-flex">
-              Start drilling <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
+            <span className="hidden sm:block">
+              <Link href="/app" className="signal-cta">
+                Start drilling <ArrowRight className="h-4 w-4" aria-hidden />
+              </Link>
+            </span>
           </div>
         </div>
       </header>
@@ -114,21 +138,16 @@ export default function LandingPage() {
               </h2>
             </div>
             <div className="space-y-0 border-t border-edge/70">
-              {[
-                ["01", "See the pattern", "Start with a short explanation, so you know what the syntax is doing before your hands touch the keys.", Braces],
-                ["02", "Recall it", "Type the pattern from memory. The gap between seeing and writing is where recognition becomes knowledge.", Sparkles],
-                ["03", "Earn the clean run", "Character-level feedback gives you a precise read on accuracy, pace, and the next pattern to master.", CircleCheck],
-              ].map(([number, title, copy, Icon]) => {
-                const StepIcon = Icon as typeof Braces;
-                return <article key={number as string} className="signal-step">
-                  <span className="signal-step-number">{number as string}</span>
-                  <StepIcon className="mt-1 h-5 w-5 text-accent" strokeWidth={1.5} aria-hidden />
+              {STEPS.map((step) => (
+                <article key={step.number} className="signal-step">
+                  <span className="signal-step-number">{step.number}</span>
+                  <step.icon className="mt-1 h-5 w-5 text-accent" strokeWidth={1.5} aria-hidden />
                   <div>
-                    <h3 className="text-2xl font-medium tracking-[-0.04em] text-ink">{title as string}</h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">{copy as string}</p>
+                    <h3 className="text-2xl font-medium tracking-[-0.04em] text-ink">{step.title}</h3>
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">{step.copy}</p>
                   </div>
-                </article>;
-              })}
+                </article>
+              ))}
             </div>
           </div>
         </section>
