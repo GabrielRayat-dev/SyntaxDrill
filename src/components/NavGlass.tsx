@@ -1,6 +1,7 @@
 "use client";
 
 import { useScrolled } from "@/lib/useScrolled";
+import BlueprintCorners from "@/components/BlueprintCorners";
 
 export default function NavGlass({
   className,
@@ -12,6 +13,7 @@ export default function NavGlass({
   const scrolled = useScrolled();
   return (
     <header className={className} data-scrolled={scrolled}>
+      <BlueprintCorners />
       {children}
     </header>
   );

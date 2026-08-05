@@ -64,7 +64,7 @@ export default function LandingPage() {
         Skip to content
       </a>
       <NavGlass className="signal-nav sticky top-0 z-40">
-        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
+        <div className="signal-nav-inner mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
           <Link href="/" className="signal-wordmark" aria-label="SyntaxDrill home">
             syntax<span>drill</span>
           </Link>

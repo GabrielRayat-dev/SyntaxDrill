@@ -266,16 +266,16 @@ body:has(.signal-page) .paper-grain { display: none; }
   border-bottom-color: color-mix(in srgb, var(--sd-accent) 42%, var(--sd-border));
   box-shadow: 0 10px 38px rgb(0 0 0 / .22);
 }
-.signal-nav > div { transition: transform 220ms ease; }
-.signal-nav[data-scrolled="true"] > div { transform: scale(.98); }
+.signal-nav > .signal-nav-inner { transition: transform 220ms ease; }
+.signal-nav[data-scrolled="true"] > .signal-nav-inner { transform: scale(.98); }
 .signal-app-nav[data-scrolled="true"] {
   background: color-mix(in srgb, var(--sd-bg) 90%, transparent);
   border-bottom-color: color-mix(in srgb, var(--sd-accent) 38%, var(--sd-border));
   box-shadow: 0 10px 38px rgb(0 0 0 / .22);
 }
 @media (prefers-reduced-motion: reduce) {
-  .signal-nav, .signal-app-nav, .signal-nav > div { transition: none; }
-  .signal-nav[data-scrolled="true"] > div { transform: none; }
+  .signal-nav, .signal-app-nav, .signal-nav > .signal-nav-inner { transition: none; }
+  .signal-nav[data-scrolled="true"] > .signal-nav-inner { transform: none; }
 }
 /* Blueprint scroll decoration: dashed grid edges + corner crosshairs */
 .signal-blueprint {
