@@ -20,45 +20,11 @@
 
 /*
  * Theme presets — each one swaps these tokens. All UI reads the tokens,
- * never a raw color, so the six theme variants are real, full-product themes.
- * Default (:root) is Paper, light.
+ * never a raw color, so the four themes are real, full-product themes.
+ * Default (:root) is Signal, dark.
  */
 :root,
-[data-theme="paper-light"] {
-  --sd-bg: #f1ecdf;
-  --sd-surface: #f8f4e9;
-  --sd-raised: #e7e0cd;
-  --sd-border: #d9d0ba;
-  --sd-text: #23201a;
-  --sd-muted: #6f6757;
-  --sd-accent: #b3401f;
-  --sd-accent-2: #8a4a2e;
-  --sd-correct: #49783f;
-  --sd-error: #a6352f;
-  --sd-warn: #9a6b1f;
-  --sd-caret: #b3401f;
-  --sd-glow: rgba(179, 64, 31, 0.14);
-  color-scheme: light;
-}
-
-[data-theme="paper"] {
-  --sd-bg: #1c1712;
-  --sd-surface: #241e16;
-  --sd-raised: #2e261b;
-  --sd-border: #3d3222;
-  --sd-text: #ede5d2;
-  --sd-muted: #a2967d;
-  --sd-accent: #e0662e;
-  --sd-accent-2: #d19a5b;
-  --sd-correct: #7fb069;
-  --sd-error: #e06c5a;
-  --sd-warn: #d9a441;
-  --sd-caret: #e0662e;
-  --sd-glow: rgba(224, 102, 46, 0.18);
-  color-scheme: dark;
-}
-
-[data-theme="night"] {
+[data-theme="signal"] {
   --sd-bg: #090b10;
   --sd-surface: #10141d;
   --sd-raised: #171c27;
@@ -75,54 +41,54 @@
   color-scheme: dark;
 }
 
-[data-theme="night-light"] {
-  --sd-bg: #e9ecf2;
-  --sd-surface: #f5f6f9;
-  --sd-raised: #dde2ea;
-  --sd-border: #c8cfda;
-  --sd-text: #1d2531;
-  --sd-muted: #5d6a7c;
-  --sd-accent: #3a63c8;
-  --sd-accent-2: #6658d6;
-  --sd-correct: #2e8a67;
-  --sd-error: #c94a5e;
-  --sd-warn: #a47422;
-  --sd-caret: #3a63c8;
-  --sd-glow: rgba(58, 99, 200, 0.14);
+[data-theme="signal-light"] {
+  --sd-bg: #f4f6fa;
+  --sd-surface: #ffffff;
+  --sd-raised: #eef1f6;
+  --sd-border: #d7dce6;
+  --sd-text: #141821;
+  --sd-muted: #5b6573;
+  --sd-accent: #4658d0;
+  --sd-accent-2: #4658d0;
+  --sd-correct: #1f7a4f;
+  --sd-error: #c03a48;
+  --sd-warn: #a06c16;
+  --sd-caret: #4658d0;
+  --sd-glow: rgba(70, 88, 208, 0.16);
   color-scheme: light;
 }
 
-[data-theme="pencil"] {
-  --sd-bg: #10151a;
-  --sd-surface: #161c22;
-  --sd-raised: #1f262d;
-  --sd-border: #2c353e;
-  --sd-text: #d9dfe4;
-  --sd-muted: #87929c;
-  --sd-accent: #4f9aa8;
-  --sd-accent-2: #7fc2cf;
-  --sd-correct: #52b589;
-  --sd-error: #e4707c;
-  --sd-warn: #c9a04e;
-  --sd-caret: #4f9aa8;
-  --sd-glow: rgba(79, 154, 168, 0.16);
+[data-theme="graphite"] {
+  --sd-bg: #0a0c0f;
+  --sd-surface: #101318;
+  --sd-raised: #171a20;
+  --sd-border: #262a31;
+  --sd-text: #eef0f3;
+  --sd-muted: #9aa0aa;
+  --sd-accent: #8fa6ff;
+  --sd-accent-2: #8fa6ff;
+  --sd-correct: #8fd7b1;
+  --sd-error: #f28d97;
+  --sd-warn: #e7bf78;
+  --sd-caret: #8fa6ff;
+  --sd-glow: rgba(143, 166, 255, 0.18);
   color-scheme: dark;
 }
 
-[data-theme="pencil-light"] {
-  --sd-bg: #eaedef;
-  --sd-surface: #f6f7f8;
-  --sd-raised: #dde1e5;
-  --sd-border: #c9d0d5;
-  --sd-text: #232a31;
-  --sd-muted: #5b656f;
-  --sd-accent: #3b7f8c;
-  --sd-accent-2: #4f8da0;
-  --sd-correct: #2f8a63;
-  --sd-error: #c24753;
-  --sd-warn: #97702b;
-  --sd-caret: #3b7f8c;
-  --sd-glow: rgba(59, 127, 140, 0.14);
+[data-theme="graphite-light"] {
+  --sd-bg: #f2f3f5;
+  --sd-surface: #ffffff;
+  --sd-raised: #eceef1;
+  --sd-border: #d4d7dc;
+  --sd-text: #16181c;
+  --sd-muted: #5c616a;
+  --sd-accent: #4658d0;
+  --sd-accent-2: #4658d0;
+  --sd-correct: #1f7a4f;
+  --sd-error: #c03a48;
+  --sd-warn: #a06c16;
+  --sd-caret: #4658d0;
+  --sd-glow: rgba(70, 88, 208, 0.16);
   color-scheme: light;
 }
 
@@ -149,7 +115,7 @@ body:has(.signal-page) .paper-grain { display: none; }
 .signal-cta { background: transparent; border: 1px solid var(--sd-accent); clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 13px 100%, 0 calc(100% - 13px)); color: var(--sd-text); isolation: isolate; overflow: hidden; }
 .signal-cta::before { background: var(--sd-accent); content: ""; inset: 0; position: absolute; transform: translateX(-104%) skewX(-20deg); transform-origin: left; transition: transform 330ms cubic-bezier(.2,.9,.2,1); z-index: -1; }
 .signal-cta::after { background: var(--sd-accent); content: ""; height: 4px; position: absolute; right: 0; top: 0; width: 4px; }
-.signal-cta:hover { color: #10131d; }
+.signal-cta:hover { color: var(--sd-bg); }
 .signal-cta:hover::before { transform: translateX(-1%) skewX(-20deg); }
 .signal-secondary-cta { border-bottom: 1px solid var(--sd-muted); color: var(--sd-text); padding-left: .1rem; padding-right: .1rem; }
 .signal-secondary-cta::after { background: var(--sd-accent); bottom: -1px; content: ""; height: 1px; left: 0; position: absolute; transform: scaleX(0); transform-origin: left; transition: transform 240ms ease; width: 100%; }
@@ -210,7 +176,7 @@ body:has(.signal-app) .paper-grain { display: none; }
 .signal-app-metrics { background: color-mix(in srgb, var(--sd-surface) 50%, transparent); border: 1px solid color-mix(in srgb, var(--sd-border) 70%, transparent); border-radius: 10px; }
 .signal-app-track { border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 78%, transparent); transition: background 180ms ease, padding 180ms ease; }
 .signal-app-track:hover { background: color-mix(in srgb, var(--sd-surface) 70%, transparent); padding-left: .75rem; padding-right: .75rem; }
-.signal-app-callout { background: radial-gradient(circle at 85% 0%, rgb(122 162 224 / .16), transparent 38%), var(--sd-surface); border-left: 1px solid var(--sd-accent); border-radius: 10px; }
+.signal-app-callout { background: radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--sd-accent) 16%, transparent), transparent 38%), var(--sd-surface); border-left: 1px solid var(--sd-accent); border-radius: 10px; }
 .signal-app button, .signal-app a { -webkit-tap-highlight-color: transparent; }
 .signal-app button:active, .signal-app a:active { transform: translateY(1px) scale(.99); }
 
@@ -219,8 +185,10 @@ body:has(.signal-app) .paper-grain { display: none; }
 .signal-auth-card { background: color-mix(in srgb, var(--sd-surface) 90%, transparent); border: 1px solid color-mix(in srgb, var(--sd-border) 80%, transparent); border-left-color: var(--sd-accent); border-radius: 10px; box-shadow: 26px 28px 70px rgb(0 0 0 / .24); }
 .signal-auth-tab { border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 180ms ease, border-color 180ms ease; }
 .signal-auth-tab-active { border-bottom-color: var(--sd-accent); }
+.signal-input,
 .signal-auth-input { background: var(--sd-raised); border: 1px solid var(--sd-border); border-radius: 6px; transition: border-color 180ms ease, background 180ms ease; }
-.signal-auth-input:focus { background: color-mix(in srgb, var(--sd-raised) 72%, var(--sd-surface)); border-color: var(--sd-accent); box-shadow: 0 0 0 3px rgb(143 166 255 / .12); }
+.signal-input:focus,
+.signal-auth-input:focus { background: color-mix(in srgb, var(--sd-raised) 72%, var(--sd-surface)); border-color: var(--sd-accent); box-shadow: 0 0 0 3px var(--sd-glow); }
 .signal-auth-github { align-items: center; background: linear-gradient(100deg, color-mix(in srgb, var(--sd-raised) 82%, transparent), transparent); border: 1px solid var(--sd-border); border-radius: 8px; display: grid; gap: .85rem; grid-template-columns: 2.55rem minmax(0, 1fr) auto; padding: .65rem .8rem; position: relative; text-align: left; transition: border-color 180ms ease, background 180ms ease, transform 180ms ease; }
 .signal-auth-github::before { background: var(--sd-accent); bottom: -1px; content: ""; height: 2px; left: 0; position: absolute; transform: scaleX(.12); transform-origin: left; transition: transform 260ms cubic-bezier(.2,.9,.2,1); width: 100%; }
 .signal-auth-github-mark { align-items: center; background: var(--sd-bg); border: 1px solid var(--sd-border); border-radius: 5px; color: var(--sd-accent); display: inline-flex; font-family: var(--font-jetbrains-mono), monospace; font-size: .7rem; font-weight: 700; height: 2.55rem; justify-content: center; letter-spacing: -.08em; }
@@ -229,8 +197,8 @@ body:has(.signal-app) .paper-grain { display: none; }
 .signal-auth-github:hover { background: var(--sd-raised); border-color: var(--sd-accent); }
 .signal-auth-github:hover::before { transform: scaleX(1); }
 .signal-auth-github:active { transform: translateY(1px) scale(.99); }
-.signal-auth-submit { align-items: center; background: var(--sd-accent); border: 0; clip-path: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 17px 100%, 0 calc(100% - 17px)); color: #10131d; display: grid; font-size: .86rem; font-weight: 700; grid-template-columns: minmax(0, 1fr) auto auto; min-height: 3.2rem; padding: .75rem 1rem .75rem 1.2rem; text-align: left; transition: background 180ms ease, transform 180ms ease; }
-.signal-auth-submit-index { border-left: 1px solid rgb(16 19 29 / .25); font-family: var(--font-jetbrains-mono), monospace; font-size: .65rem; font-weight: 600; margin-left: .9rem; margin-right: .8rem; padding-left: .8rem; }
+.signal-auth-submit { align-items: center; background: var(--sd-accent); border: 0; clip-path: polygon(0 0, calc(100% - 17px) 0, 100% 17px, 100% 100%, 17px 100%, 0 calc(100% - 17px)); color: var(--sd-bg); display: grid; font-size: .86rem; font-weight: 700; grid-template-columns: minmax(0, 1fr) auto auto; min-height: 3.2rem; padding: .75rem 1rem .75rem 1.2rem; text-align: left; transition: background 180ms ease, transform 180ms ease; }
+.signal-auth-submit-index { border-left: 1px solid color-mix(in srgb, var(--sd-bg) 25%, transparent); font-family: var(--font-jetbrains-mono), monospace; font-size: .65rem; font-weight: 600; margin-left: .9rem; margin-right: .8rem; padding-left: .8rem; }
 .signal-auth-submit:hover { background: #b2c1ff; }
 .signal-auth-submit:active { transform: translateY(1px) scale(.99); }
 
