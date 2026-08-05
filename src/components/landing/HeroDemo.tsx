@@ -67,8 +67,6 @@ export default function HeroDemo() {
 
   return (
     <div className="sd-rise relative rounded-lg border border-edge bg-surface shadow-[0_18px_40px_-20px_var(--sd-glow)]">
-      <span className="index-hole left-10" aria-hidden />
-      <span className="index-hole left-16" aria-hidden />
       <div className="flex items-center gap-3 border-b border-edge/70 px-4 pb-3 pt-6 sm:px-5">
         <span className="font-mono text-xs text-muted">
           DR-004 <span className="text-accent">loops</span> · JS
@@ -116,7 +114,9 @@ export default function HeroDemo() {
       <div className="flex min-h-9 items-center gap-4 border-t border-edge/70 px-4 py-2.5 sm:px-5">
         {done ? (
           <>
-            <span className="sd-stamp">Clean run</span>
+            <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-good">
+              Clean run
+            </span>
             <span className="mr-auto font-mono text-xs tabular-nums text-muted">
               {Math.round(accuracy(editor) * 100)}% accurate
             </span>

@@ -9,14 +9,14 @@ export default function AccountButton() {
   const [open, setOpen] = useState(false);
 
   if (status === "loading") {
-    return <span className="h-8 w-8 animate-pulse rounded-[2px] bg-raised" aria-hidden />;
+    return <span className="h-8 w-8 animate-pulse rounded-md bg-raised" aria-hidden />;
   }
 
   if (!session?.user) {
     return (
       <Link
         href="/signin"
-        className="rounded-[2px] border border-edge bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
+        className="rounded-md border border-edge bg-surface px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-raised"
       >
         Sign in
       </Link>
@@ -33,11 +33,11 @@ export default function AccountButton() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-[2px] bg-accent/15 text-sm font-semibold text-accent ring-1 ring-inset ring-edge"
+        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md bg-accent/15 text-sm font-semibold text-accent ring-1 ring-inset ring-edge"
       >
         {user.image ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={user.image} alt="" className="h-full w-full rounded-full object-cover" />
+          <img src={user.image} alt="" className="h-full w-full rounded-md object-cover" />
         ) : (
           initial
         )}
@@ -67,7 +67,7 @@ export default function AccountButton() {
               href="/progress"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="mt-1 block rounded-[2px] px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
+              className="mt-1 block rounded-md px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
             >
               Progress
             </Link>
@@ -75,7 +75,7 @@ export default function AccountButton() {
               href="/settings"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="block rounded-[2px] px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
+              className="block rounded-md px-3 py-2 text-sm text-ink transition-colors hover:bg-raised"
             >
               Settings
             </Link>
@@ -83,7 +83,7 @@ export default function AccountButton() {
               type="button"
               role="menuitem"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="block w-full rounded-[2px] px-3 py-2 text-left text-sm text-bad transition-colors hover:bg-raised"
+              className="block w-full rounded-md px-3 py-2 text-left text-sm text-bad transition-colors hover:bg-raised"
             >
               Sign out
             </button>
