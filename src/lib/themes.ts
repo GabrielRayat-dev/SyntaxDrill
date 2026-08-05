@@ -1,6 +1,6 @@
 export type ThemeMode = "light" | "dark";
 
-export type ColorwayId = "paper" | "night" | "pencil";
+export type ColorwayId = "signal" | "graphite";
 
 export type ThemeId = ColorwayId | `${ColorwayId}-light`;
 
@@ -14,63 +14,53 @@ export interface Colorway {
 
 export const COLORWAYS: Colorway[] = [
   {
-    id: "paper",
-    name: "Paper",
-    // paper
+    id: "signal",
+    name: "Signal",
     descriptions: {
-      light: "Cream stock, ink, vermilion. The classic field guide.",
-      dark: "The reading room. Warm lamplit charcoal.",
+      dark: "Blue-black surfaces, soft cobalt.",
+      light: "Cool paper-white, cobalt ink.",
     },
     swatches: {
-      dark: ["#1c1712", "#e0662e", "#d19a5b", "#7fb069", "#e06c5a"],
-      light: ["#f1ecdf", "#b3401f", "#8a4a2e", "#49783f", "#a6352f"],
+      dark: ["#090b10", "#8fa6ff", "#8fd7b1", "#f28d97", "#f1f4f8"],
+      light: ["#f4f6fa", "#4658d0", "#1f7a4f", "#c03a48", "#141821"],
     },
   },
   {
-    id: "night",
-    name: "Night",
-    // night
+    id: "graphite",
+    name: "Graphite",
     descriptions: {
-      light: "Library slate and lamp-blue ink.",
-      dark: "Night shift. Deep blue-charcoal.",
+      dark: "Neutral graphite, one cobalt accent.",
+      light: "Cool neutral paper, graphite ink.",
     },
     swatches: {
-      dark: ["#12161f", "#7aa2e0", "#9b8cff", "#5bbf9a", "#e26d7e"],
-      light: ["#e9ecf2", "#3a63c8", "#6658d6", "#2e8a67", "#c94a5e"],
-    },
-  },
-  {
-    id: "pencil",
-    name: "Pencil",
-    // pencil
-    descriptions: {
-      light: "Graphite, cool paper, slate-teal marks.",
-      dark: "Field notebook graphite, heavy shadow.",
-    },
-    swatches: {
-      dark: ["#10151a", "#4f9aa8", "#7fc2cf", "#52b589", "#e4707c"],
-      light: ["#eaedef", "#3b7f8c", "#4f8da0", "#2f8a63", "#c24753"],
+      dark: ["#0a0c0f", "#8fa6ff", "#8fd7b1", "#f28d97", "#eef0f3"],
+      light: ["#f2f3f5", "#4658d0", "#1f7a4f", "#c03a48", "#16181c"],
     },
   },
 ];
 
 /**
  * Legacy colorway ids from the pre-Drillbook system. Dark variants map to
- * night (dark); light variants map to paper (light), preserving the user's
+ * signal (dark); light variants map to signal-light, preserving the user's
  * mode preference.
  */
 const LEGACY_THEMES: Record<string, ThemeId> = {
-  "tokyo-night": "night",
-  "rose-pine": "night",
-  dracula: "night",
-  sunset: "night",
-  "tokyo-night-light": "paper-light",
-  "rose-pine-light": "paper-light",
-  "dracula-light": "paper-light",
-  "sunset-light": "paper-light",
+  night: "signal",
+  "tokyo-night": "signal",
+  "rose-pine": "signal",
+  dracula: "signal",
+  sunset: "signal",
+  paper: "signal",
+  pencil: "signal",
+  "paper-light": "signal-light",
+  "pencil-light": "signal-light",
+  "tokyo-night-light": "signal-light",
+  "rose-pine-light": "signal-light",
+  "dracula-light": "signal-light",
+  "sunset-light": "signal-light",
 };
 
-export const DEFAULT_THEME: ThemeId = "paper-light";
+export const DEFAULT_THEME: ThemeId = "signal";
 
 export function themeId(
   colorway: ColorwayId,
