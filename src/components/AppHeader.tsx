@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AccountButton from "@/components/AccountButton";
-import ModeToggle from "@/components/theme/ModeToggle";
 
 const NAV: { id: string; label: string; href: string }[] = [
   { id: "practice", label: "Practice", href: "/app" },
@@ -23,18 +22,13 @@ export default function AppHeader() {
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-40 border-b border-edge/70 bg-page/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-4">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-baseline gap-2">
-              <span className="font-display text-lg font-semibold tracking-tight text-ink">
-                SyntaxDrill
-              </span>
-              <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted sm:inline">
-                workbook
-              </span>
+      <header className="signal-app-nav sticky top-0 z-40">
+        <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
+          <div className="flex min-w-0 items-center gap-5 sm:gap-9">
+            <Link href="/" className="signal-wordmark shrink-0" aria-label="SyntaxDrill home">
+              syntax<span>drill</span>
             </Link>
-            <nav className="flex items-center gap-5">
+            <nav className="flex min-w-0 items-center gap-4 sm:gap-6" aria-label="Application navigation">
               {NAV.map((item) => {
                 const active =
                   item.id === "practice"
@@ -45,7 +39,7 @@ export default function AppHeader() {
                     key={item.id}
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`sd-nav-link ${active ? "sd-nav-link-active" : ""}`}
+                    className={`signal-app-link ${active ? "signal-app-link-active" : ""} ${item.id === "settings" ? "hidden sm:inline" : ""}`}
                   >
                     {item.label}
                   </Link>
@@ -53,10 +47,7 @@ export default function AppHeader() {
               })}
             </nav>
           </div>
-          <div className="flex items-center gap-2">
-            <ModeToggle />
-            <AccountButton />
-          </div>
+          <AccountButton />
         </div>
       </header>
     </>

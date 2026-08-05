@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 const LEGACY_THEMES = `{"tokyo-night":"night","rose-pine":"night","dracula":"night","sunset":"night","tokyo-night-light":"paper-light","rose-pine-light":"paper-light","dracula-light":"paper-light","sunset-light":"paper-light"}`;
 
 function themeScript() {
-  return `try{var map=${LEGACY_THEMES},t=localStorage.getItem("sd.theme"),s;if(t){s=map[t]||t}else{s="paper-light"}document.documentElement.dataset.theme=s}catch(e){document.documentElement.dataset.theme="paper-light"}`;
+  return `try{var map=${LEGACY_THEMES},t=localStorage.getItem("sd.theme"),s;if(t){s=map[t]||t}else{s="night"}document.documentElement.dataset.theme=s}catch(e){document.documentElement.dataset.theme="night"}`;
 }
 
 export default function RootLayout({

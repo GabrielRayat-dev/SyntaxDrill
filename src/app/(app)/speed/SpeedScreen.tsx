@@ -463,7 +463,7 @@ function SpeedConfigPanel({
   return (
     <div className="sd-rise space-y-6">
       <div>
-        <p className="sd-eyebrow mb-1">{"// speed test"}</p>
+        <p className="signal-kicker mb-3">Speed test</p>
         <h1 className="font-display text-xl font-semibold text-ink">
           Speed test
         </h1>

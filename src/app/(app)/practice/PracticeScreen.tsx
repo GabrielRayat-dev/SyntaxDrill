@@ -456,7 +456,7 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
   return (
     <div className="sd-rise space-y-6">
       <div>
-        <p className="sd-eyebrow mb-1">{"// drill session"}</p>
+        <p className="signal-kicker mb-3">Drill session</p>
         <h1 className="font-display text-xl font-semibold text-ink">Practice</h1>
         <p className="mt-1 text-sm text-muted">
           Pick a language, concept, and difficulty, then type 10 real snippets.
@@ -567,7 +567,7 @@ function Summary({
   return (
     <div className="sd-rise space-y-6">
       <div>
-        <p className="sd-eyebrow mb-1">{"// drill session"}</p>
+        <p className="signal-kicker mb-3">Drill session</p>
         <div className="flex items-center justify-between">
           <h1 className="font-display text-xl font-semibold text-ink">Session complete</h1>
           <span className="sd-stamp">

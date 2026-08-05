@@ -33,8 +33,8 @@ export default async function ProgressPage() {
       >
         ← Tracks
       </Link>
-      <p className="sd-eyebrow mb-1">{"// field record"}</p>
-      <h1 className="mb-6 font-display text-2xl font-semibold tracking-tight text-ink">
+      <p className="signal-kicker mb-3">Your history</p>
+      <h1 className="mb-8 text-4xl font-medium tracking-[-0.05em] text-ink">
         Progress
       </h1>
       <div className="mb-6 grid gap-3 sm:grid-cols-2">

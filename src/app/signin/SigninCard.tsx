@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useActionState } from "react";
 import { signIn } from "next-auth/react";
+import { ArrowRight } from "lucide-react";
 import { registerUser, type AuthActionState } from "./actions";
 
 const initialState: AuthActionState = {};
@@ -34,15 +35,17 @@ export default function SigninCard() {
   }
 
   const inputCls =
-    "w-full rounded-[2px] border border-edge bg-raised px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-accent focus:outline-none";
+    "signal-auth-input w-full px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:outline-none";
   const tabBtn = (id: "signin" | "register") =>
-    `flex-1 rounded-[2px] px-3 py-1.5 text-sm font-medium transition-colors ${
-      tab === id ? "bg-raised text-ink shadow-sm" : "text-muted hover:text-ink"
+    `signal-auth-tab flex-1 px-3 py-2 text-sm font-medium ${
+      tab === id ? "signal-auth-tab-active text-ink" : "text-muted hover:text-ink"
     }`;
 
   return (
-    <div className="w-full max-w-sm rounded-lg border border-edge/70 bg-surface p-6">
-      <div className="mb-5 flex items-center gap-1 rounded-[2px] border border-edge/70 bg-page p-0.5">
+    <div className="signal-auth-card w-full max-w-sm p-6 sm:p-7">
+      <p className="signal-kicker mb-3">Enter the practice space</p>
+      <h1 className="mb-6 text-3xl font-medium tracking-[-0.055em] text-ink">Make the next run count.</h1>
+      <div className="mb-5 flex gap-1 border-b border-edge/70">
         <button type="button" onClick={() => setTab("signin")} className={tabBtn("signin")}>
           Sign in
         </button>
@@ -54,9 +57,14 @@ export default function SigninCard() {
       <button
         type="button"
         onClick={handleGithub}
-        className="mb-5 w-full rounded-[2px] bg-page px-3.5 py-2.5 text-sm font-semibold text-ink ring-1 ring-inset ring-edge transition-colors hover:bg-raised"
+        className="signal-auth-github mb-5 w-full"
       >
-        Continue with GitHub
+        <span className="signal-auth-github-mark" aria-hidden>GH</span>
+        <span className="signal-auth-github-copy">
+          Continue with GitHub
+          <small>Sync your progress across devices</small>
+        </span>
+        <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden />
       </button>
 
       <div className="mb-5 flex items-center gap-3 text-[10px] font-medium uppercase tracking-widest text-muted">
@@ -72,9 +80,11 @@ export default function SigninCard() {
           {loginError && <p className="text-xs text-bad">{loginError}</p>}
           <button
             type="submit"
-            className="mt-1 w-full rounded-[2px] bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+            className="signal-auth-submit mt-1 w-full"
           >
-            Sign in
+            <span>Sign in</span>
+            <span className="signal-auth-submit-index" aria-hidden>01</span>
+            <ArrowRight className="h-4 w-4" strokeWidth={1.5} aria-hidden />
           </button>
         </form>
       ) : (
@@ -100,7 +110,7 @@ export default function SigninCard() {
           <button
             type="submit"
             disabled={pending}
-            className="mt-1 w-full rounded-[2px] bg-accent px-3.5 py-2.5 text-sm font-semibold text-page transition-opacity hover:opacity-90 disabled:opacity-60"
+            className="signal-auth-submit mt-1 w-full disabled:opacity-60"
           >
             {pending ? "Creating account…" : "Create account"}
           </button>
