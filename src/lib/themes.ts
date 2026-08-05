@@ -1,6 +1,6 @@
 export type ThemeMode = "light" | "dark";
 
-export type ColorwayId = "signal" | "graphite";
+export type ColorwayId = "signal" | "graphite" | "ember" | "fern" | "orchid";
 
 export type ThemeId = ColorwayId | `${ColorwayId}-light`;
 
@@ -35,6 +35,42 @@ export const COLORWAYS: Colorway[] = [
     swatches: {
       dark: ["#0a0c0f", "#8fa6ff", "#8fd7b1", "#f28d97", "#eef0f3"],
       light: ["#f2f3f5", "#4658d0", "#1f7a4f", "#c03a48", "#16181c"],
+    },
+  },
+  {
+    id: "ember",
+    name: "Ember",
+    descriptions: {
+      dark: "Warm near-black, amber glow.",
+      light: "Warm paper, burnt amber ink.",
+    },
+    swatches: {
+      dark: ["#120c08", "#f2a33c", "#a3d977", "#f07a6b", "#f7f1e8"],
+      light: ["#faf5ec", "#a8540e", "#2f7d4f", "#b3372b", "#241a10"],
+    },
+  },
+  {
+    id: "fern",
+    name: "Fern",
+    descriptions: {
+      dark: "Deep green, terminal green.",
+      light: "Pale green-white, forest ink.",
+    },
+    swatches: {
+      dark: ["#0a0f0c", "#5fce8a", "#7ee0a0", "#f77f8a", "#eef4ef"],
+      light: ["#f2f7f2", "#1e7a4a", "#3f8f60", "#c0392b", "#142019"],
+    },
+  },
+  {
+    id: "orchid",
+    name: "Orchid",
+    descriptions: {
+      dark: "Near-black violet, lavender glow.",
+      light: "Pale lavender-white, violet ink.",
+    },
+    swatches: {
+      dark: ["#0d0a12", "#c4a6ff", "#8fd7b1", "#f28d97", "#f2eff7"],
+      light: ["#f6f4fa", "#6d4fd0", "#2f7a56", "#b63d5e", "#1b1624"],
     },
   },
 ];

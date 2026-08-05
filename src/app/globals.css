@@ -92,6 +92,108 @@
   color-scheme: light;
 }
 
+[data-theme="ember"] {
+  --sd-bg: #120c08;
+  --sd-surface: #1a120a;
+  --sd-raised: #241811;
+  --sd-border: #3a2c1d;
+  --sd-text: #f7f1e8;
+  --sd-muted: #b0a188;
+  --sd-accent: #f2a33c;
+  --sd-accent-2: #f2a33c;
+  --sd-correct: #a3d977;
+  --sd-error: #f07a6b;
+  --sd-warn: #e7bf78;
+  --sd-caret: #f2a33c;
+  --sd-glow: rgba(242, 163, 60, 0.18);
+  color-scheme: dark;
+}
+
+[data-theme="ember-light"] {
+  --sd-bg: #faf5ec;
+  --sd-surface: #ffffff;
+  --sd-raised: #f1e9db;
+  --sd-border: #e0d3bd;
+  --sd-text: #241a10;
+  --sd-muted: #7d6f5c;
+  --sd-accent: #a8540e;
+  --sd-accent-2: #a8540e;
+  --sd-correct: #2f7d4f;
+  --sd-error: #b3372b;
+  --sd-warn: #8a6a12;
+  --sd-caret: #a8540e;
+  --sd-glow: rgba(168, 84, 14, 0.16);
+  color-scheme: light;
+}
+
+[data-theme="fern"] {
+  --sd-bg: #0a0f0c;
+  --sd-surface: #0f1612;
+  --sd-raised: #162019;
+  --sd-border: #263529;
+  --sd-text: #eef4ef;
+  --sd-muted: #93a69a;
+  --sd-accent: #5fce8a;
+  --sd-accent-2: #5fce8a;
+  --sd-correct: #7ee0a0;
+  --sd-error: #f77f8a;
+  --sd-warn: #e7c56b;
+  --sd-caret: #5fce8a;
+  --sd-glow: rgba(95, 206, 138, 0.16);
+  color-scheme: dark;
+}
+
+[data-theme="fern-light"] {
+  --sd-bg: #f2f7f2;
+  --sd-surface: #ffffff;
+  --sd-raised: #e7efe7;
+  --sd-border: #d3ded3;
+  --sd-text: #142019;
+  --sd-muted: #5c6b5f;
+  --sd-accent: #1e7a4a;
+  --sd-accent-2: #1e7a4a;
+  --sd-correct: #3f8f60;
+  --sd-error: #c0392b;
+  --sd-warn: #9a7a1a;
+  --sd-caret: #1e7a4a;
+  --sd-glow: rgba(30, 122, 74, 0.15);
+  color-scheme: light;
+}
+
+[data-theme="orchid"] {
+  --sd-bg: #0d0a12;
+  --sd-surface: #141019;
+  --sd-raised: #1c1722;
+  --sd-border: #2e2738;
+  --sd-text: #f2eff7;
+  --sd-muted: #a398b0;
+  --sd-accent: #c4a6ff;
+  --sd-accent-2: #c4a6ff;
+  --sd-correct: #8fd7b1;
+  --sd-error: #f28d97;
+  --sd-warn: #e7bf78;
+  --sd-caret: #c4a6ff;
+  --sd-glow: rgba(196, 166, 255, 0.16);
+  color-scheme: dark;
+}
+
+[data-theme="orchid-light"] {
+  --sd-bg: #f6f4fa;
+  --sd-surface: #ffffff;
+  --sd-raised: #ece7f4;
+  --sd-border: #ddd6e6;
+  --sd-text: #1b1624;
+  --sd-muted: #6b6278;
+  --sd-accent: #6d4fd0;
+  --sd-accent-2: #6d4fd0;
+  --sd-correct: #2f7a56;
+  --sd-error: #b63d5e;
+  --sd-warn: #8a6a12;
+  --sd-caret: #6d4fd0;
+  --sd-glow: rgba(109, 79, 208, 0.15);
+  color-scheme: light;
+}
+
 body {
   background: var(--sd-bg);
   color: var(--sd-text);
