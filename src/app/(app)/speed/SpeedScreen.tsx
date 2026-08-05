@@ -178,7 +178,7 @@ export default function SpeedScreen({
                 }}
                 title="Restart (Tab)"
                 aria-label="Restart test"
-                className="rounded-[2px] border border-edge/70 bg-surface p-2 text-muted transition-colors hover:border-accent hover:text-accent"
+                className="rounded-md border border-edge/70 bg-surface p-2 text-muted transition-colors hover:border-accent hover:text-accent"
               >
                 <RotateCcw className="h-4 w-4" aria-hidden />
               </button>
@@ -246,7 +246,7 @@ function ConfigBar({
 }) {
   const targets = config.mode === "time" ? TIME_TARGETS : WORD_TARGETS;
   return (
-    <div className="flex items-center gap-1 rounded-[2px] border border-edge/70 bg-surface p-1 text-xs font-medium">
+    <div className="flex items-center gap-1 rounded-md border border-edge/70 bg-surface p-1 text-xs font-medium">
       {(["time", "words"] as const).map((mode) => (
         <button
           key={mode}
@@ -254,7 +254,7 @@ function ConfigBar({
             onBlur(e);
             onPick({ mode, target: mode === "time" ? 15 : 10 });
           }}
-          className={`rounded-[2px] px-2.5 py-1 transition-colors ${
+          className={`rounded-md px-2.5 py-1 transition-colors ${
             config.mode === mode ? "bg-raised text-ink" : "text-muted hover:text-ink"
           }`}
         >
@@ -269,7 +269,7 @@ function ConfigBar({
             onBlur(e);
             onPick({ mode: config.mode, target });
           }}
-          className={`rounded-[2px] px-2 py-1 tabular-nums transition-colors ${
+          className={`rounded-md px-2 py-1 tabular-nums transition-colors ${
             config.target === target
               ? "bg-raised text-ink"
               : "text-muted hover:text-ink"
@@ -410,9 +410,7 @@ function SpeedResult({
   const durationS =
     ((test.finishedAt ?? test.startedAt ?? 0) - (test.startedAt ?? 0)) / 1000;
   return (
-    <div className="sd-rise relative rounded-lg border border-edge/70 bg-surface p-8 text-center sm:p-10">
-      <span className="index-hole left-10" aria-hidden />
-      <span className="index-hole left-16" aria-hidden />
+    <div className="sd-rise border-t border-edge/80 pt-10 text-center sm:pt-12">
       <div className="font-display text-6xl font-semibold tabular-nums text-accent sm:text-7xl">
         {speedWpm(test).toFixed(0)}
       </div>
@@ -428,13 +426,13 @@ function SpeedResult({
       <div className="mt-8 flex flex-col gap-2 sm:flex-row">
         <button
           onClick={onAgain}
-          className="flex-1 rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+          className="signal-cta flex-1"
         >
           Go again
         </button>
         <button
           onClick={onChange}
-          className="flex-1 rounded-[2px] border border-edge bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
+          className="flex-1 rounded-md border border-edge bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-raised"
         >
           Change test
         </button>
@@ -473,7 +471,7 @@ function SpeedConfigPanel({
       </div>
 
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
           Mode
         </p>
         <div className="flex gap-2">
@@ -481,7 +479,7 @@ function SpeedConfigPanel({
             <button
               key={m}
               onClick={() => pickMode(m)}
-              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                 mode === m
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -494,7 +492,7 @@ function SpeedConfigPanel({
       </div>
 
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-widest text-muted">
+        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
           {mode === "time" ? "Seconds" : "Word count"}
         </p>
         <div className="flex flex-wrap gap-2">
@@ -502,7 +500,7 @@ function SpeedConfigPanel({
             <button
               key={t}
               onClick={() => setTarget(t)}
-              className={`rounded-[2px] border px-4 py-2 text-sm font-medium transition-colors ${
+              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
                 target === t
                   ? "border-accent bg-raised text-ink"
                   : "border-edge bg-surface text-muted hover:text-ink"
@@ -516,7 +514,7 @@ function SpeedConfigPanel({
 
       <button
         onClick={() => onPick({ mode, target })}
-        className="w-full rounded-[2px] bg-accent px-4 py-3 text-sm font-semibold text-page transition-opacity hover:opacity-90"
+        className="signal-cta w-full"
       >
         Start test
       </button>
