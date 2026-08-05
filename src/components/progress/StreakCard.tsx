@@ -52,36 +52,84 @@ function computeStreak(records: StatRecord[]) {
   return { current, longest };
 }
 
+const WEEK_DAYS = 7;
+
+function weekDays(): string[] {
+  const today = dateKey(new Date().toISOString());
+  const keys: string[] = [];
+  for (let i = WEEK_DAYS - 1; i >= 0; i--) keys.push(addDays(today, -i));
+  return keys;
+}
+
+function weekdayLabel(key: string): string {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(undefined, {
+    weekday: "narrow",
+  });
+}
+
 export default function StreakCard({ records }: { records: StatRecord[] }) {
   const { current, longest } = computeStreak(records);
+  const practiced = new Set(records.map((r) => dateKey(r.startedAt)));
+  const days = weekDays();
+  const today = days[days.length - 1];
 
   return (
-    <div className="sd-rise rounded-lg border border-edge/70 bg-surface p-5">
-      <h2 className="mb-3 font-semibold text-ink">Streaks</h2>
+    <section>
+      <h2 className="mb-4 text-xl font-medium tracking-[-0.035em] text-ink">
+        Streaks
+      </h2>
       {records.length === 0 ? (
-        <p className="text-sm text-muted">
+        <p className="mb-6 text-sm text-muted">
           No sessions yet. Practice or take a speed test to start a streak.
         </p>
       ) : (
-        <div className="flex gap-8">
+        <div className="mb-6 flex gap-10">
           <div>
-            <div className="font-mono text-2xl font-semibold tabular-nums text-accent">
+            <div className="font-mono text-3xl font-semibold tabular-nums text-accent">
               {current}
             </div>
-            <div className="text-[10px] font-medium uppercase tracking-widest text-muted">
+            <div className="mt-1 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
               Current day{current === 1 ? "" : "s"}
             </div>
           </div>
           <div>
-            <div className="font-mono text-2xl font-semibold tabular-nums text-ink">
+            <div className="font-mono text-3xl font-semibold tabular-nums text-ink">
               {longest}
             </div>
-            <div className="text-[10px] font-medium uppercase tracking-widest text-muted">
+            <div className="mt-1 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
               Longest
             </div>
           </div>
         </div>
       )}
-    </div>
+      <div
+        className="signal-app-metrics px-4 pb-4 pt-5"
+        role="img"
+        aria-label="Practice activity over the last 7 days"
+      >
+        <div className="flex items-end justify-between gap-2">
+          {days.map((day) => {
+            const active = practiced.has(day);
+            const isToday = day === today;
+            return (
+              <div key={day} className="flex flex-1 flex-col items-center gap-1.5">
+                <div className="flex h-14 w-full items-end justify-center">
+                  <div
+                    className={`w-full max-w-[16px] ${active ? "bg-accent" : "bg-raised"} ${
+                      isToday ? "ring-1 ring-inset ring-accent/70" : ""
+                    }`}
+                    style={{ height: active ? "100%" : "36%" }}
+                  />
+                </div>
+                <span className="font-mono text-[9px] uppercase tracking-wider text-muted">
+                  {weekdayLabel(day)}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
