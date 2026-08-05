@@ -1,29 +1,41 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, type LucideIcon } from "lucide-react";
+import type { ThemeMode } from "@/lib/themes";
 import { useTheme } from "./ThemeProvider";
+
+const OPTIONS: { id: ThemeMode; label: string; icon: LucideIcon }[] = [
+  { id: "light", label: "Light", icon: Sun },
+  { id: "dark", label: "Dark", icon: Moon },
+];
 
 export default function ModeToggle() {
   const { mode, setMode } = useTheme();
-  const light = mode === "light";
+
   return (
-    <button
-      type="button"
-      onClick={() => setMode(light ? "dark" : "light")}
-      title={light ? "Switch to dark mode" : "Switch to light mode"}
-      aria-label={light ? "Switch to dark mode" : "Switch to light mode"}
-      className="group flex h-8 w-8 items-center justify-center overflow-hidden rounded-[2px] border border-edge bg-surface text-muted transition-colors hover:border-accent/50 hover:text-accent"
+    <div
+      role="group"
+      aria-label="Color mode"
+      className="inline-flex gap-1 rounded-md border border-edge bg-surface p-1"
     >
-      <span
-        key={mode}
-        className="sd-rise flex h-full w-full items-center justify-center"
-      >
-        {light ? (
-          <Moon className="h-3.5 w-3.5" aria-hidden />
-        ) : (
-          <Sun className="h-3.5 w-3.5" aria-hidden />
-        )}
-      </span>
-    </button>
+      {OPTIONS.map((opt) => {
+        const Icon = opt.icon;
+        const active = mode === opt.id;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => setMode(opt.id)}
+            aria-pressed={active}
+            className={`flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors ${
+              active ? "bg-raised text-ink" : "text-muted hover:text-ink"
+            }`}
+          >
+            <Icon className="h-3.5 w-3.5" aria-hidden />
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
