@@ -277,6 +277,51 @@ body:has(.signal-page) .paper-grain { display: none; }
   .signal-nav, .signal-app-nav, .signal-nav > div { transition: none; }
   .signal-nav[data-scrolled="true"] > div { transform: none; }
 }
+/* Blueprint scroll decoration: dashed grid edges + corner crosshairs */
+.signal-blueprint {
+  border-bottom: 1px dashed var(--sd-accent);
+  border-top: 1px dashed var(--sd-accent);
+  color: var(--sd-accent);
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: border-color 220ms ease;
+}
+.signal-blueprint-cross {
+  height: 16px;
+  opacity: .5;
+  position: absolute;
+  transition: transform 220ms ease, opacity 220ms ease;
+  width: 16px;
+}
+.signal-blueprint-cross path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+.signal-blueprint-cross--tl { left: 0; top: 0; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--tr { left: 100%; top: 0; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--bl { left: 0; top: 100%; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--br { left: 100%; top: 100%; transform: translate(-50%, -50%) translate(0, 14px); }
+
+.signal-nav[data-scrolled="true"] .signal-blueprint,
+.signal-app-nav[data-scrolled="true"] .signal-blueprint {
+  border-bottom-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
+  border-top-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
+}
+.signal-nav[data-scrolled="true"] .signal-blueprint-cross,
+.signal-app-nav[data-scrolled="true"] .signal-blueprint-cross {
+  transform: translate(-50%, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-blueprint,
+  .signal-blueprint-cross {
+    transition: none;
+  }
+  .signal-blueprint-cross {
+    transform: translate(-50%, -50%);
+  }
+}
 @media (max-width: 767px) { .signal-roadmap-item { grid-template-columns: 1fr; gap: .7rem; } .syntax-constellation span:nth-child(4n) { display: none; } }
 
 /* Product workspace: the same signal language, tuned for concentrated practice. */
