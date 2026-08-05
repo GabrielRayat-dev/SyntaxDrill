@@ -16,7 +16,7 @@ The animation is **CSS-only** and rides the existing `data-scrolled` boolean att
 - The landing nav already scales its inner content div to `.98` on scroll via `.signal-nav > div` — that selector must be narrowed so the new absolute-positioned decoration is **not** caught by the scale rule.
 - No test runner. Gate cycle: `npx tsc --noEmit` → PASS, `npm run lint` → PASS, then `npm run build` → PASS.
 - Reduced-motion is respected: under `prefers-reduced-motion: reduce`, decoration stays locked onto the corners (no transforms/opacity transitions), matching the existing nav convention.
-- Decoration uses the existing `--sd-accent` / `--sd-border` tokens at low opacity so it themes across all 10 colorways. Landing and sign-in remain pinned to signal dark.
+- Decoration uses the existing `--sd-accent` token (at low strength when scrolled) so it themes across all 10 colorways. Landing and sign-in remain pinned to signal dark.
 - The decoration must not affect layout, hit-testing, or accessibility: `position: absolute; inset: 0; pointer-events: none;` on a single wrapper, all marks `aria-hidden`.
 
 ---
@@ -31,10 +31,6 @@ A small presentational component with **no client directives and no hooks** — 
 export default function BlueprintCorners() {
   return (
     <div className="signal-blueprint" aria-hidden="true">
-      <svg className="signal-blueprint-grid" viewBox="0 0 100 68" preserveAspectRatio="none" focusable="false">
-        <line x1="0" y1="0.5" x2="100" y2="0.5" />
-        <line x1="0" y1="67.5" x2="100" y2="67.5" />
-      </svg>
       {["tl", "tr", "bl", "br"].map((corner) => (
         <svg
           key={corner}
@@ -50,10 +46,10 @@ export default function BlueprintCorners() {
 }
 ```
 
-- **One full-bleed `<svg>`** for the grid lines: `viewBox="0 0 100 68"`, `preserveAspectRatio="none"`, `position: absolute; inset: 0; width/height: 100%`. Two `<line>`s at `y=0.5` (top edge) and `y=67.5` (bottom edge).
+- **Grid lines** are the wrapper's own **CSS dashed borders** (`border-top` + `border-bottom`, `1px dashed var(--sd-accent)`) — the wrapper is `inset: 0` over the header, so its top/bottom edges are exactly the header's. CSS dashes stay 1px with a consistent `3px 6px` pattern at every viewport width. (An SVG grid with `stroke-dasharray` was rejected because `preserveAspectRatio="none"` stretches the dash pattern horizontally — on a 1920px-wide header each dash renders ~57px, not a hairline.)
 - **Four 16×16 crosshair `<svg>`s**, each a plain `+` registration cross, absolutely positioned and centered on the 4 header corners via `translate(-50%, -50%)`.
 
-Both svg sets use `stroke: currentColor` and `color: var(--sd-accent)` so color flows from the theme tokens. `pointer-events` is neutralized on the wrapper.
+Both the borders and the crosshair strokes use `currentColor` with `color: var(--sd-accent)` so color flows from the theme tokens. `pointer-events` is neutralized on the wrapper.
 
 ### Mounting — `src/components/NavGlass.tsx` + `src/components/AppHeader.tsx`
 
@@ -64,34 +60,24 @@ Both files are client components and simply add the import + one element.
 
 ### Animation states — driven by `data-scrolled`
 
-| State | Grid lines (top/bottom hairline) | 4 corner crosshairs |
+| State | Grid lines (top/bottom dashed border) | 4 corner crosshairs |
 |---|---|---|
-| **Top** (`data-scrolled="false"`, default) | Dashed accent hairlines on both edges, `opacity .4` | Each crosshair sits offset **outward from its corner** — spread away from the header body |
-| **Scrolled** (`data-scrolled="true"`) | Lines fade to `opacity .12`, stay on the edges | Crosshairs slide **inward/lock onto the corners**, `opacity .5` |
+| **Top** (`data-scrolled="false"`, default) | Dashed accent hairlines on both edges, full `--sd-accent` | Each crosshair sits offset **14px downward** from its corner — reading as a frame taller than the 68px bar |
+| **Scrolled** (`data-scrolled="true"`) | Lines fade to `12%` accent (faint hairline), stay on the edges | Crosshairs slide **up onto / lock on the corners** |
 
-Transitions: `transform 220ms ease, opacity 220ms ease` — matching the existing frost/scale timing (220ms) so the blueprint settle and the glass frost land together.
+Transitions: `transform 220ms ease` on the crosshairs and `border-color 220ms ease` on the grid — matching the existing frost/scale timing (220ms) so the blueprint settle and the glass frost land together.
 
 ### CSS — `src/app/globals.css` (new rules, added near the existing nav rules)
 
 ```css
 .signal-blueprint {
+  border-bottom: 1px dashed var(--sd-accent);
+  border-top: 1px dashed var(--sd-accent);
   color: var(--sd-accent);
   inset: 0;
   pointer-events: none;
   position: absolute;
-}
-.signal-blueprint-grid {
-  height: 100%;
-  inset: 0;
-  position: absolute;
-  width: 100%;
-}
-.signal-blueprint-grid line {
-  opacity: .4;
-  stroke: currentColor;
-  stroke-dasharray: 3 6;
-  stroke-width: 1;
-  transition: opacity 220ms ease;
+  transition: border-color 220ms ease;
 }
 .signal-blueprint-cross {
   height: 16px;
@@ -105,21 +91,22 @@ Transitions: `transform 220ms ease, opacity 220ms ease` — matching the existin
   stroke: currentColor;
   stroke-width: 1;
 }
-.signal-blueprint-cross--tl { left: 0; top: 0; transform: translate(-50%, -50%) translate(-14px, -14px); }
-.signal-blueprint-cross--tr { left: 100%; top: 0; transform: translate(-50%, -50%) translate(14px, -14px); }
-.signal-blueprint-cross--bl { left: 0; top: 100%; transform: translate(-50%, -50%) translate(-14px, 14px); }
-.signal-blueprint-cross--br { left: 100%; top: 100%; transform: translate(-50%, -50%) translate(14px, 14px); }
+.signal-blueprint-cross--tl { left: 0; top: 0; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--tr { left: 100%; top: 0; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--bl { left: 0; top: 100%; transform: translate(-50%, -50%) translate(0, 14px); }
+.signal-blueprint-cross--br { left: 100%; top: 100%; transform: translate(-50%, -50%) translate(0, 14px); }
 
-.signal-nav[data-scrolled="true"] .signal-blueprint-grid line,
-.signal-app-nav[data-scrolled="true"] .signal-blueprint-grid line {
-  opacity: .12;
+.signal-nav[data-scrolled="true"] .signal-blueprint,
+.signal-app-nav[data-scrolled="true"] .signal-blueprint {
+  border-bottom-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
+  border-top-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
 }
 .signal-nav[data-scrolled="true"] .signal-blueprint-cross,
 .signal-app-nav[data-scrolled="true"] .signal-blueprint-cross {
   transform: translate(-50%, -50%);
 }
 @media (prefers-reduced-motion: reduce) {
-  .signal-blueprint-grid line,
+  .signal-blueprint,
   .signal-blueprint-cross {
     transition: none;
   }
@@ -130,9 +117,10 @@ Transitions: `transform 220ms ease, opacity 220ms ease` — matching the existin
 ```
 
 Notes:
-- Crosshair corner offsets: **top corners move outward up-and-away** (`-14px, -14px` / `+14px, -14px`), **bottom corners move outward down-and-away** (`-14px, +14px` / `+14px, +14px`), from their locked corner center. This matches "spaced out at top, collapse inward on scroll" while staying at most 14px outside the 68px bar — visible against the hero on both navs.
-- `preserveAspectRatio="none"` with `viewBox="0 0 100 68"` keeps the two grid lines pinned to the header's true top/bottom edges regardless of header width. `stroke-width: 1` may render hairline-thin when stretched wide (non-uniform scaling) — acceptable for a 1px decorative hairline, and confirmed visually in manual QA.
-- The wrapper itself carries no `z-index`, so it participates in the header's normal paint order but is drawn before the inner content (it is first-child) and behind the content on the landing page's `.signal-nav > div` transform layer. Crosshairs poke outside the header box (visible against the page, no clipping because no parent sets `overflow: hidden` on the header).
+- Crosshair motion: at top-of-page **all four** sit 14px **below** their corner (top pair inside the header, bottom pair below the bottom edge, against the hero). On scroll they slide **up** to sit centered exactly on the corners. Offset direction is downward — not outward — because the header is full-width and `sticky top-0`, so upward/horizontal offsets would push the top pair off-screen at `scrollY=0`. This is the same "frame condenses and locks onto the compact bar" intent, and the marks stay visible in both states.
+- Grid-line dimming uses `border-color` → `color-mix(... 12%, transparent)` rather than `opacity`, because opacity on the wrapper would also fade the crosshair children. The scrolled grid reads as a faint hairline.
+- The wrapper is `inset: 0` on the header, so its dashed `border-top`/`border-bottom` sit on the header's top/bottom edges. The landing header already has its own solid frost `border-bottom`; the dashed overlay draws just inside it, so the bottom edge may read as a **double hairline** (1px solid + 1px dashed). That reads as intentional blueprint drafting — flagged for visual sign-off in manual QA; if it looks noisy, drop the frost rule's solid border when `data-scrolled="true"`.
+- The wrapper carries no `z-index` and is first-child, so it paints before the inner content; on the landing page the content transform layer is `.signal-nav > .signal-nav-inner` (below), so the decoration is not caught by the `.98` scale and stays full-size. Crosshairs poke below the header box (visible against the hero, no clipping because no ancestor sets `overflow: hidden` on the header).
 
 ### Selector narrowing — `src/app/globals.css` (existing rules)
 
@@ -173,8 +161,9 @@ And in the reduced-motion block, the `.signal-nav > div` entry becomes `.signal-
 3. `npm run build` → PASS
 4. Manual (dev server):
    - Landing + app header: dashed accent grid hairlines on top/bottom edges; 4 `+` crosshairs at the header corners.
-   - At top of page: crosshairs sit 14px outward from corners; after scrolling ~8px they slide in and lock exactly on the 4 corners, grid lines dim to `.12` opacity, landing inner bar still scales to `.98` (decoration does NOT scale).
+   - At top of page: crosshairs sit 14px below each corner; after scrolling ~8px they slide up and lock exactly on the 4 corners, grid lines fade to a faint `12%` accent hairline, landing inner bar still scales to `.98` (decoration does NOT scale).
    - Decoration appears in all 10 colorways (accent-tinted); landing + sign-in stay signal dark.
    - Crosshairs sit on the **header** corners, not the 1440px inner-bar corners (full-width blueprint frame).
+   - Landing bottom edge: confirm the solid frost border + dashed blueprint border read as a clean double hairline (not noise) in both scroll states.
 5. Reduced-motion (`prefers-reduced-motion: reduce`): no crosshair motion; decoration stays locked on the corners; grid lines static.
 6. No layout shift: decoration is absolute + `pointer-events: none`; content and hit-testing unaffected.
