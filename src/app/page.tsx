@@ -11,6 +11,7 @@ import { CONCEPTS } from "@/lib/concepts";
 import HeroDemo from "@/components/landing/HeroDemo";
 import LandingStats from "@/components/landing/LandingStats";
 import AccountButton from "@/components/AccountButton";
+import NavGlass from "@/components/NavGlass";
 
 const NAV_LINKS = [
   { href: "#tracks", label: "Tracks" },
@@ -62,7 +63,7 @@ export default function LandingPage() {
       >
         Skip to content
       </a>
-      <header className="signal-nav sticky top-0 z-40">
+      <NavGlass className="signal-nav sticky top-0 z-40">
         <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
           <Link href="/" className="signal-wordmark" aria-label="SyntaxDrill home">
             syntax<span>drill</span>
@@ -83,7 +84,7 @@ export default function LandingPage() {
             </span>
           </div>
         </div>
-      </header>
+      </NavGlass>
 
       <main id="main">
         <section className="signal-hero relative">

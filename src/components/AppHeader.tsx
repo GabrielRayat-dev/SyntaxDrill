@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AccountButton from "@/components/AccountButton";
+import { useScrolled } from "@/lib/useScrolled";
 
 const NAV: { id: string; label: string; href: string }[] = [
   { id: "practice", label: "Practice", href: "/app" },
@@ -13,6 +14,7 @@ const NAV: { id: string; label: string; href: string }[] = [
 
 export default function AppHeader() {
   const pathname = usePathname();
+  const scrolled = useScrolled();
 
   return (
     <>
@@ -22,7 +24,7 @@ export default function AppHeader() {
       >
         Skip to content
       </a>
-      <header className="signal-app-nav sticky top-0 z-40">
+      <header className="signal-app-nav sticky top-0 z-40" data-scrolled={scrolled}>
         <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
           <div className="flex min-w-0 items-center gap-5 sm:gap-9">
             <Link href="/" className="signal-wordmark shrink-0" aria-label="SyntaxDrill home">

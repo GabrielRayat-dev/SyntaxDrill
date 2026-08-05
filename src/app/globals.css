@@ -106,7 +106,7 @@ body {
   font-family: var(--font-geist-sans), ui-sans-serif, sans-serif;
 }
 body:has(.signal-page) .paper-grain { display: none; }
-.signal-nav { border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 70%, transparent); background: color-mix(in srgb, var(--sd-bg) 82%, transparent); backdrop-filter: blur(20px); }
+.signal-nav { border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 70%, transparent); background: color-mix(in srgb, var(--sd-bg) 55%, transparent); backdrop-filter: blur(12px); }
 .signal-wordmark { color: var(--sd-text); font-family: var(--font-geist-sans), sans-serif; font-size: 1.13rem; font-weight: 650; letter-spacing: -0.07em; }
 .signal-wordmark span { color: var(--sd-accent); }
 .signal-nav-link { color: var(--sd-muted); font-size: 0.8rem; transition: color 160ms ease; }
@@ -155,16 +155,33 @@ body:has(.signal-page) .paper-grain { display: none; }
 @media (prefers-reduced-motion: no-preference) { .signal-orbit-one { animation: signal-drift 18s ease-in-out infinite alternate; } .signal-orbit-two { animation: signal-drift 23s ease-in-out infinite alternate-reverse; } .syntax-constellation span:nth-child(3n) { animation: syntax-drift 9s ease-in-out infinite alternate; } }
 @keyframes signal-drift { to { transform: translate3d(-2.5%, 2%, 0) scale(1.04); } }
 @keyframes syntax-drift { to { transform: translate3d(10px, -14px, 0); } }
-@supports (animation-timeline: scroll()) { @media (prefers-reduced-motion: no-preference) { .signal-nav { animation: signal-nav-settle linear both; animation-range: 0 180px; animation-timeline: scroll(root); } .signal-nav > div { animation: signal-nav-inner linear both; animation-range: 0 180px; animation-timeline: scroll(root); } } }
-@keyframes signal-nav-settle { to { border-color: color-mix(in srgb, var(--sd-accent) 42%, var(--sd-border)); box-shadow: 0 10px 38px rgb(0 0 0 / .22); } }
-@keyframes signal-nav-inner { to { transform: scale(.95); } }
+.signal-nav,
+.signal-app-nav {
+  transition: background 220ms ease, border-bottom-color 220ms ease, box-shadow 220ms ease;
+}
+.signal-nav[data-scrolled="true"] {
+  background: color-mix(in srgb, var(--sd-bg) 88%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--sd-accent) 42%, var(--sd-border));
+  box-shadow: 0 10px 38px rgb(0 0 0 / .22);
+}
+.signal-nav > div { transition: transform 220ms ease; }
+.signal-nav[data-scrolled="true"] > div { transform: scale(.98); }
+.signal-app-nav[data-scrolled="true"] {
+  background: color-mix(in srgb, var(--sd-bg) 90%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--sd-accent) 38%, var(--sd-border));
+  box-shadow: 0 10px 38px rgb(0 0 0 / .22);
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-nav, .signal-app-nav, .signal-nav > div { transition: none; }
+  .signal-nav[data-scrolled="true"] > div { transform: none; }
+}
 @media (max-width: 767px) { .signal-roadmap-item { grid-template-columns: 1fr; gap: .7rem; } .syntax-constellation span:nth-child(4n) { display: none; } }
 
 /* Product workspace: the same signal language, tuned for concentrated practice. */
 .signal-app { background: var(--sd-bg); color: var(--sd-text); font-family: var(--font-geist-sans), ui-sans-serif, sans-serif; }
 .signal-app .font-display { font-family: var(--font-geist-sans), ui-sans-serif, sans-serif; letter-spacing: -0.045em; }
 body:has(.signal-app) .paper-grain { display: none; }
-.signal-app-nav { border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 75%, transparent); background: color-mix(in srgb, var(--sd-bg) 86%, transparent); backdrop-filter: blur(20px); }
+.signal-app-nav { border-bottom: 1px solid color-mix(in srgb, var(--sd-border) 75%, transparent); background: color-mix(in srgb, var(--sd-bg) 64%, transparent); backdrop-filter: blur(20px); }
 .signal-app-link { color: var(--sd-muted); font-size: 0.79rem; transition: color 160ms ease; }
 .signal-app-link:hover { color: var(--sd-text); }
 .signal-app-link-active { color: var(--sd-accent); }
