@@ -266,7 +266,7 @@ body:has(.signal-page) .paper-grain { display: none; }
 }
 .signal-nav[data-scrolled="true"] {
   background: color-mix(in srgb, var(--sd-bg) 88%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--sd-accent) 42%, var(--sd-border));
+  border-bottom-color: transparent;
   box-shadow: 0 10px 38px rgb(0 0 0 / .22);
   height: 60px;
   margin: 0 16px;
@@ -276,7 +276,7 @@ body:has(.signal-page) .paper-grain { display: none; }
 .signal-nav[data-scrolled="true"] > .signal-nav-inner { transform: scale(.98); }
 .signal-app-nav[data-scrolled="true"] {
   background: color-mix(in srgb, var(--sd-bg) 90%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--sd-accent) 38%, var(--sd-border));
+  border-bottom-color: transparent;
   box-shadow: 0 10px 38px rgb(0 0 0 / .22);
 }
 @media (prefers-reduced-motion: reduce) {
