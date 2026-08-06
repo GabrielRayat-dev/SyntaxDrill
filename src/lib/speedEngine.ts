@@ -54,6 +54,7 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
     return commitWord({
       ...state,
       startedAt,
+      currentTyped: state.currentTyped + " ",
       correctKeystrokes: state.correctKeystrokes + 1,
     });
   }
@@ -77,7 +78,7 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
 }
 
 function commitWord(state: WordTestState): WordTestState {
-  const typedWords = [...state.typedWords, state.currentTyped.replace(/ +$/, "")];
+  const typedWords = [...state.typedWords, state.currentTyped];
   const currentIndex = state.currentIndex + 1;
   const base: WordTestState = {
     ...state,

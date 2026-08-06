@@ -367,38 +367,60 @@ function WordStream({
               const opacity = Math.max(0.25, 1 - back * 0.18);
               const typed = test.typedWords[index] ?? "";
               const chars: React.ReactNode[] = [];
-              for (let ci = 0; ci < Math.max(typed.length, word.length); ci++) {
+              for (let ci = 0; ci < Math.max(typed.length, word.length + 1); ci++) {
                 const typedCh = typed[ci];
-                const targetCh = word[ci];
-                if (targetCh === undefined) {
-                  chars.push(
-                    <span key={ci} className="text-bad">
-                      {typedCh}
-                    </span>,
-                  );
-                } else if (typedCh === undefined) {
-                  chars.push(
-                    <span key={ci} className="text-muted">
-                      {targetCh}
-                    </span>,
-                  );
-                } else if (typedCh === targetCh) {
-                  chars.push(
-                    <span key={ci} className="text-ink">
-                      {targetCh}
-                    </span>,
-                  );
+                if (ci < word.length) {
+                  const targetCh = word[ci];
+                  if (typedCh === undefined) {
+                    chars.push(
+                      <span key={ci} className="text-muted">
+                        {targetCh}
+                      </span>,
+                    );
+                  } else if (typedCh === targetCh) {
+                    chars.push(
+                      <span key={ci} className="text-ink">
+                        {targetCh}
+                      </span>,
+                    );
+                  } else {
+                    chars.push(
+                      <span key={ci} className="text-bad">
+                        {targetCh}
+                      </span>,
+                    );
+                  }
+                } else if (ci === word.length) {
+                  if (typedCh === undefined) {
+                    chars.push(
+                      <span key={ci} className="text-muted">
+                        {" "}
+                      </span>,
+                    );
+                  } else if (typedCh === " ") {
+                    chars.push(
+                      <span key={ci} className="text-ink">
+                        {" "}
+                      </span>,
+                    );
+                  } else {
+                    chars.push(
+                      <span key={ci} className="text-bad">
+                        {" "}
+                      </span>,
+                    );
+                  }
                 } else {
                   chars.push(
                     <span key={ci} className="text-bad">
-                      {targetCh}
+                      {typedCh}
                     </span>,
                   );
                 }
               }
               return (
                 <span key={index} className="whitespace-pre" style={{ opacity }}>
-                  {chars}{" "}
+                  {chars}
                 </span>
               );
             }
