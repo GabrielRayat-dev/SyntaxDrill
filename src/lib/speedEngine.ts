@@ -51,13 +51,11 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
   }
 
   if (ch === " " && j === target.length) {
-    return {
+    return commitWord({
       ...state,
       startedAt,
-      currentTyped: state.currentTyped + " ",
       correctKeystrokes: state.correctKeystrokes + 1,
-      finishedAt: isLast ? Date.now() : state.finishedAt,
-    };
+    });
   }
 
   let correct = state.correctKeystrokes;
