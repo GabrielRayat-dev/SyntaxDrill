@@ -282,8 +282,35 @@ function ConfigBar({
   );
 }
 
-const STREAM_WINDOW = 28;
-const STREAM_SLIDE = 20;
+const DEFAULT_CHARS_PER_LINE = 40;
+
+function packPageEnd(words: string[], start: number, charsPerLine: number): number {
+  let used = 0;
+  let line = 1;
+  let end = start;
+  for (let i = start; i < words.length; i++) {
+    const w = words[i].length + 1;
+    if (used + w > charsPerLine) {
+      if (line >= 2) break;
+      line += 1;
+      used = 0;
+    }
+    used += w;
+    end = i + 1;
+  }
+  return end;
+}
+
+function pageStart(words: string[], targetIndex: number, charsPerLine: number): number {
+  let anchor = 0;
+  let pageEnd = 0;
+  while (pageEnd <= targetIndex && pageEnd < words.length) {
+    anchor = pageEnd;
+    pageEnd = packPageEnd(words, anchor, charsPerLine);
+    if (pageEnd <= anchor) pageEnd = anchor + 1;
+  }
+  return anchor;
+}
 
 function WordStream({
   test,
@@ -293,14 +320,46 @@ function WordStream({
   onBlur: (e: React.MouseEvent) => void;
 }) {
   const { words, currentIndex, currentTyped } = test;
-  const anchor =
-    Math.max(0, Math.floor(Math.max(0, currentIndex - (STREAM_WINDOW - STREAM_SLIDE)) / STREAM_SLIDE) * STREAM_SLIDE);
-  const end = Math.min(words.length, anchor + STREAM_WINDOW);
+  const streamRef = useRef<HTMLDivElement>(null);
+  const probeRef = useRef<HTMLSpanElement>(null);
+  const [charsPerLine, setCharsPerLine] = useState<number | null>(null);
+
+  useEffect(() => {
+    const measure = () => {
+      const container = streamRef.current;
+      const probe = probeRef.current;
+      if (!container || !probe) return;
+      const charPx = probe.getBoundingClientRect().width || 1;
+      setCharsPerLine((prev) => {
+        const next = Math.max(1, Math.floor(container.clientWidth / charPx));
+        return prev === next ? prev : next;
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (streamRef.current) ro.observe(streamRef.current);
+    void document.fonts.ready.then(measure, () => undefined);
+    return () => ro.disconnect();
+  }, []);
+
+  const cpl = charsPerLine ?? DEFAULT_CHARS_PER_LINE;
+  const anchor = pageStart(words, currentIndex, cpl);
+  const end = packPageEnd(words, anchor, cpl);
 
   return (
     <div className="relative w-full" onMouseDown={onBlur}>
+      <span
+        ref={probeRef}
+        aria-hidden
+        className="pointer-events-none invisible absolute left-0 top-0 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl"
+      >
+        m
+      </span>
       <div className="px-4 sm:px-5">
-        <div className="flex w-full flex-wrap items-start justify-start gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
+        <div
+          ref={streamRef}
+          className="flex w-full flex-wrap items-start justify-start gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl"
+        >
           {words.map((word, index) => {
             if (index < anchor || index >= end) return null;
             if (index < currentIndex) {
