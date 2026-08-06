@@ -8,6 +8,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { CONCEPTS } from "@/lib/concepts";
+import { auth } from "@/lib/auth";
 import HeroDemo from "@/components/landing/HeroDemo";
 import LandingStats from "@/components/landing/LandingStats";
 import AccountButton from "@/components/AccountButton";
@@ -54,9 +55,13 @@ const STEPS: { number: string; title: string; copy: string; icon: LucideIcon }[]
   },
 ];
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await auth();
   return (
-    <div className="signal-page min-h-[100dvh] overflow-clip" data-theme="signal">
+    <div
+      className="signal-page min-h-[100dvh] overflow-clip"
+      data-theme={session?.user ? undefined : "signal"}
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-page"
