@@ -35,7 +35,7 @@ export default function AccountButton() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Account menu"
-        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md bg-accent/15 text-accent ring-1 ring-inset ring-edge"
+        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md bg-accent/15 text-accent"
       >
         <User className="h-4 w-4" aria-hidden />
       </button>
