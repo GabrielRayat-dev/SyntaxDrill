@@ -341,14 +341,26 @@ function WordStream({
             if (index < currentIndex) {
               const back = currentIndex - index;
               const opacity = Math.max(0.25, 1 - back * 0.18);
-              const wrong = test.typedWords[index] !== word;
+              const typed = test.typedWords[index] ?? "";
               return (
-                <span
-                  key={index}
-                  className={wrong ? "text-bad" : "text-accent"}
-                  style={{ opacity }}
-                >
-                  {word}
+                <span key={index} className="whitespace-nowrap" style={{ opacity }}>
+                  {word.split("").map((ch, ci) => {
+                    const typedCh = typed[ci];
+                    return (
+                      <span
+                        key={ci}
+                        className={
+                          typedCh === undefined
+                            ? "text-muted"
+                            : typedCh === ch
+                              ? "text-accent"
+                              : "text-bad"
+                        }
+                      >
+                        {ch}
+                      </span>
+                    );
+                  })}
                 </span>
               );
             }
