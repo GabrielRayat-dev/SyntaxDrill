@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Prism from "prismjs";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-sql";
+import "prismjs/components/prism-markup-templating";
 import "prismjs/components/prism-php";
 import "prismjs/components/prism-c";
 import type { SnippetLanguage } from "@/types";
