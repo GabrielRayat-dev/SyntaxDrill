@@ -300,7 +300,7 @@ function WordStream({
   return (
     <div className="relative w-full" onMouseDown={onBlur}>
       <div className="px-4 sm:px-5">
-        <div className="flex w-full flex-wrap items-start justify-start gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
+        <div className="flex w-full flex-wrap items-start justify-start gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
           {words.map((word, index) => {
             if (index < anchor || index >= end) return null;
             if (index < currentIndex) {
@@ -333,7 +333,7 @@ function WordStream({
               }
               return (
                 <span key={index} className="whitespace-nowrap" style={{ opacity }}>
-                  {chars}
+                  {chars}{" "}
                 </span>
               );
             }
@@ -348,10 +348,10 @@ function WordStream({
             return (
               <span
                 key={index}
-                className="text-muted"
+                className="whitespace-nowrap text-muted"
                 style={{ opacity: upcoming <= 1 ? 0.55 : 0.35 }}
               >
-                {word}
+                {word}{" "}
               </span>
             );
           })}
@@ -364,15 +364,14 @@ function WordStream({
 function ActiveWord({ word, typed }: { word: string; typed: string }) {
   const chars: React.ReactNode[] = [];
   for (let i = 0; i < typed.length; i++) {
-    const target = word[i];
-    if (typed[i] === " " && i >= word.length) {
+    if (i >= word.length) {
       chars.push(
-        <span key={i} className="text-ink">
+        <span key={i} className={typed[i] === " " ? "text-ink" : "text-bad"}>
           {typed[i]}
         </span>,
       );
     } else {
-      const correct = target !== undefined && typed[i] === target;
+      const correct = typed[i] === word[i];
       chars.push(
         <span key={i} className={correct ? "text-ink" : "text-bad"}>
           {typed[i]}
@@ -385,6 +384,13 @@ function ActiveWord({ word, typed }: { word: string; typed: string }) {
     chars.push(
       <span key={i} className="text-muted/40">
         {word[i]}
+      </span>,
+    );
+  }
+  if (typed.length <= word.length) {
+    chars.push(
+      <span key="space" className="text-muted/40">
+        {" "}
       </span>,
     );
   }
