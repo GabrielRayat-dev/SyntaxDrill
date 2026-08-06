@@ -332,14 +332,14 @@ function WordStream({
                 }
               }
               return (
-                <span key={index} className="whitespace-nowrap" style={{ opacity }}>
+                <span key={index} className="whitespace-pre" style={{ opacity }}>
                   {chars}{" "}
                 </span>
               );
             }
             if (index === currentIndex) {
               return (
-                <span key={index} className="whitespace-nowrap">
+                <span key={index} className="whitespace-pre">
                   <ActiveWord word={word} typed={currentTyped} />
                 </span>
               );
@@ -348,7 +348,7 @@ function WordStream({
             return (
               <span
                 key={index}
-                className="whitespace-nowrap text-muted"
+                className="whitespace-pre text-muted"
                 style={{ opacity: upcoming <= 1 ? 0.55 : 0.35 }}
               >
                 {word}{" "}
