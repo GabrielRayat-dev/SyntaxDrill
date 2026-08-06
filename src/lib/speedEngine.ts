@@ -44,9 +44,24 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
   const startedAt = state.startedAt ?? Date.now();
   const target = state.words[state.currentIndex] ?? "";
   const j = state.currentTyped.length;
+  const isLast = state.currentIndex === state.words.length - 1;
 
-  if (ch === " " && j >= target.length) {
-    return completeWord({ ...state, startedAt });
+  if (ch !== " " && j > target.length && state.currentTyped[target.length] === " ") {
+    return typeChar(commitWord(state), ch);
+  }
+
+  if (ch === " " && j === target.length) {
+    return {
+      ...state,
+      startedAt,
+      currentTyped: state.currentTyped + " ",
+      correctKeystrokes: state.correctKeystrokes + 1,
+      finishedAt: isLast ? Date.now() : state.finishedAt,
+    };
+  }
+
+  if (ch === " " && j > target.length && state.currentTyped[target.length] !== " ") {
+    return commitWord({ ...state, startedAt });
   }
 
   let correct = state.correctKeystrokes;
@@ -61,19 +76,17 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
     currentTyped: state.currentTyped + ch,
   };
 
-  const isLast = state.currentIndex === state.words.length - 1;
   if (isLast && next.currentTyped === target) {
     return { ...next, finishedAt: Date.now() };
   }
   return next;
 }
 
-function completeWord(state: WordTestState): WordTestState {
-  const typedWords = [...state.typedWords, state.currentTyped];
+function commitWord(state: WordTestState): WordTestState {
+  const typedWords = [...state.typedWords, state.currentTyped.replace(/ +$/, "")];
   const currentIndex = state.currentIndex + 1;
   const base: WordTestState = {
     ...state,
-    correctKeystrokes: state.correctKeystrokes + 1,
     typedWords,
     currentIndex,
     currentTyped: "",

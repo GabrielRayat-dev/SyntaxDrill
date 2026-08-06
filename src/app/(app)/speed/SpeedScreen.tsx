@@ -400,12 +400,20 @@ function ActiveWord({ word, typed }: { word: string; typed: string }) {
   const chars: React.ReactNode[] = [];
   for (let i = 0; i < typed.length; i++) {
     const target = word[i];
-    const correct = target !== undefined && typed[i] === target;
-    chars.push(
-      <span key={i} className={correct ? "text-ink" : "text-bad"}>
-        {typed[i]}
-      </span>,
-    );
+    if (typed[i] === " " && i >= word.length) {
+      chars.push(
+        <span key={i} className="text-ink">
+          {typed[i]}
+        </span>,
+      );
+    } else {
+      const correct = target !== undefined && typed[i] === target;
+      chars.push(
+        <span key={i} className={correct ? "text-ink" : "text-bad"}>
+          {typed[i]}
+        </span>,
+      );
+    }
   }
   chars.push(<span key="caret" className="caret-bar" aria-hidden />);
   for (let i = typed.length; i < word.length; i++) {
