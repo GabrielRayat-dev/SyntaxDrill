@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { RotateCcw } from "lucide-react";
 import type { SpeedTestMode, SpeedTestRecord } from "@/types";
 import { pickWords } from "@/lib/words";
@@ -282,9 +282,8 @@ function ConfigBar({
   );
 }
 
-const STREAM_LINES = 3;
-const STREAM_GAP = 12;
-const STREAM_PAD_Y = 20;
+const STREAM_WINDOW = 28;
+const STREAM_SLIDE = 20;
 
 function WordStream({
   test,
@@ -294,50 +293,16 @@ function WordStream({
   onBlur: (e: React.MouseEvent) => void;
 }) {
   const { words, currentIndex, currentTyped } = test;
-  const outerRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-  const activeRef = useRef<HTMLSpanElement>(null);
-
-  const align = useCallback(() => {
-    const outer = outerRef.current;
-    const inner = innerRef.current;
-    const active = activeRef.current;
-    if (!outer || !inner || !active) return;
-    const lineH = active.getBoundingClientRect().height;
-    if (lineH <= 0) return;
-    const stride = lineH + STREAM_GAP;
-    const top =
-      active.getBoundingClientRect().top -
-      inner.getBoundingClientRect().top -
-      STREAM_PAD_Y;
-    const lineIndex = Math.round(top / stride);
-    const offset = stride * Math.max(0, lineIndex - (STREAM_LINES - 2));
-    inner.style.transform = `translateY(${-offset}px)`;
-    outer.style.height = `${STREAM_PAD_Y * 2 + lineH * STREAM_LINES + STREAM_GAP * (STREAM_LINES - 1)}px`;
-  }, []);
-
-  useLayoutEffect(() => {
-    align();
-  });
-
-  useLayoutEffect(() => {
-    window.addEventListener("resize", align);
-    return () => window.removeEventListener("resize", align);
-  }, [align]);
+  const anchor =
+    Math.max(0, Math.floor(Math.max(0, currentIndex - (STREAM_WINDOW - STREAM_SLIDE)) / STREAM_SLIDE) * STREAM_SLIDE);
+  const end = Math.min(words.length, anchor + STREAM_WINDOW);
 
   return (
-    <div
-      ref={outerRef}
-      className="relative w-full overflow-hidden"
-      onMouseDown={onBlur}
-    >
-      <div
-        ref={innerRef}
-        className="relative px-4 will-change-transform sm:px-5"
-        style={{ paddingTop: STREAM_PAD_Y, paddingBottom: STREAM_PAD_Y }}
-      >
+    <div className="relative w-full" onMouseDown={onBlur}>
+      <div className="px-4 sm:px-5">
         <div className="flex w-full flex-wrap items-start justify-start gap-x-4 gap-y-3 font-mono text-2xl leading-snug sm:text-3xl xl:text-4xl">
           {words.map((word, index) => {
+            if (index < anchor || index >= end) return null;
             if (index < currentIndex) {
               const back = currentIndex - index;
               const opacity = Math.max(0.25, 1 - back * 0.18);
@@ -374,7 +339,7 @@ function WordStream({
             }
             if (index === currentIndex) {
               return (
-                <span key={index} ref={activeRef} className="whitespace-nowrap">
+                <span key={index} className="whitespace-nowrap">
                   <ActiveWord word={word} typed={currentTyped} />
                 </span>
               );
