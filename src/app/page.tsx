@@ -64,7 +64,7 @@ export default function LandingPage() {
         Skip to content
       </a>
       <NavGlass className="signal-nav sticky top-0 z-40">
-        <div className="signal-nav-inner mx-auto flex h-[68px] max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
+        <div className="signal-nav-inner mx-auto flex h-full max-w-[1440px] items-center justify-between gap-4 px-5 lg:px-8">
           <Link href="/" className="signal-wordmark" aria-label="SyntaxDrill home">
             syntax<span>drill</span>
           </Link>
@@ -96,7 +96,7 @@ export default function LandingPage() {
             <span>{"return"}</span><span>{"<T>"}</span><span>{"async"}</span>
             <span>{"[]"}</span><span>{"null"}</span><span>{"./drill"}</span>
           </div>
-          <div className="mx-auto grid min-h-[calc(100dvh-68px)] max-w-[1440px] items-center gap-10 px-5 py-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-16">
+          <div className="mx-auto grid min-h-[calc(100dvh-96px)] max-w-[1440px] items-center gap-10 px-5 py-12 lg:grid-cols-[0.82fr_1.18fr] lg:px-8 lg:py-16">
             <div className="relative z-10 max-w-xl">
               <p className="signal-kicker">Training ground for real code</p>
               <h1 className="mt-5 font-sans text-[clamp(3.2rem,7vw,7.2rem)] font-medium leading-[0.88] tracking-[-0.075em] text-ink">
