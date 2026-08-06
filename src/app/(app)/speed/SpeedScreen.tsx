@@ -459,7 +459,7 @@ function SpeedConfigPanel({
   }
 
   return (
-    <div className="sd-rise mx-auto w-full max-w-4xl rounded-lg border border-edge/70 p-6 sm:p-8 lg:p-10">
+    <div className="sd-rise mx-auto w-full max-w-4xl p-6 sm:p-8 lg:p-10">
       <div>
         <p className="signal-kicker mb-3">Speed test</p>
         <h1 className="font-display text-2xl font-semibold text-ink">
