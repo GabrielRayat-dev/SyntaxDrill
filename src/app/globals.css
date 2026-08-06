@@ -259,7 +259,7 @@ body:has(.signal-page) .paper-grain { display: none; }
 @keyframes syntax-drift { to { transform: translate3d(10px, -14px, 0); } }
 .signal-nav,
 .signal-app-nav {
-  transition: background 220ms ease, border-bottom-color 220ms ease, box-shadow 220ms ease, height 220ms ease, margin 220ms ease, border-radius 220ms ease;
+  transition: background 220ms ease, border-bottom-color 220ms ease, box-shadow 220ms ease, height 220ms ease, margin 220ms ease;
 }
 .signal-nav {
   height: 96px;
@@ -267,10 +267,9 @@ body:has(.signal-page) .paper-grain { display: none; }
 .signal-nav[data-scrolled="true"] {
   background: color-mix(in srgb, var(--sd-bg) 88%, transparent);
   border-bottom-color: color-mix(in srgb, var(--sd-accent) 42%, var(--sd-border));
-  border-radius: 16px;
   box-shadow: 0 10px 38px rgb(0 0 0 / .22);
   height: 60px;
-  margin: 12px 16px 0;
+  margin: 24px 16px 0;
 }
 .signal-nav > .signal-nav-inner { transition: transform 220ms ease; }
 .signal-nav[data-scrolled="true"] > .signal-nav-inner { transform: scale(.98); }
@@ -286,7 +285,6 @@ body:has(.signal-page) .paper-grain { display: none; }
 /* Blueprint scroll decoration: dashed grid edges + corner crosshairs */
 .signal-blueprint {
   border-bottom: 1px dashed transparent;
-  border-radius: inherit;
   border-top: 1px dashed transparent;
   color: var(--sd-accent);
   inset: 0;
