@@ -42,18 +42,17 @@ export function refillWordTest(
 export function typeChar(state: WordTestState, ch: string): WordTestState {
   if (state.finishedAt !== null) return state;
   const startedAt = state.startedAt ?? Date.now();
-  if (ch === " ") return completeWord({ ...state, startedAt });
-
   const target = state.words[state.currentIndex] ?? "";
   const j = state.currentTyped.length;
+
+  if (ch === " " && j >= target.length) {
+    return completeWord({ ...state, startedAt });
+  }
+
   let correct = state.correctKeystrokes;
   let error = state.errorKeystrokes;
-  if (j < target.length) {
-    if (ch === target[j]) correct += 1;
-    else error += 1;
-  } else {
-    error += 1;
-  }
+  if (j < target.length && ch === target[j]) correct += 1;
+  else error += 1;
   const next: WordTestState = {
     ...state,
     startedAt,
@@ -70,17 +69,11 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
 }
 
 function completeWord(state: WordTestState): WordTestState {
-  const target = state.words[state.currentIndex] ?? "";
-  const typed = state.currentTyped;
-  let error = state.errorKeystrokes;
-  if (typed !== target) {
-    error += Math.max(0, target.length - typed.length);
-  }
-  const typedWords = [...state.typedWords, typed];
+  const typedWords = [...state.typedWords, state.currentTyped];
   const currentIndex = state.currentIndex + 1;
   const base: WordTestState = {
     ...state,
-    errorKeystrokes: error,
+    correctKeystrokes: state.correctKeystrokes + 1,
     typedWords,
     currentIndex,
     currentTyped: "",
