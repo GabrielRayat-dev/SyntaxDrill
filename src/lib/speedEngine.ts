@@ -46,7 +46,7 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
   const j = state.currentTyped.length;
   const isLast = state.currentIndex === state.words.length - 1;
 
-  if (ch !== " " && j > target.length && state.currentTyped[target.length] === " ") {
+  if (j > target.length) {
     return typeChar(commitWord(state), ch);
   }
 
@@ -58,10 +58,6 @@ export function typeChar(state: WordTestState, ch: string): WordTestState {
       correctKeystrokes: state.correctKeystrokes + 1,
       finishedAt: isLast ? Date.now() : state.finishedAt,
     };
-  }
-
-  if (ch === " " && j > target.length && state.currentTyped[target.length] !== " ") {
-    return commitWord({ ...state, startedAt });
   }
 
   let correct = state.correctKeystrokes;

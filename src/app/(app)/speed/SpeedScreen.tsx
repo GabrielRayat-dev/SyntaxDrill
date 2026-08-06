@@ -363,37 +363,45 @@ function WordStream({
 
 function ActiveWord({ word, typed }: { word: string; typed: string }) {
   const chars: React.ReactNode[] = [];
-  for (let i = 0; i < typed.length; i++) {
-    if (i >= word.length) {
-      chars.push(
-        <span key={i} className={typed[i] === " " ? "text-ink" : "text-bad"}>
-          {typed[i]}
-        </span>,
-      );
-    } else {
-      const correct = typed[i] === word[i];
-      chars.push(
-        <span key={i} className={correct ? "text-ink" : "text-bad"}>
-          {typed[i]}
-        </span>,
-      );
+  const caretIndex = typed.length;
+
+  for (let i = 0; i < word.length; i++) {
+    if (i === caretIndex) {
+      chars.push(<span key={`caret-${i}`} className="caret-bar" aria-hidden />);
     }
-  }
-  chars.push(<span key="caret" className="caret-bar" aria-hidden />);
-  for (let i = typed.length; i < word.length; i++) {
+    const status = i < typed.length ? (typed[i] === word[i] ? "correct" : "wrong") : "untyped";
     chars.push(
-      <span key={i} className="text-muted/40">
+      <span key={i} className={status === "correct" ? "text-ink" : status === "wrong" ? "text-bad" : "text-muted/40"}>
         {word[i]}
       </span>,
     );
   }
-  if (typed.length <= word.length) {
+
+  if (word.length === caretIndex) {
+    chars.push(<span key="caret-delim" className="caret-bar" aria-hidden />);
+  }
+  const delimTyped = typed[word.length];
+  const delimStatus = delimTyped === undefined ? "untyped" : delimTyped === " " ? "correct" : "wrong";
+  chars.push(
+    <span key="delim" className={delimStatus === "correct" ? "text-ink" : delimStatus === "wrong" ? "text-bad" : "text-muted/40"}>
+      {" "}
+    </span>,
+  );
+
+  for (let i = word.length + 1; i < typed.length; i++) {
+    if (i === caretIndex) {
+      chars.push(<span key={`caret-${i}`} className="caret-bar" aria-hidden />);
+    }
     chars.push(
-      <span key="space" className="text-muted/40">
-        {" "}
+      <span key={i} className="text-bad">
+        {typed[i]}
       </span>,
     );
   }
+  if (caretIndex > word.length + 1) {
+    chars.push(<span key="caret-end" className="caret-bar" aria-hidden />);
+  }
+
   return <>{chars}</>;
 }
 
