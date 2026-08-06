@@ -459,7 +459,7 @@ function SpeedConfigPanel({
   }
 
   return (
-    <div className="sd-rise space-y-6">
+    <div className="sd-rise mx-auto w-full max-w-xl rounded-lg border border-edge/70 bg-surface p-6 sm:p-8">
       <div>
         <p className="signal-kicker mb-3">Speed test</p>
         <h1 className="font-display text-xl font-semibold text-ink">
@@ -470,51 +470,53 @@ function SpeedConfigPanel({
         </p>
       </div>
 
-      <div>
-        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
-          Mode
-        </p>
-        <div className="flex gap-2">
-          {(["time", "words"] as const).map((m) => (
-            <button
-              key={m}
-              onClick={() => pickMode(m)}
-              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                mode === m
-                  ? "border-accent bg-raised text-ink"
-                  : "border-edge bg-surface text-muted hover:text-ink"
-              }`}
-            >
-              {m === "time" ? "Timed" : "Words"}
-            </button>
-          ))}
+      <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div>
+          <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
+            Mode
+          </p>
+          <div className="flex gap-2">
+            {(["time", "words"] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => pickMode(m)}
+                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                  mode === m
+                    ? "border-accent bg-raised text-ink"
+                    : "border-edge bg-surface text-muted hover:text-ink"
+                }`}
+              >
+                {m === "time" ? "Timed" : "Words"}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div>
-        <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
-          {mode === "time" ? "Seconds" : "Word count"}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {targets.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTarget(t)}
-              className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
-                target === t
-                  ? "border-accent bg-raised text-ink"
-                  : "border-edge bg-surface text-muted hover:text-ink"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+        <div>
+          <p className="mb-2 font-mono text-[10px] font-medium uppercase tracking-widest text-muted">
+            {mode === "time" ? "Seconds" : "Word count"}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {targets.map((t) => (
+              <button
+                key={t}
+                onClick={() => setTarget(t)}
+                className={`rounded-md border px-4 py-2 text-sm font-medium transition-colors ${
+                  target === t
+                    ? "border-accent bg-raised text-ink"
+                    : "border-edge bg-surface text-muted hover:text-ink"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <button
         onClick={() => onPick({ mode, target })}
-        className="signal-cta w-full"
+        className="signal-cta mt-6 w-full"
       >
         Start test
       </button>
