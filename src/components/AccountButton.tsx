@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, User } from "lucide-react";
 
 export default function AccountButton() {
   const { data: session, status } = useSession();
@@ -26,7 +26,6 @@ export default function AccountButton() {
   }
 
   const { user } = session;
-  const initial = (user.username ?? user.name ?? "?").slice(0, 1).toUpperCase();
 
   return (
     <div className="relative">
@@ -35,14 +34,10 @@ export default function AccountButton() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md bg-accent/15 text-sm font-semibold text-accent ring-1 ring-inset ring-edge"
+        aria-label="Account menu"
+        className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md bg-accent/15 text-accent ring-1 ring-inset ring-edge"
       >
-        {user.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={user.image} alt="" className="h-full w-full rounded-md object-cover" />
-        ) : (
-          initial
-        )}
+        <User className="h-4 w-4" aria-hidden />
       </button>
 
       {open && (
