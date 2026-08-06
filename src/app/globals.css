@@ -279,8 +279,8 @@ body:has(.signal-page) .paper-grain { display: none; }
 }
 /* Blueprint scroll decoration: dashed grid edges + corner crosshairs */
 .signal-blueprint {
-  border-bottom: 1px dashed var(--sd-accent);
-  border-top: 1px dashed var(--sd-accent);
+  border-bottom: 1px dashed transparent;
+  border-top: 1px dashed transparent;
   color: var(--sd-accent);
   inset: 0;
   pointer-events: none;
@@ -289,7 +289,7 @@ body:has(.signal-page) .paper-grain { display: none; }
 }
 .signal-blueprint-cross {
   height: 16px;
-  opacity: .5;
+  opacity: 0;
   position: absolute;
   transition: transform 220ms ease, opacity 220ms ease;
   width: 16px;
@@ -306,20 +306,18 @@ body:has(.signal-page) .paper-grain { display: none; }
 
 .signal-nav[data-scrolled="true"] .signal-blueprint,
 .signal-app-nav[data-scrolled="true"] .signal-blueprint {
-  border-bottom-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
-  border-top-color: color-mix(in srgb, var(--sd-accent) 12%, transparent);
+  border-bottom-color: var(--sd-accent);
+  border-top-color: var(--sd-accent);
 }
 .signal-nav[data-scrolled="true"] .signal-blueprint-cross,
 .signal-app-nav[data-scrolled="true"] .signal-blueprint-cross {
+  opacity: .5;
   transform: translate(-50%, -50%);
 }
 @media (prefers-reduced-motion: reduce) {
   .signal-blueprint,
   .signal-blueprint-cross {
     transition: none;
-  }
-  .signal-blueprint-cross {
-    transform: translate(-50%, -50%);
   }
 }
 @media (max-width: 767px) { .signal-roadmap-item { grid-template-columns: 1fr; gap: .7rem; } .syntax-constellation span:nth-child(4n) { display: none; } }
