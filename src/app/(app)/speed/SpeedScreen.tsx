@@ -404,7 +404,7 @@ function ActiveWord({ word, typed }: { word: string; typed: string }) {
       </span>,
     );
   }
-  if (caretIndex > word.length + 1) {
+  if (caretIndex > word.length) {
     chars.push(<span key="caret-end" className="caret-bar" aria-hidden />);
   }
 
