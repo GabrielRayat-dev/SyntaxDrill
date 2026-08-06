@@ -342,25 +342,33 @@ function WordStream({
               const back = currentIndex - index;
               const opacity = Math.max(0.25, 1 - back * 0.18);
               const typed = test.typedWords[index] ?? "";
+              const chars: React.ReactNode[] = [];
+              for (let ci = 0; ci < Math.max(typed.length, word.length); ci++) {
+                const typedCh = typed[ci];
+                const targetCh = word[ci];
+                if (typedCh === undefined) {
+                  chars.push(
+                    <span key={ci} className="text-muted">
+                      {targetCh}
+                    </span>,
+                  );
+                } else if (targetCh === undefined || typedCh !== targetCh) {
+                  chars.push(
+                    <span key={ci} className="text-bad">
+                      {typedCh}
+                    </span>,
+                  );
+                } else {
+                  chars.push(
+                    <span key={ci} className="text-ink">
+                      {typedCh}
+                    </span>,
+                  );
+                }
+              }
               return (
                 <span key={index} className="whitespace-nowrap" style={{ opacity }}>
-                  {word.split("").map((ch, ci) => {
-                    const typedCh = typed[ci];
-                    return (
-                      <span
-                        key={ci}
-                        className={
-                          typedCh === undefined
-                            ? "text-muted"
-                            : typedCh === ch
-                              ? "text-accent"
-                              : "text-bad"
-                        }
-                      >
-                        {ch}
-                      </span>
-                    );
-                  })}
+                  {chars}
                 </span>
               );
             }
@@ -394,7 +402,7 @@ function ActiveWord({ word, typed }: { word: string; typed: string }) {
     const target = word[i];
     const correct = target !== undefined && typed[i] === target;
     chars.push(
-      <span key={i} className={correct ? "text-accent" : "text-bad"}>
+      <span key={i} className={correct ? "text-ink" : "text-bad"}>
         {typed[i]}
       </span>,
     );
