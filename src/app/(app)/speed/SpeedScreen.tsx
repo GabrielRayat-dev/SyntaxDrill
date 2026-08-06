@@ -291,7 +291,7 @@ function packPageEnd(words: string[], start: number, charsPerLine: number): numb
   for (let i = start; i < words.length; i++) {
     const w = words[i].length + 1;
     if (used + w > charsPerLine) {
-      if (line >= 2) break;
+      if (line >= 3) break;
       line += 1;
       used = 0;
     }
