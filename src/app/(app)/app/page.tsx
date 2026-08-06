@@ -51,7 +51,7 @@ export default function HomePage() {
         </div>
 
         {records.length > 0 && (
-          <div className="signal-app-metrics mb-10 grid grid-cols-2 gap-y-3 sm:grid-cols-5 sm:divide-x sm:divide-edge/60">
+          <div className="mb-10 grid grid-cols-2 gap-y-6 sm:grid-cols-5 sm:divide-x sm:divide-edge/60">
             <Totals label="Sessions" value={String(t.sessions)} />
             <Totals label="Snippets" value={String(t.snippetsTyped)} />
             <Totals label="Mastered" value={String(t.snippetsMastered)} />
@@ -144,13 +144,13 @@ export default function HomePage() {
 
 function Totals({ label, value }: { label: string; value: string }) {
   return (
-    <div className="px-3 py-2.5 text-center">
-      <div className="text-2xl font-semibold tabular-nums text-ink">
+    <div className="flex flex-col items-center gap-1 px-4 text-center sm:items-start sm:text-left">
+      <span className="font-sans text-3xl font-medium tabular-nums tracking-[-0.03em] text-ink">
         {value}
-      </div>
-      <div className="text-[10px] font-medium uppercase tracking-widest text-muted">
+      </span>
+      <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
         {label}
-      </div>
+      </span>
     </div>
   );
 }
