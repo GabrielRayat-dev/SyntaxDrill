@@ -311,22 +311,28 @@ function WordStream({
               for (let ci = 0; ci < Math.max(typed.length, word.length); ci++) {
                 const typedCh = typed[ci];
                 const targetCh = word[ci];
-                if (typedCh === undefined) {
-                  chars.push(
-                    <span key={ci} className="text-muted">
-                      {targetCh}
-                    </span>,
-                  );
-                } else if (targetCh === undefined || typedCh !== targetCh) {
+                if (targetCh === undefined) {
                   chars.push(
                     <span key={ci} className="text-bad">
                       {typedCh}
                     </span>,
                   );
-                } else {
+                } else if (typedCh === undefined) {
+                  chars.push(
+                    <span key={ci} className="text-muted">
+                      {targetCh}
+                    </span>,
+                  );
+                } else if (typedCh === targetCh) {
                   chars.push(
                     <span key={ci} className="text-ink">
-                      {typedCh}
+                      {targetCh}
+                    </span>,
+                  );
+                } else {
+                  chars.push(
+                    <span key={ci} className="text-bad">
+                      {targetCh}
                     </span>,
                   );
                 }
