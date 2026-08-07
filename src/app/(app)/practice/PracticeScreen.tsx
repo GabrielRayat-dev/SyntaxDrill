@@ -65,6 +65,7 @@ export default function PracticeScreen({
   const [session, setSession] = useState<Snippet[]>(initialSession);
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>(initialConfig ? "read" : "config");
+  const [resumePhase, setResumePhase] = useState<Phase | null>(null);
   const [editor, setEditor] = useState<EditorState | null>(null);
   const [results, setResults] = useState<SnippetResult[]>([]);
   const [runResult, setRunResult] = useState<RunResult | null>(null);
@@ -75,6 +76,7 @@ export default function PracticeScreen({
 
   function startSession(cfg: PracticeConfig) {
     savedRef.current = false;
+    setResumePhase(null);
     setConfig(cfg);
     setSession(buildSession(cfg, randomSeed()));
     setIndex(0);
@@ -195,7 +197,19 @@ export default function PracticeScreen({
 
   return (
     <div className="mx-auto max-w-3xl">
-      {phase === "config" && <ConfigPanel onPick={startSession} />}
+      {phase === "config" && (
+        <ConfigPanel
+          onPick={startSession}
+          onResume={
+            config && resumePhase && resumePhase !== "config"
+              ? () => {
+                  setPhase(resumePhase);
+                  setResumePhase(null);
+                }
+              : null
+          }
+        />
+      )}
 
         {phase !== "config" && phase !== "summary" && snippet && (
           <>
@@ -224,7 +238,10 @@ export default function PracticeScreen({
                 </div>
               </div>
               <button
-                onClick={() => setPhase("config")}
+                onClick={() => {
+                  setResumePhase(phase);
+                  setPhase("config");
+                }}
                 className="shrink-0 text-xs font-medium text-muted transition-colors hover:text-ink"
               >
                 Change
@@ -445,7 +462,13 @@ export default function PracticeScreen({
   );
 }
 
-function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
+function ConfigPanel({
+  onPick,
+  onResume,
+}: {
+  onPick: (config: PracticeConfig) => void;
+  onResume: (() => void) | null;
+}) {
   const [language, setLanguage] = useState<SnippetLanguage>("javascript");
   const [concept, setConcept] = useState<ConceptId>("variables");
   const [difficulty, setDifficulty] = useState<Difficulty>("beginner");
@@ -456,6 +479,21 @@ function ConfigPanel({ onPick }: { onPick: (config: PracticeConfig) => void }) {
   return (
     <div className="sd-rise space-y-6">
       <div>
+        {onResume ? (
+          <button
+            onClick={onResume}
+            className="mb-4 text-xs font-medium text-muted transition-colors hover:text-ink"
+          >
+            ← Back
+          </button>
+        ) : (
+          <Link
+            href="/app"
+            className="mb-4 inline-block text-xs font-medium text-muted transition-colors hover:text-ink"
+          >
+            ← Tracks
+          </Link>
+        )}
         <p className="signal-kicker mb-3">Drill session</p>
         <h1 className="font-display text-xl font-semibold text-ink">Practice</h1>
         <p className="mt-1 text-sm text-muted">
